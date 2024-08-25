@@ -16,7 +16,7 @@ import org.hibernate.annotations.DynamicUpdate;
 @Getter
 @DynamicUpdate
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
-@ToString(exclude = "hospital")
+@ToString
 @Comment("")
 public class User {
 

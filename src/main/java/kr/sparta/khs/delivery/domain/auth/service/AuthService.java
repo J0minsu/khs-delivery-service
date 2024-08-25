@@ -1,12 +1,10 @@
 package kr.sparta.khs.delivery.domain.auth.service;
 
-import com.sparta.msa_exam.auth.domain.user.entity.User;
-import com.sparta.msa_exam.auth.domain.user.repository.UserRepository;
 import io.jsonwebtoken.Jwts;
 import io.jsonwebtoken.io.Decoders;
 import io.jsonwebtoken.security.Keys;
-import kr.khs.delivery.domain.user.entity.User;
-import kr.khs.delivery.domain.user.repository.UserRepository;
+import kr.sparta.khs.delivery.domain.user.entity.User;
+import kr.sparta.khs.delivery.domain.user.repository.UserRepository;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
@@ -78,13 +76,14 @@ public class AuthService {
      * @return JWT 액세스 토큰
      */
     public String signIn(String userId, String password) {
-        User user = userRepository.findById(userId)
+        User user = userRepository.findById(1)
                 .orElseThrow(() -> new IllegalArgumentException("Invalid user ID or password"));
 
         if (!passwordEncoder.matches(password, user.getPassword())) {
             throw new IllegalArgumentException("Invalid user ID or password");
         }
 
-        return createAccessToken(user.getUserId(), user.getRole());
+//        return createAccessToken(user.getUserId(), user.getRole());
+        return null;
     }
 }

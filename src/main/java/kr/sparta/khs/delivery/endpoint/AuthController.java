@@ -1,8 +1,8 @@
 package kr.sparta.khs.delivery.endpoint;
 
 
-import kr.khs.delivery.domain.auth.service.AuthService;
-import kr.khs.delivery.endpoint.dto.req.SignInRequest;
+import kr.sparta.khs.delivery.domain.auth.service.AuthService;
+import kr.sparta.khs.delivery.endpoint.dto.req.SignInRequest;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
