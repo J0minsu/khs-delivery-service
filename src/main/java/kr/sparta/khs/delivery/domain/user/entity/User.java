@@ -2,6 +2,7 @@ package kr.sparta.khs.delivery.domain.user.entity;
 
 import jakarta.persistence.*;
 import kr.sparta.khs.delivery.domain.common.entity.BaseEntity;
+import kr.sparta.khs.delivery.domain.user.vo.UserVO;
 import lombok.AccessLevel;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -71,6 +72,15 @@ public class User extends BaseEntity {
 
     public void updatePassword(String newPassword) {
         this.password = newPassword;
+    }
+
+    public UserVO toUserVO() {
+        return new UserVO(
+                id, username, password,
+                name, email, contact, address,
+                authType, isActive,
+                getCreatedAt(), getUpdatedAt(), getDeletedAt(),
+                getCreatedBy(), getUpdatedBy(), getDeletedBy());
     }
 
 }
