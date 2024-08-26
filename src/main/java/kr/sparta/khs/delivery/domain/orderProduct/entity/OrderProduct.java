@@ -1,6 +1,7 @@
 package kr.sparta.khs.delivery.domain.orderProduct.entity;
 
 import jakarta.persistence.*;
+import kr.sparta.khs.delivery.domain.common.entity.BaseEntity;
 import kr.sparta.khs.delivery.domain.order.entity.Order;
 import kr.sparta.khs.delivery.domain.product.entity.Product;
 import lombok.AccessLevel;
@@ -15,7 +16,7 @@ import java.util.UUID;
 @ToString
 @Table(name = "p_order_product")
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
-public class OrderProduct {
+public class OrderProduct extends BaseEntity {
     @Id
     @GeneratedValue(strategy = GenerationType.UUID)
     @Column(name = "order_product_id")
