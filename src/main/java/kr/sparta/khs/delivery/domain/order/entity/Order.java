@@ -1,6 +1,7 @@
 package kr.sparta.khs.delivery.domain.order.entity;
 
 import jakarta.persistence.*;
+import kr.sparta.khs.delivery.domain.restaurant.entity.Restaurant;
 import kr.sparta.khs.delivery.domain.user.entity.User;
 import lombok.AccessLevel;
 import lombok.Getter;

@@ -19,13 +19,13 @@ public class AuthController {
 
     private final AuthService authService;
 
-    @PostMapping("/auth/signIn")
+    @PostMapping("/auth/signin")
     public ResponseEntity<?> createAuthenticationToken(@RequestBody SignInRequest signInRequest){
         String token = authService.signIn(signInRequest.getUserId(), signInRequest.getPassword());
         return ResponseEntity.ok(new AuthResponse(token));
     }
 
-//    @PostMapping("/auth/signUp")
+//    @PostMapping("/auth/signup")
 //    TODO change to DTO
 //    public ResponseEntity<?> signUp(@RequestBody User user) {
 //        User createdUser = authService.signUp(user);

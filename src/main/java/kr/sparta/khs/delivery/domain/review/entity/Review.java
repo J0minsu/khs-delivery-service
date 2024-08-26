@@ -1,6 +1,7 @@
 package kr.sparta.khs.delivery.domain.review.entity;
 
 import jakarta.persistence.*;
+import kr.sparta.khs.delivery.domain.order.entity.Order;
 import kr.sparta.khs.delivery.domain.user.entity.User;
 import lombok.AccessLevel;
 import lombok.Getter;
@@ -43,5 +44,8 @@ public class Review {
      * TODO attach Order.class
      *  OneToOne(parent)
      */
-
+    @OneToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "order_id")
+    @Comment("주문 아이디")
+    private Order order;
 }
