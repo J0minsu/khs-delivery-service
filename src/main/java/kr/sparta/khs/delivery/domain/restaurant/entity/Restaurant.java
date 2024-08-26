@@ -1,10 +1,12 @@
 package kr.sparta.khs.delivery.domain.restaurant.entity;
 
 import jakarta.persistence.*;
+import kr.sparta.khs.delivery.domain.common.entity.BaseEntity;
 import kr.sparta.khs.delivery.domain.foodcategory.entity.FoodCategory;
 import kr.sparta.khs.delivery.domain.product.entity.Product;
 import kr.sparta.khs.delivery.domain.user.entity.User;
 import lombok.*;
+import org.hibernate.annotations.Comment;
 import org.hibernate.annotations.DynamicUpdate;
 
 import java.util.ArrayList;
@@ -15,38 +17,43 @@ import java.util.UUID;
 @DynamicUpdate
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
 @ToString
-public class Restaurant {
+public class Restaurant extends BaseEntity {
    @Id
    @GeneratedValue(strategy = GenerationType.UUID)
    @Column(name = "restaurant_id")
    private UUID id;
 
-   @Column(name = "restaurant_name")
+   @Column(name = "restaurant_name" , nullable = false)
    private String name;
 
-   @Column(name = "restaurant_address")
+   @Column(name = "restaurant_address" , nullable = false)
    private String address;
 
    @Column(name = "restaurant_phone")
    private String phone;
 
    @Column(name = "restaurant_min_price")
-   private int min_price;
+   @Comment("최소주문금액")
+   private int minPrice;
 
    @Column(name = "restaurant_operation_hours")
-   private String operation_hours;
+   @Comment("운영시간")
+   private String operationHours;
 
    @Column(name = "restaurant_closed_days")
-   private String closed_days;
+   @Comment("휴일")
+   private String closedDays;
 
    @Column(name = "restaurant_delivery_tip")
-   private String delivery_tip;
+   @Comment("배달팁")
+   private String deliveryTip;
 
-   @Column(name = "restaurant_status")
+   @Column(name = "restaurant_status" , nullable = false)
+   @Comment("가게 운영상태")
    private String status;
 
 
-   @OneToMany(mappedBy = "Restaurant")
+   @OneToMany(mappedBy = "restaurant")
    private ArrayList<Product> products;
 
 
