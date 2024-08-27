@@ -9,6 +9,7 @@ public enum ReportType {
     DELIVERY,
     RESTAURANT,
     PRODUCT,
+    AI,
     ;
 
 

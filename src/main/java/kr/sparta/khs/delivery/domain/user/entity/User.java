@@ -70,6 +70,8 @@ public class User extends BaseEntity {
         return new User(username, password, name, email, contact, address, authType, isActive);
     }
 
+    public static User emptyObject() {return new User();}
+
     public void updatePassword(String newPassword) {
         this.password = newPassword;
     }

@@ -12,9 +12,11 @@ import lombok.experimental.FieldDefaults;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.data.crossstore.ChangeSetPersister;
 import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.util.List;
 import java.util.NoSuchElementException;
 import java.util.Optional;
 import java.util.UUID;
@@ -22,7 +24,7 @@ import java.util.UUID;
 @Service
 @RequiredArgsConstructor
 @Slf4j
-@Transactional(readOnly = true)
+@Transactional
 public class AIService {
 
     private final AIRepository aiRepository;
@@ -37,31 +39,36 @@ public class AIService {
         return ai;
     }
 
-    public void create(AIRequest request) {
+    @Transactional
+    public AIVO create(AIRequest request) {
 
-        User user = userRepository.findById(request.getUserId())
-                .orElseThrow(NoSuchElementException::new);
+        User user = userRepository.getOne(request.getUserId());
 
         String prompt = request.getPrompt();
         request.setPrompt(prompt + PROMPT_SUFFIX);
-        //AI Request
-
+        // TODO AI Request
 
         AI ai = AI.create(request.getPrompt(), "answer", user);
 
-        aiRepository.save(ai);
+        AI savedAI = aiRepository.save(ai);
+
+        return savedAI.toVO();
 
     }
 
     public Page<AIVO> findByUser(Integer id) {
 
-        User user = userRepository.findById(id)
-                .orElseThrow(NoSuchElementException::new);
+//        User user = userRepository.getOne(id);
+        PageRequest pageRequest = PageRequest.of(0, 100);
 
-        Page<AI> ais = aiRepository.findByRequestUser(user);
+        Page<AI> ais = aiRepository.findByRequestUserId(id, pageRequest);
 
         Page<AIVO> result = ais.map(AI::toVO);
 
         return result;
+    }
+
+    public List<AI> findAll() {
+        return aiRepository.findAll();
     }
 }
