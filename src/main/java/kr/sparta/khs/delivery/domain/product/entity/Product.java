@@ -30,7 +30,7 @@ public class Product extends BaseEntity {
     private String description;
 
     @Column(name ="product_price", nullable = false)
-    private Double price;
+    private Integer price;
 
     @Column(name ="product_status", nullable = false)
     private String status;

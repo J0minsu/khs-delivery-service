@@ -33,4 +33,16 @@ public class OrderProduct extends BaseEntity {
     private Integer quantity;
     @Column(name = "product_price", nullable = false)
     private Integer price;
+    public OrderProduct(Order order, Product product, Integer quantity, Integer price) {
+        this.order = order;
+        this.product = product;
+        this.quantity = quantity;
+        this.price = price;
+    }
+    public void updateQuantity(Integer quantity) {
+        this.quantity = quantity;
+    }
+    public void updatePrice(Integer price) {
+        this.price = price;
+    }
 }
