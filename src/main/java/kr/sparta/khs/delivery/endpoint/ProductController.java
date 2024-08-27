@@ -6,6 +6,7 @@ import kr.sparta.khs.delivery.domain.product.entity.Product;
 import kr.sparta.khs.delivery.domain.product.service.ProductService;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.annotation.Secured;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.UUID;
@@ -21,6 +22,7 @@ public class ProductController {
         this.productService = productService;
     }
 
+    @Secured({"MANAGER","MASTER"})
     @PostMapping("{restaurantId}")
     public ResponseEntity<String> createProduct(
             @PathVariable UUID restaurantId,@RequestBody ProductRequest productRequest) {
@@ -36,5 +38,11 @@ public class ProductController {
         return ResponseEntity.status(HttpStatus.OK).body(productResponse);
     }
 
+    @Secured({"MANAGER","MASTER"})
+    @PutMapping
+    public ResponseEntity<String> updateProduct() {
+
+        return ResponseEntity.status(HttpStatus.OK).body("수정 성공");
+    }
 
 }

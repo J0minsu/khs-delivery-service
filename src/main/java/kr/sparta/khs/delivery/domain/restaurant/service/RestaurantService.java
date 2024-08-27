@@ -51,37 +51,12 @@ public class RestaurantService {
     }
 
     public List<RestaurantResponse> getAllRestaurants() {
-        return restaurantRepository.findAll().stream()
-                .map(this::toResponse)
-                .collect(Collectors.toList());
+
+        return restaurantRepository.findAll().stream().map(RestaurantResponse::fromEntity).collect(Collectors.toList());
+
     }
 
-
-    private RestaurantResponse toResponse(Restaurant restaurant) {
-        List<ProductResponse> productResponses = restaurant.getProducts().stream()
-                .map(product -> ProductResponse.builder()
-                        .id(product.getId())
-                        .name(product.getName())
-                        .description(product.getDescription())
-                        .price(product.getPrice())
-                        .status(product.getStatus())
-                        .build())
-                .collect(Collectors.toList());
-
-        return new RestaurantResponse(
-                restaurant.getId(),
-                restaurant.getName(),
-                restaurant.getAddress(),
-                restaurant.getPhone(),
-                restaurant.getMinPrice(),
-                restaurant.getOperationHours(),
-                restaurant.getClosedDays(),
-                restaurant.getDeliveryTip(),
-                restaurant.getStatus(),
-                restaurant.getFoodCategory().getName(),
-                productResponses,
-                restaurant.getUser().getName()
-        );
+    public void updateRestaurant(UUID id) {
     }
-
 }
+

@@ -36,6 +36,7 @@ public class RestaurantResponse {
                         .description(product.getDescription())
                         .price(product.getPrice())
                         .status(product.getStatus())
+                        .restaurantName(product.getRestaurant().getName())
                         .build())
                 .collect(Collectors.toList());
 
