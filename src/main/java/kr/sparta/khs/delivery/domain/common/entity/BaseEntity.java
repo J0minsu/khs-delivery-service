@@ -38,12 +38,12 @@ public class BaseEntity {
 
     @CreatedBy
     @Column(updatable = false)
-    private UUID createdBy;
+    private Integer createdBy;
 
     @LastModifiedBy
-    private UUID updatedBy;
+    private Integer updatedBy;
 
-    private UUID deletedBy;
+    private Integer deletedBy;
 
 
 }

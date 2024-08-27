@@ -7,17 +7,25 @@ import lombok.AccessLevel;
 import lombok.RequiredArgsConstructor;
 import lombok.experimental.FieldDefaults;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
+import java.time.LocalDateTime;
+
 @RestController
-@FieldDefaults(level = AccessLevel.PRIVATE, makeFinal = true)
 @Slf4j
 @RequiredArgsConstructor
-@RequestMapping("/ai")
 public class AIController {
 
     private final AIService aiService;
     private final UserService userService;
+
+
+    @GetMapping("/ai")
+    public ResponseEntity test() {
+        return ResponseEntity.ok(LocalDateTime.now());
+    }
 
 }
