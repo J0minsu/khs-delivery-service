@@ -2,6 +2,7 @@ package kr.sparta.khs.delivery.domain.report.entity;
 
 import jakarta.persistence.*;
 import kr.sparta.khs.delivery.domain.common.entity.BaseEntity;
+import kr.sparta.khs.delivery.domain.report.vo.ReportVO;
 import kr.sparta.khs.delivery.domain.user.entity.User;
 import lombok.AccessLevel;
 import lombok.Getter;
@@ -11,6 +12,7 @@ import lombok.experimental.FieldDefaults;
 import org.hibernate.annotations.Comment;
 import org.hibernate.annotations.DynamicUpdate;
 
+import java.util.Optional;
 import java.util.UUID;
 
 @Entity(name = "p_report")
@@ -57,5 +59,39 @@ public class Report extends BaseEntity {
     @ManyToOne(fetch = FetchType.LAZY)
     @Comment("문의 처리자 ID")
     private User reportHandler;
+
+    protected Report(ReportType reportType, UUID referenceId, ReportProcessStatus reportProcessStatus, String reason, String answer, User user, User reportHandler) {
+        this.reportType = reportType;
+        this.referenceId = referenceId;
+        this.reportProcessStatus = reportProcessStatus;
+        this.reason = reason;
+        this.answer = answer;
+        this.user = user;
+        this.reportHandler = reportHandler;
+    }
+
+    public static Report create(ReportType reportType, UUID referenceId, ReportProcessStatus reportProcessStatus, String reason, String answer, User user, User reportHandler) {
+        return new Report(reportType, referenceId, reportProcessStatus, reason, answer, user, reportHandler);
+    }
+
+    public void solve(String answer, User reportHandler) {
+        this.answer = answer;
+        this.reportProcessStatus = ReportProcessStatus.FINISHED;
+        this.reportHandler = reportHandler;
+    }
+
+    public void accept(User reportHandler) {
+        this.reportProcessStatus = ReportProcessStatus.PROCESSING;
+        this.reportHandler = reportHandler;
+    }
+
+    public ReportVO toVO() {
+
+        User afterReportHandler = Optional.ofNullable(reportHandler).orElse(User.emptyObject());
+        return new ReportVO(id, reportType, referenceId, reportProcessStatus, reason, answer,
+                user.toUserVO(), afterReportHandler.toUserVO(),
+                getCreatedAt(), getUpdatedAt(), getDeletedAt(),
+                getCreatedBy(), getUpdatedBy(), getDeletedBy());
+    }
 
 }

@@ -47,4 +47,15 @@ public class BaseEntity {
 
     private boolean isDeleted = false;
 
+    public void delete(Integer handlerId) {
+        this.deletedBy = handlerId;
+        this.isDeleted = true;
+        this.deletedAt = LocalDateTime.now();
+    }
+
+    public void undoDelete(Integer handlerId) {
+        this.deletedBy = null;
+        this.deletedAt = null;
+    }
+
 }

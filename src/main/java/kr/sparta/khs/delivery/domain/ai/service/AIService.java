@@ -50,9 +50,7 @@ public class AIService {
 
         AI ai = AI.create(request.getPrompt(), "answer", user);
 
-        System.out.println("start create");
         AI savedAI = aiRepository.save(ai);
-        System.out.println("end create");
 
         return savedAI.toVO();
 
