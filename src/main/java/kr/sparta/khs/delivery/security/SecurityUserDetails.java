@@ -37,6 +37,10 @@ public class SecurityUserDetails implements UserDetails {
     }
 
 
+    public Integer getId() {
+        return securityUserInfo.getId();
+    }
+
     public String getName() {
         return securityUserInfo.getName();
     }
