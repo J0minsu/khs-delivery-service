@@ -37,7 +37,7 @@ public class RestaurantService {
                 .orElseThrow(() -> new IllegalArgumentException("유효하지 않은 음식 카테고리입니다."));
 
         // 임시
-        User user = User.createUser("a","a","a","a","a","a", AuthType.ADMIN,true);
+        User user = User.createUser("a","a","a","a","a","a", AuthType.MASTER,true);
 
         Restaurant restaurant = Restaurant.of(request,foodCategory ,user);
 

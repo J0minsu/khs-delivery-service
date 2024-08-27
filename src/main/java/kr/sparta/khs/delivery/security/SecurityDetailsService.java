@@ -1,6 +1,5 @@
 package kr.sparta.khs.delivery.security;
 
-import kr.sparta.khs.delivery.domain.user.mapper.UserMapper;
 import kr.sparta.khs.delivery.domain.user.service.UserService;
 import kr.sparta.khs.delivery.domain.user.vo.UserVO;
 import lombok.AccessLevel;
@@ -42,10 +41,18 @@ public class SecurityDetailsService implements UserDetailsService {
             throw new UsernameNotFoundException("This account is unavailable");
         }
 
-        SecurityUserInfo securityUserInfo = UserMapper.toSecurityUserInfo(user);
+        SecurityUserInfo securityUserInfo = toSecurityUserInfo(user);
 
         return securityUserInfo;
 
+    }
+
+    public SecurityUserInfo toSecurityUserInfo(UserVO user) {
+        return new SecurityUserInfo(
+                user.getId(), user.getUsername(), user.getPassword(), user.getName(),
+                user.getEmail(), user.getContact(), user.getAddress(),
+                user.getAuthType(), user.isActive()
+        );
     }
 
 }

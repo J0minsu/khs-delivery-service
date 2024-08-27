@@ -45,5 +45,6 @@ public class BaseEntity {
 
     private Integer deletedBy;
 
+    private boolean isDeleted = false;
 
 }

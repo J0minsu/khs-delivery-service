@@ -34,7 +34,7 @@ public class AI extends BaseEntity {
     @Comment("AI 응답 결과")
     private String answer;
 
-    @JoinColumn(name = "request_user_id")
+    @JoinColumn(name = "request_user_id", foreignKey = @ForeignKey(value = ConstraintMode.NO_CONSTRAINT))
     @ManyToOne(fetch = FetchType.LAZY)
     @Comment("AI 요청자")
     private User requestUser;
