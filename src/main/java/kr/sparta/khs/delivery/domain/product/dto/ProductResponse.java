@@ -36,7 +36,7 @@ public class ProductResponse {
         this.description = description;
         this.price = price;
         this.status = status;
-        this.restaurant = restaurant;
+        this.restaurantName = restaurant.getName();
     }
 
     public static ProductResponse fromEntity(Product product) {

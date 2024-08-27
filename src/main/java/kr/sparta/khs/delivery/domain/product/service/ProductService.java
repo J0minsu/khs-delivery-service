@@ -22,16 +22,18 @@ public class ProductService {
     @Transactional
     public void createProduct(ProductRequest productRequest,UUID restaurantId) {
         Restaurant restaurant = restaurantRepository.findById(restaurantId)
-                .orElseThrow(() -> new IllegalArgumentException("Invalid restaurant ID"));
+                .orElseThrow(() -> new IllegalArgumentException("잘못된 restaurant ID 입니다"));
         Product product = Product.createProduct(productRequest, restaurant);
         productRepository.save(product);
     }
 
 
+    @Transactional(readOnly = true)
     public ProductResponse getProduct(UUID productId) {
-        Product product = productRepository.findById(productId).orElseThrow(() -> new IllegalArgumentException("잘못된 ID 입니다"));
+        Product product = productRepository.findById(productId).orElseThrow(() -> new IllegalArgumentException("잘못된 restaurant ID 입니다"));
         return ProductResponse.fromEntity(product);
     }
+
 
 
 }

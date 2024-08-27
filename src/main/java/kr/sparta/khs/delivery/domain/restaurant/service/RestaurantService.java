@@ -53,9 +53,12 @@ public class  RestaurantService {
     }
 
     public List<RestaurantResponse> getAllRestaurants() {
-        return restaurantRepository.findAll().stream()
-                .map(RestaurantResponse::fromEntity)
-                .collect(Collectors.toList());
+
+        return restaurantRepository.findAll().stream().map(RestaurantResponse::fromEntity).collect(Collectors.toList());
+
     }
 
+    public void updateRestaurant(UUID id) {
+    }
 }
+

@@ -12,6 +12,7 @@ import java.util.List;
 import java.util.UUID;
 
 @RestController
+@RequestMapping("/restaurant")
 public class RestaurantController {
     private final RestaurantService restaurantService;
 
@@ -28,8 +29,15 @@ public class RestaurantController {
         return ResponseEntity.status(HttpStatus.CREATED).body("Restaurant created successfully");
     }
 
+    @PutMapping("/{id}")
+    @Secured({"MANAGER","MASTER"})
+    public ResponseEntity<String>updateRestaurant(@PathVariable UUID id) {
+        restaurantService.updateRestaurant(id);
+        return ResponseEntity.status(HttpStatus.OK).body("수정 성공");
+    }
+
     @GetMapping("/{id}")
-    public ResponseEntity<?> getRestaurantById(@PathVariable UUID id) {
+    public ResponseEntity<RestaurantResponse> getRestaurantById(@PathVariable UUID id) {
         RestaurantResponse restaurant = restaurantService.getRestaurantById(id);
         return ResponseEntity.status(HttpStatus.OK).body(restaurant);
     }
@@ -39,7 +47,6 @@ public class RestaurantController {
         List<RestaurantResponse> restaurants = restaurantService.getAllRestaurants();
         return ResponseEntity.status(HttpStatus.OK).body(restaurants);
     }
-
 
 
 }

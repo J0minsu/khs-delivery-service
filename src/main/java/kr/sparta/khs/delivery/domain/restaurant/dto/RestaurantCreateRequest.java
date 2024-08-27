@@ -12,8 +12,6 @@ import java.util.UUID;
 public class RestaurantCreateRequest {
 
 
-    private UUID id;
-
     private String name;
 
     private String address;
