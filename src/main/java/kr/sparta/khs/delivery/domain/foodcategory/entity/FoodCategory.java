@@ -11,7 +11,7 @@ import java.util.UUID;
 @Builder
 @AllArgsConstructor
 @NoArgsConstructor
-@Setter
+@Getter
 public class FoodCategory extends BaseEntity {
     @Id
     @GeneratedValue(strategy = GenerationType.UUID)
@@ -22,5 +22,11 @@ public class FoodCategory extends BaseEntity {
     @Column(name = "food_Type", nullable = false)
     private String foodType;
 
+
+    public static FoodCategory of(String foodType) {
+         return  FoodCategory.builder()
+                 .foodType(foodType)
+                 .build();
+    }
 
 }

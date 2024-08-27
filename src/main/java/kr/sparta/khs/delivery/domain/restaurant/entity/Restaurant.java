@@ -4,17 +4,19 @@ import jakarta.persistence.*;
 import kr.sparta.khs.delivery.domain.common.entity.BaseEntity;
 import kr.sparta.khs.delivery.domain.foodcategory.entity.FoodCategory;
 import kr.sparta.khs.delivery.domain.product.entity.Product;
+import kr.sparta.khs.delivery.domain.restaurant.dto.RestaurantCreateRequest;
 import kr.sparta.khs.delivery.domain.user.entity.User;
 import lombok.*;
 import org.hibernate.annotations.Comment;
 import org.hibernate.annotations.DynamicUpdate;
-
-import java.util.ArrayList;
+import java.util.List;
 import java.util.UUID;
 
 @Entity(name = "p_restaurant")
 @Getter
 @DynamicUpdate
+@Builder(access = AccessLevel.PRIVATE)
+@AllArgsConstructor(access = AccessLevel.PROTECTED)
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
 @ToString
 public class Restaurant extends BaseEntity {
@@ -54,7 +56,7 @@ public class Restaurant extends BaseEntity {
 
 
    @OneToMany(mappedBy = "restaurant")
-   private ArrayList<Product> products;
+   private List<Product> products;
 
 
    @ManyToOne
@@ -65,5 +67,25 @@ public class Restaurant extends BaseEntity {
    @JoinColumn(name = "food_category_id" , nullable = false)
    private FoodCategory foodCategory;
 
+
+   public static Restaurant of(RestaurantCreateRequest request,FoodCategory foodCategory , User user) {
+        return Restaurant.builder()
+                 .name(request.getName())
+                 .address(request.getAddress())
+                 .phone(request.getPhone())
+                 .minPrice(request.getMinPrice())
+                 .operationHours(request.getOperationHours())
+                 .closedDays(request.getClosedDays())
+                 .deliveryTip(request.getDeliveryTip())
+                 .status(request.getStatus())
+                 .foodCategory(foodCategory)
+                 .user(user)
+                 .build();
+
+   }
+
+   public void addProduct(Product product) {
+      products.add(product);
+   }
 
 }
