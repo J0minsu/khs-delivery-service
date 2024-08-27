@@ -30,15 +30,6 @@ public class ProductResponse {
 
 
 
-    public ProductResponse(UUID id, String name, String description, int price, String status, Restaurant restaurant) {
-        this.id = id;
-        this.name = name;
-        this.description = description;
-        this.price = price;
-        this.status = status;
-        this.restaurant = restaurant;
-    }
-
     public static ProductResponse fromEntity(Product product) {
         return new ProductResponse(
                 product.getId(),

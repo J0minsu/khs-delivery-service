@@ -33,13 +33,13 @@ public class RestaurantService {
     public void createRestaurant(RestaurantCreateRequest request) {
 
 
-        FoodCategory foodCategory = foodCategoryRepository.findById(request.getGetFoodCategoryId())
+        FoodCategory foodCategory = foodCategoryRepository.findById(request.getFoodCategoryId())
                 .orElseThrow(() -> new IllegalArgumentException("유효하지 않은 음식 카테고리입니다."));
 
         // 임시
         User user = User.createUser("a","a","a","a","a","a", AuthType.MASTER,true);
 
-        Restaurant restaurant = Restaurant.of(request,foodCategory ,user);
+        Restaurant restaurant = Restaurant.createRestaurant(request,foodCategory ,user);
 
         restaurantRepository.save(restaurant);
     }
@@ -78,7 +78,7 @@ public class RestaurantService {
                 restaurant.getClosedDays(),
                 restaurant.getDeliveryTip(),
                 restaurant.getStatus(),
-                restaurant.getFoodCategory().getFoodType(),
+                restaurant.getFoodCategory().getName(),
                 productResponses,
                 restaurant.getUser().getName()
         );
