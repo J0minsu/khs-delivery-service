@@ -3,7 +3,6 @@ package kr.sparta.khs.delivery.domain.user.vo;
 import kr.sparta.khs.delivery.domain.user.entity.AuthType;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
-import lombok.NoArgsConstructor;
 import lombok.ToString;
 
 import java.time.LocalDateTime;

@@ -8,14 +8,11 @@ import kr.sparta.khs.delivery.domain.restaurant.dto.RestaurantCreateRequest;
 import kr.sparta.khs.delivery.domain.user.entity.User;
 import lombok.*;
 import org.hibernate.annotations.Comment;
-import org.hibernate.annotations.DynamicUpdate;
 import java.util.List;
 import java.util.UUID;
 
 @Entity(name = "p_restaurant")
 @Getter
-@DynamicUpdate
-@Builder(access = AccessLevel.PRIVATE)
 @AllArgsConstructor(access = AccessLevel.PROTECTED)
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
 @ToString
@@ -55,7 +52,7 @@ public class Restaurant extends BaseEntity {
    private String status;
 
 
-   @OneToMany(mappedBy = "restaurant")
+   @OneToMany(mappedBy = "restaurant",cascade = CascadeType.ALL)
    private List<Product> products;
 
 
@@ -68,20 +65,33 @@ public class Restaurant extends BaseEntity {
    private FoodCategory foodCategory;
 
 
-   public static Restaurant of(RestaurantCreateRequest request,FoodCategory foodCategory , User user) {
-        return Restaurant.builder()
-                 .name(request.getName())
-                 .address(request.getAddress())
-                 .phone(request.getPhone())
-                 .minPrice(request.getMinPrice())
-                 .operationHours(request.getOperationHours())
-                 .closedDays(request.getClosedDays())
-                 .deliveryTip(request.getDeliveryTip())
-                 .status(request.getStatus())
-                 .foodCategory(foodCategory)
-                 .user(user)
-                 .build();
+   public Restaurant(String name, String address, String phone, int minPrice, String operationHours,
+                     String closedDays, String deliveryTip, String status, FoodCategory foodCategory, User user) {
+      this.name = name;
+      this.address = address;
+      this.phone = phone;
+      this.minPrice = minPrice;
+      this.operationHours = operationHours;
+      this.closedDays = closedDays;
+      this.deliveryTip = deliveryTip;
+      this.status = status;
+      this.foodCategory = foodCategory;
+      this.user = user;
+   }
 
+   public static Restaurant createRestaurant(RestaurantCreateRequest request, FoodCategory foodCategory, User user) {
+      return new Restaurant(
+              request.getName(),
+              request.getAddress(),
+              request.getPhone(),
+              request.getMinPrice(),
+              request.getOperationHours(),
+              request.getClosedDays(),
+              request.getDeliveryTip(),
+              request.getStatus(),
+              foodCategory,
+              user
+      );
    }
 
    public void addProduct(Product product) {

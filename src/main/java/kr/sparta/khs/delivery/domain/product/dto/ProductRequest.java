@@ -18,7 +18,5 @@ public class ProductRequest {
 
     private String status;
 
-    private UUID restaurantId;
-
 
 }

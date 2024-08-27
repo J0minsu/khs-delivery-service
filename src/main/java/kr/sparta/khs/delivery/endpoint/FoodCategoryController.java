@@ -1,16 +1,17 @@
 package kr.sparta.khs.delivery.endpoint;
 
+import kr.sparta.khs.delivery.domain.foodcategory.dto.UpdateFoodCategoryRequest;
 import kr.sparta.khs.delivery.domain.foodcategory.service.FoodCategoryService;
 import kr.sparta.khs.delivery.domain.foodcategory.dto.FoodCategoryCreateRequest;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.annotation.Secured;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
+
+import java.util.UUID;
 
 @RestController
-@RequestMapping("/foodcategory")
+@RequestMapping("/foodCategories")
 public class FoodCategoryController {
 
     private final FoodCategoryService foodCategoryService;
@@ -21,18 +22,27 @@ public class FoodCategoryController {
 
 
     @PostMapping
-    @Secured("ROLE_ADMIN")
-    public ResponseEntity<?> createFoodCategory(@RequestBody FoodCategoryCreateRequest foodCategoryCreateRequest) {
-        foodCategoryService.createFoodCategory(foodCategoryCreateRequest);
-        return ResponseEntity.status(201).body("Food category created successfully");
+    @Secured("MASTER")
+    public ResponseEntity<?> createFoodCategory(
+            @RequestBody FoodCategoryCreateRequest foodCategoryCreateRequest) {
+            foodCategoryService.createFoodCategory(foodCategoryCreateRequest);
+            return ResponseEntity.status(HttpStatus.CREATED).body("음식 카테고리 생성완료.");
     }
 
 
+    @GetMapping
+    public ResponseEntity<?> getAllFoodCategory() {
 
+         foodCategoryService.getAllFoodCategory();
+         return ResponseEntity.status(HttpStatus.OK).body(foodCategoryService.getAllFoodCategory());
+    }
 
-
-
-
+    @PutMapping("{id}")
+    @Secured("MASTER")
+    public ResponseEntity<?> updateFoodCategory(@RequestBody UpdateFoodCategoryRequest request) {
+        foodCategoryService.updateFoodCategory(request);
+        return ResponseEntity.status(HttpStatus.OK).body("음식 카테고리 수정완료");
+    }
 
 
 }

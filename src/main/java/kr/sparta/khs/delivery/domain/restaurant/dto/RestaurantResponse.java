@@ -1,12 +1,14 @@
 package kr.sparta.khs.delivery.domain.restaurant.dto;
 
 import kr.sparta.khs.delivery.domain.product.dto.ProductResponse;
+import kr.sparta.khs.delivery.domain.restaurant.entity.Restaurant;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
 import java.util.List;
 import java.util.UUID;
+import java.util.stream.Collectors;
 
 @Data
 @NoArgsConstructor
@@ -23,6 +25,38 @@ public class RestaurantResponse {
     private String status;
     private String foodCategory;
     private List<ProductResponse> products;
-    private String Username;
+    private String username;
+
+
+    public static RestaurantResponse fromEntity(Restaurant restaurant) {
+        List<ProductResponse> productResponses = restaurant.getProducts().stream()
+                .map(product -> ProductResponse.builder()
+                        .id(product.getId())
+                        .name(product.getName())
+                        .description(product.getDescription())
+                        .price(product.getPrice())
+                        .status(product.getStatus())
+                        .build())
+                .collect(Collectors.toList());
+
+        return new RestaurantResponse(
+                restaurant.getId(),
+                restaurant.getName(),
+                restaurant.getAddress(),
+                restaurant.getPhone(),
+                restaurant.getMinPrice(),
+                restaurant.getOperationHours(),
+                restaurant.getClosedDays(),
+                restaurant.getDeliveryTip(),
+                restaurant.getStatus(),
+                restaurant.getFoodCategory().getName(),
+                productResponses,
+                restaurant.getUser().getName()
+        );
+    }
+
+
 
 }
+
+

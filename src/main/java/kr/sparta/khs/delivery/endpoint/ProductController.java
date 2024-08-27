@@ -1,13 +1,17 @@
 package kr.sparta.khs.delivery.endpoint;
 
 import kr.sparta.khs.delivery.domain.product.dto.ProductRequest;
+import kr.sparta.khs.delivery.domain.product.dto.ProductResponse;
+import kr.sparta.khs.delivery.domain.product.entity.Product;
 import kr.sparta.khs.delivery.domain.product.service.ProductService;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
+
+import java.util.UUID;
 
 @RestController
+@RequestMapping("/products")
 public class ProductController {
 
     private final ProductService productService;
@@ -17,18 +21,20 @@ public class ProductController {
         this.productService = productService;
     }
 
-    @PostMapping
-    public ResponseEntity<String> createProduct(@RequestBody ProductRequest productRequest) {
+    @PostMapping("{restaurantId}")
+    public ResponseEntity<String> createProduct(
+            @PathVariable UUID restaurantId,@RequestBody ProductRequest productRequest) {
+        productService.createProduct(productRequest, restaurantId);
+        return ResponseEntity.status(HttpStatus.CREATED).body("상품이 생성됐습니다");
 
-        productService.createProduct(productRequest);
-
-        return ResponseEntity.status(201).body("Product created");
     }
 
 
-
-
-
+    @GetMapping("{productId}")
+    public ResponseEntity<ProductResponse> getProduct(@PathVariable UUID productId) {
+        ProductResponse productResponse=  productService.getProduct(productId);
+        return ResponseEntity.status(HttpStatus.OK).body(productResponse);
+    }
 
 
 }
