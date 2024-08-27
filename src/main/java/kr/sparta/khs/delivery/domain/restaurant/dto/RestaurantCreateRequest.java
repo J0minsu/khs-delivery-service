@@ -30,7 +30,7 @@ public class RestaurantCreateRequest {
 
     private String status;
 
-    private UUID getFoodCategoryId;
+    private UUID FoodCategoryId;
 
 
 }

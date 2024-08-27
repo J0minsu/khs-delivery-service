@@ -20,6 +20,7 @@ public class OrderProduct {
     @GeneratedValue(strategy = GenerationType.UUID)
     @Column(name = "order_product_id")
     private UUID id;
+
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "product_id")
     private Product product;

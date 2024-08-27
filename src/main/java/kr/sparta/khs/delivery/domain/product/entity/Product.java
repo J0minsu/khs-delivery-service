@@ -11,8 +11,6 @@ import java.util.UUID;
 
 @Entity(name = "p_product")
 @Getter
-@Builder
-@DynamicUpdate
 @AllArgsConstructor
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
 @ToString
@@ -39,16 +37,24 @@ public class Product extends BaseEntity {
     @JoinColumn(name = "restaurant_id")
     private Restaurant restaurant;
 
-
-    public static Product of(ProductRequest productRequest,Restaurant restaurant) {
-
-        return Product.builder()
-                .name(productRequest.getName())
-                .description(productRequest.getDescription())
-                .price(productRequest.getPrice())
-                .status(productRequest.getStatus())
-                .restaurant(restaurant)
-                .build();
-
+    public Product(String name, String description, int price, String status, Restaurant restaurant) {
+        this.name = name;
+        this.description = description;
+        this.price = price;
+        this.status = status;
+        this.restaurant = restaurant;
+        this.restaurant.addProduct(this);
     }
+
+
+    public static Product createProduct(ProductRequest productRequest, Restaurant restaurant) {
+        return new Product(
+                productRequest.getName(),
+                productRequest.getDescription(),
+                productRequest.getPrice(),
+                productRequest.getStatus(),
+                restaurant
+        );
+    }
+
 }
