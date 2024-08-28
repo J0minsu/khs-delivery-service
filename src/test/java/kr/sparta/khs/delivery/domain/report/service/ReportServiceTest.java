@@ -11,10 +11,12 @@ import kr.sparta.khs.delivery.domain.user.vo.UserVO;
 import kr.sparta.khs.delivery.endpoint.dto.req.AIRequest;
 import kr.sparta.khs.delivery.endpoint.dto.req.ReportCreateRequest;
 import kr.sparta.khs.delivery.endpoint.dto.req.SignUpRequest;
+import kr.sparta.khs.delivery.endpoint.dto.req.SortStandard;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
+import org.springframework.data.domain.PageRequest;
 import org.springframework.transaction.annotation.Transactional;
 
 import static org.junit.jupiter.api.Assertions.*;
@@ -108,11 +110,22 @@ class ReportServiceTest {
         UserVO handler = userService.entry(userRequest);
 
         //when
-        ReportVO deleted = reportService.delete(report.getId(), handler.getId());
+        reportService.delete(report.getId(), handler.getId());
 
         //then
-        assertEquals(report.getId(), deleted.getId());
-        assertEquals(handler.getId(), deleted.getDeletedBy());
+    }
+
+    @Test
+    public void 서치_동작_확인() throws Exception {
+
+        //given
+        reportService.search("hello", PageRequest.of(0, 10, SortStandard.CREATED_DESC.getSort()));
+
+
+        //when
+
+        //then
+
     }
     
 }

@@ -1,29 +1,28 @@
-package kr.sparta.khs.delivery.domain.report.vo;
+package kr.sparta.khs.delivery.domain.review.vo;
 
-import kr.sparta.khs.delivery.domain.report.entity.ReportProcessStatus;
-import kr.sparta.khs.delivery.domain.report.entity.ReportType;
+import kr.sparta.khs.delivery.domain.order.entity.Order;
 import kr.sparta.khs.delivery.domain.user.entity.User;
 import kr.sparta.khs.delivery.domain.user.vo.UserVO;
 import lombok.AllArgsConstructor;
+import lombok.EqualsAndHashCode;
 import lombok.Getter;
 import lombok.ToString;
 
+import java.math.BigDecimal;
 import java.time.LocalDateTime;
 import java.util.UUID;
 
+@Getter
 @AllArgsConstructor
 @ToString
-@Getter
-public class ReportVO {
+@EqualsAndHashCode
+public class ReviewVO {
 
     private final UUID id;
-    private final ReportType reportType;
-    private final UUID referenceId;
-    private final ReportProcessStatus reportProcessStatus;
-    private final String reason;
-    private final String answer;
-    private final UserVO user;
-    private final UserVO reportHandler;
+    private final String comment;
+    private final int rating;
+    private final UserVO reviewer;
+    private final Order order;
     private final LocalDateTime createdAt;
     private final LocalDateTime updatedAt;
     private final LocalDateTime deletedAt;
@@ -31,5 +30,5 @@ public class ReportVO {
     private final Integer updatedBy;
     private final Integer deletedBy;
     private final boolean isDeleted;
-    
+
 }

@@ -1,7 +1,10 @@
 package kr.sparta.khs.delivery.domain.review.entity;
 
 import jakarta.persistence.*;
+import kr.sparta.khs.delivery.domain.common.entity.BaseEntity;
 import kr.sparta.khs.delivery.domain.order.entity.Order;
+import kr.sparta.khs.delivery.domain.report.vo.ReportVO;
+import kr.sparta.khs.delivery.domain.review.vo.ReviewVO;
 import kr.sparta.khs.delivery.domain.user.entity.User;
 import lombok.AccessLevel;
 import lombok.Getter;
@@ -20,7 +23,7 @@ import java.util.UUID;
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
 @ToString
 @Comment("리뷰 관리")
-public class Review {
+public class Review extends BaseEntity {
 
     @Id
     @GeneratedValue(strategy = GenerationType.UUID)
@@ -32,8 +35,8 @@ public class Review {
     private String comment;
 
     @Column(nullable = false)
-    @Comment("리뷰 평점(0.5~5 0.5씩)")
-    private BigDecimal rating;
+    @Comment("1 per 0.5 point max 10")
+    private int rating;
 
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "reviewer_id", nullable = false)
@@ -50,14 +53,28 @@ public class Review {
     @Comment("주문 아이디")
     private Order order;
 
-    protected Review(String comment, BigDecimal rating, User reviewer, Order order) {
+    protected Review(String comment, int rating, User reviewer, Order order) {
         this.comment = comment;
         this.rating = rating;
         this.reviewer = reviewer;
         this.order = order;
     }
 
-    public static Review create(String comment, BigDecimal rating, User reviewer, Order order) {
+    public static Review create(String comment, int rating, User reviewer, Order order) {
+        if(rating <= 0 || rating > 10) {
+            throw new IllegalArgumentException("rating is out of range(1 ~ 10)");
+        }
         return new Review(comment, rating, reviewer, order);
+    }
+
+    public ReviewVO toVO() {
+        return new ReviewVO(id, comment, rating, reviewer.toUserVO(), order,
+                getCreatedAt(), getUpdatedAt(), getDeletedAt(),
+                getCreatedBy(), getUpdatedBy(), getDeletedBy(), isDeleted());
+    }
+
+    public void modify(String comment, int rating) {
+        this.comment = comment;
+        this.rating = rating;
     }
 }
