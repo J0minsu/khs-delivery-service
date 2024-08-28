@@ -1,6 +1,7 @@
 package kr.sparta.khs.delivery.domain.payment.entity;
 
 import jakarta.persistence.*;
+import kr.sparta.khs.delivery.domain.common.entity.BaseEntity;
 import kr.sparta.khs.delivery.domain.order.entity.Order;
 import kr.sparta.khs.delivery.domain.order.entity.PaymentStatus;
 import kr.sparta.khs.delivery.domain.user.entity.User;
@@ -16,7 +17,7 @@ import java.util.UUID;
 @Table(name = "p_payment")
 @ToString
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
-public class Payment {
+public class Payment extends BaseEntity {
     @Id
     @GeneratedValue(strategy = GenerationType.UUID)
     @Column(name = "payment_id")
