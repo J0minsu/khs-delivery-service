@@ -78,7 +78,7 @@ public class UserController {
             @PathVariable Integer userId,
             @AuthenticationPrincipal SecurityUserDetails userDetails
     ) {
-        if(userDetails.getAuthType() == AuthType.CUSTOMER && userId != userDetails.getId()) {
+        if(userDetails.getAuthType() != AuthType.MASTER && userId != userDetails.getId()) {
             throw new IllegalArgumentException("Customers can only delete their own.");
         }
 

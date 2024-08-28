@@ -62,6 +62,7 @@ public class ReportController {
     }
 
     @GetMapping("/{reportId}")
+    @PreAuthorize("hasAnyRole('MASTER')")
     public ResponseEntity findReport(
             @PathVariable UUID reportId,
             @AuthenticationPrincipal SecurityUserDetails userDetails) {
@@ -80,7 +81,7 @@ public class ReportController {
     }
 
     @GetMapping
-    @PreAuthorize("hasAnyRole('MANAGER', 'MASTER')")
+    @PreAuthorize("hasAnyRole('MASTER')")
     public ResponseEntity search(
             @RequestParam(defaultValue = "0") int pageNumber,
             @RequestParam(defaultValue = "10") int size,
@@ -98,7 +99,7 @@ public class ReportController {
     }
 
     @PatchMapping("/{reportId}/accept")
-    @PreAuthorize("hasAnyRole('MANAGER', 'MASTER')")
+    @PreAuthorize("hasAnyRole('MASTER')")
     public ResponseEntity acceptReport(
             @PathVariable UUID reportId,
             @AuthenticationPrincipal SecurityUserDetails userDetails) {
@@ -112,7 +113,7 @@ public class ReportController {
     }
 
     @PatchMapping("/{reportId}/solve")
-    @PreAuthorize("hasAnyRole('MANAGER', 'MASTER')")
+    @PreAuthorize("hasAnyRole('MASTER')")
     public ResponseEntity solveReport(
             @PathVariable UUID reportId,
             @AuthenticationPrincipal SecurityUserDetails userDetails,
