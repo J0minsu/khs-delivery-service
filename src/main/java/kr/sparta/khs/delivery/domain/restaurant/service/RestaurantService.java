@@ -47,9 +47,8 @@ public class RestaurantService {
     public RestaurantResponse getRestaurantById(UUID id) {
         Restaurant restaurant = restaurantRepository.findById(id)
                 .orElseThrow(() -> new IllegalArgumentException("유효하지 않은 레스토랑 ID입니다."));
-        //TODO please check this red line,
-//        RestaurantResponse response = toResponse(restaurant);
-        return null;
+        RestaurantResponse response = RestaurantResponse.fromEntity(restaurant);
+        return response;
     }
 
     public List<RestaurantResponse> getAllRestaurants() {

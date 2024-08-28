@@ -2,6 +2,7 @@ package kr.sparta.khs.delivery.domain.product.entity;
 
 import jakarta.persistence.*;
 import kr.sparta.khs.delivery.domain.common.entity.BaseEntity;
+import kr.sparta.khs.delivery.domain.product.dto.ProductRequest;
 import kr.sparta.khs.delivery.domain.restaurant.entity.Restaurant;
 import lombok.*;
 import org.hibernate.annotations.DynamicUpdate;
