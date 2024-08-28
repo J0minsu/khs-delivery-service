@@ -1,5 +1,6 @@
 package kr.sparta.khs.delivery.endpoint;
 
+import kr.sparta.khs.delivery.domain.order.dto.OrderResponse;
 import kr.sparta.khs.delivery.domain.order.entity.Order;
 import kr.sparta.khs.delivery.domain.order.service.OrderService;
 import kr.sparta.khs.delivery.domain.restaurant.entity.Restaurant;
@@ -36,25 +37,25 @@ public class OrderController {
         return ResponseEntity.ok("Order Crate successfully");
     }
     @GetMapping("/{orderId}")
-    public ResponseEntity<Order> getOrder(@PathVariable UUID orderId, @AuthenticationPrincipal SecurityUserDetails userDetails){
+    public ResponseEntity<OrderResponse> getOrder(@PathVariable UUID orderId, @AuthenticationPrincipal SecurityUserDetails userDetails){
         User user =userRepository.findById(userDetails.getId())
                 .orElseThrow(() -> new IllegalArgumentException("User not found"));
-        Order order = orderService.getOrder(orderId, user);
+        OrderResponse order = orderService.getOrder(orderId, user);
         return ResponseEntity.ok(order);
     }
     @GetMapping("/user/{userId}")
-    public ResponseEntity<List<Order>> getOrdersByUserId(@PathVariable Integer userId) {
+    public ResponseEntity<List<OrderResponse>> getOrdersByUserId(@PathVariable Integer userId) {
         User user = userRepository.findById(userId)
                 .orElseThrow(() -> new IllegalArgumentException("User not found"));
 
-        List<Order> orders = orderService.getOrdersByUser(user);
+        List<OrderResponse> orders = orderService.getOrdersByUser(user);
         return ResponseEntity.ok(orders);
     }
     @GetMapping("/restaurants/{restaurantId}")
-    public ResponseEntity<List<Order>> getOrdersByRestaurantId(@PathVariable UUID restaurantId) {
+    public ResponseEntity<List<OrderResponse>> getOrdersByRestaurantId(@PathVariable UUID restaurantId) {
         Restaurant restaurant = restaurantRepository.findById(restaurantId)
                 .orElseThrow(() -> new IllegalArgumentException("Restaurant not found"));
-        List<Order> orders = orderService.getOrdersByRestaurant(restaurant);
+        List<OrderResponse> orders = orderService.getOrdersByRestaurant(restaurant);
         return ResponseEntity.ok(orders);
     }
     @PutMapping("/{orderId}/accept")

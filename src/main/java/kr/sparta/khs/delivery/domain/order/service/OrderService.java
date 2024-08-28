@@ -1,5 +1,6 @@
 package kr.sparta.khs.delivery.domain.order.service;
 
+import kr.sparta.khs.delivery.domain.order.dto.OrderResponse;
 import kr.sparta.khs.delivery.domain.order.entity.DeliveryStatus;
 import kr.sparta.khs.delivery.domain.order.entity.Order;
 import kr.sparta.khs.delivery.domain.order.entity.OrderStatus;
@@ -15,6 +16,7 @@ import org.springframework.stereotype.Service;
 
 import java.util.List;
 import java.util.UUID;
+import java.util.stream.Collectors;
 
 @Service
 @RequiredArgsConstructor
@@ -36,31 +38,42 @@ public class OrderService {
         orderRepository.save(order);
     }
 
-    public Order getOrder(UUID orderId, User user) {
+    public OrderResponse getOrder(UUID orderId, User user) {
         Order order = orderRepository.findById(orderId)
                 .orElseThrow(() -> new IllegalArgumentException("Order not found"));
+        OrderResponse orderResponse = OrderResponse.from(order);
         if(order.getUser().equals(user)) {
-            return order;
+            return orderResponse;
         }
         else{
             throw new IllegalArgumentException("User not found");
         }
     }
 
-    public List<Order> getOrdersByUser(User user) {
-        return orderRepository.findByUser(user);
+    public List<OrderResponse> getOrdersByUser(User user) {
+        List<Order> orders = orderRepository.findByUser(user);
+        return orders.stream()
+                .map(OrderResponse::from)
+                .collect(Collectors.toList());
     }
 
-    public List<Order> getOrdersByRestaurant(Restaurant restaurant) {
-        return orderRepository.findByRestaurant(restaurant);
+    public List<OrderResponse> getOrdersByRestaurant(Restaurant restaurant) {
+        List<Order> orders = orderRepository.findByRestaurant(restaurant);
+        return orders.stream()
+                .map(OrderResponse::from)
+                .collect(Collectors.toList());
     }
     public void acceptOrder(UUID orderId, User user) {
-        Order order = getOrder(orderId, user);
+        OrderResponse orderResponse = getOrder(orderId, user);
+        Order order = orderRepository.findById(orderResponse.getOrderId())
+                        .orElseThrow(() -> new IllegalArgumentException("Order not found"));
         order.updateOrderStatus(OrderStatus.ACCEPT);
     }
 
     public void cancelOrder(UUID orderId, User user) {
-        Order order = getOrder(orderId, user);
+        OrderResponse orderResponse = getOrder(orderId, user);
+        Order order = orderRepository.findById(orderResponse.getOrderId())
+                        .orElseThrow(() -> new IllegalArgumentException("Order not found"));
         order.updateOrderStatus(OrderStatus.CANCELED);
     }
 }
