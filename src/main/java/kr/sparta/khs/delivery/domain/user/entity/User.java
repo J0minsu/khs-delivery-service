@@ -52,10 +52,7 @@ public class User extends BaseEntity {
     @Comment("계정 권한")
     private AuthType authType;
 
-    @Comment("활성화 여부")
-    private boolean isActive;
-
-    protected User(String username, String password, String name, String email, String contact, String address, AuthType authType, boolean isActive) {
+    protected User(String username, String password, String name, String email, String contact, String address, AuthType authType) {
         this.username = username;
         this.password = password;
         this.name = name;
@@ -63,11 +60,10 @@ public class User extends BaseEntity {
         this.contact = contact;
         this.address = address;
         this.authType = authType;
-        this.isActive = isActive;
     }
 
-    public static User createUser(String username, String password, String name, String email, String contact, String address, AuthType authType, boolean isActive) {
-        return new User(username, password, name, email, contact, address, authType, isActive);
+    public static User createUser(String username, String password, String name, String email, String contact, String address, AuthType authType) {
+        return new User(username, password, name, email, contact, address, authType);
     }
 
     public static User emptyObject() {return new User();}
@@ -80,9 +76,9 @@ public class User extends BaseEntity {
         return new UserVO(
                 id, username, password,
                 name, email, contact, address,
-                authType, isActive,
+                authType,
                 getCreatedAt(), getUpdatedAt(), getDeletedAt(),
-                getCreatedBy(), getUpdatedBy(), getDeletedBy());
+                getCreatedBy(), getUpdatedBy(), getDeletedBy(), isDeleted());
     }
 
 }

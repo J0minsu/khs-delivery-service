@@ -43,7 +43,7 @@ public class UserService {
 
         User user = User.createUser(request.getUsername(), request.getPassword(),
                 request.getName(), request.getEmail(), request.getContact(), request.getAddress(),
-                request.getAuthType(), request.isActive());
+                request.getAuthType());
 
         try {
 

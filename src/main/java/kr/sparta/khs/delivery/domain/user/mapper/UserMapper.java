@@ -13,7 +13,7 @@ public final class UserMapper {
         return new SecurityUserInfo(
                 user.getId(), user.getUsername(), user.getPassword(), user.getName(),
                 user.getEmail(), user.getContact(), user.getAddress(),
-                user.getAuthType(), user.isActive()
+                user.getAuthType(), !user.isDeleted()
         );
     }
 

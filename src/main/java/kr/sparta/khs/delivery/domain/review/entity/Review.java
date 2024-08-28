@@ -45,7 +45,19 @@ public class Review {
      *  OneToOne(parent)
      */
     @OneToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "order_id")
+    @JoinColumn(name = "order_id",
+            foreignKey = @ForeignKey(value = ConstraintMode.NO_CONSTRAINT))
     @Comment("주문 아이디")
     private Order order;
+
+    protected Review(String comment, BigDecimal rating, User reviewer, Order order) {
+        this.comment = comment;
+        this.rating = rating;
+        this.reviewer = reviewer;
+        this.order = order;
+    }
+
+    public static Review create(String comment, BigDecimal rating, User reviewer, Order order) {
+        return new Review(comment, rating, reviewer, order);
+    }
 }

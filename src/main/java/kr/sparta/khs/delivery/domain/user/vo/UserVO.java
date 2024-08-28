@@ -20,7 +20,6 @@ public class UserVO {
     private final String contact;
     private final String address;
     private final AuthType authType;
-    private final boolean isActive;
 
     private final LocalDateTime createdAt;
     private final LocalDateTime updatedAt;
@@ -28,5 +27,7 @@ public class UserVO {
     private final Integer createdBy;
     private final Integer updatedBy;
     private final Integer deletedBy;
+
+    private boolean isDeleted;
 
 }

@@ -37,7 +37,7 @@ public class SecurityDetailsService implements UserDetailsService {
 
         UserVO user = userService.findByUsername(username);
 
-        if(!user.isActive()) {
+        if(user.isDeleted()) {
             throw new UsernameNotFoundException("This account is unavailable");
         }
 
@@ -51,7 +51,7 @@ public class SecurityDetailsService implements UserDetailsService {
         return new SecurityUserInfo(
                 user.getId(), user.getUsername(), user.getPassword(), user.getName(),
                 user.getEmail(), user.getContact(), user.getAddress(),
-                user.getAuthType(), user.isActive()
+                user.getAuthType(), !user.isDeleted()
         );
     }
 

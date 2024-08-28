@@ -31,7 +31,6 @@ class AuthServiceTest {
                 .contact("010-5525-1125")
                 .address("성남시 분당구 판교로 1663 이지더원 103동 702호")
                 .authType(AuthType.CUSTOMER)
-                .isActive(true)
                 .build();
 
         return result;

@@ -50,12 +50,14 @@ public class Report extends BaseEntity {
     @Comment("처리 답변")
     private String answer;
 
-    @JoinColumn(name = "user_id", nullable = false)
+    @JoinColumn(name = "user_id", nullable = false
+            , foreignKey = @ForeignKey(value = ConstraintMode.NO_CONSTRAINT))
     @ManyToOne(fetch = FetchType.LAZY)
     @Comment("신고자 ID")
     private User user;
 
-    @JoinColumn(name = "report_handler_id", nullable = true)
+    @JoinColumn(name = "report_handler_id", nullable = true
+            , foreignKey = @ForeignKey(value = ConstraintMode.NO_CONSTRAINT))
     @ManyToOne(fetch = FetchType.LAZY)
     @Comment("문의 처리자 ID")
     private User reportHandler;

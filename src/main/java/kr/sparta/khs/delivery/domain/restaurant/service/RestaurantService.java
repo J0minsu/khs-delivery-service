@@ -37,7 +37,7 @@ public class RestaurantService {
                 .orElseThrow(() -> new IllegalArgumentException("유효하지 않은 음식 카테고리입니다."));
 
         // 임시
-        User user = User.createUser("a","a","a","a","a","a", AuthType.MASTER,true);
+        User user = User.createUser("a","a","a","a","a","a", AuthType.MASTER);
 
         Restaurant restaurant = Restaurant.createRestaurant(request,foodCategory ,user);
 
@@ -47,7 +47,9 @@ public class RestaurantService {
     public RestaurantResponse getRestaurantById(UUID id) {
         Restaurant restaurant = restaurantRepository.findById(id)
                 .orElseThrow(() -> new IllegalArgumentException("유효하지 않은 레스토랑 ID입니다."));
-        return toResponse(restaurant);
+        //TODO please check this red line,
+//        RestaurantResponse response = toResponse(restaurant);
+        return null;
     }
 
     public List<RestaurantResponse> getAllRestaurants() {
