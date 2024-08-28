@@ -93,7 +93,7 @@ public class Report extends BaseEntity {
         return new ReportVO(id, reportType, referenceId, reportProcessStatus, reason, answer,
                 user.toUserVO(), afterReportHandler.toUserVO(),
                 getCreatedAt(), getUpdatedAt(), getDeletedAt(),
-                getCreatedBy(), getUpdatedBy(), getDeletedBy());
+                getCreatedBy(), getUpdatedBy(), getDeletedBy(), isDeleted());
     }
 
 }

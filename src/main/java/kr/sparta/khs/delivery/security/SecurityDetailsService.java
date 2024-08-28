@@ -29,7 +29,7 @@ public class SecurityDetailsService implements UserDetailsService {
 
         SecurityUserInfo securityUserInfo = getSecurityUserInfo(id);
         List<SimpleGrantedAuthority> authorities = new ArrayList<>();
-
+        authorities.add(new SimpleGrantedAuthority(securityUserInfo.getAuthType().name()));
         return new SecurityUserDetails(securityUserInfo, authorities);
     }
 

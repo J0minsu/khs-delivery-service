@@ -4,16 +4,15 @@ import kr.sparta.khs.delivery.domain.report.entity.Report;
 import kr.sparta.khs.delivery.domain.report.entity.ReportProcessStatus;
 import kr.sparta.khs.delivery.domain.report.repository.ReportRepository;
 import kr.sparta.khs.delivery.domain.report.vo.ReportVO;
+import kr.sparta.khs.delivery.domain.user.entity.AuthType;
 import kr.sparta.khs.delivery.domain.user.entity.User;
 import kr.sparta.khs.delivery.domain.user.repository.UserRepository;
-import kr.sparta.khs.delivery.domain.user.service.UserService;
 import kr.sparta.khs.delivery.endpoint.dto.req.ReportCreateRequest;
 import kr.sparta.khs.delivery.endpoint.dto.req.ReportSolveRequest;
-import lombok.AccessLevel;
 import lombok.RequiredArgsConstructor;
-import lombok.experimental.FieldDefaults;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -97,14 +96,27 @@ public class ReportService {
     }
 
     @Transactional
-    public ReportVO delete(UUID reportId, Integer reportHandlerId) {
+    public void delete(UUID reportId, Integer reportHandlerId) {
 
         Report report = findById(reportId);
 
-        report.delete(reportHandlerId);
+        User reportUser = report.getUser();
 
-        return report.toVO();
+        if(reportUser.getAuthType() == AuthType.CUSTOMER && reportHandlerId != reportUser.getId()) {
+            throw new IllegalArgumentException("Customers can only delete their own reports.");
+        }
+
+        report.delete(reportHandlerId);
 
     }
 
+
+    public Page<ReportVO> search(String keyword, PageRequest pageRequest) {
+
+        Page<Report> reports = reportRepository.findByKeyword(keyword, pageRequest);
+
+        Page<ReportVO> result = reports.map(Report::toVO);
+
+        return result;
+    }
 }

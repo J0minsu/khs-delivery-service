@@ -7,11 +7,13 @@ import kr.sparta.khs.delivery.domain.user.service.UserService;
 import kr.sparta.khs.delivery.domain.user.vo.UserVO;
 import kr.sparta.khs.delivery.endpoint.dto.req.AIRequest;
 import kr.sparta.khs.delivery.endpoint.dto.req.SignUpRequest;
+import kr.sparta.khs.delivery.endpoint.dto.req.SortStandard;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
@@ -67,6 +69,19 @@ class AIServiceTest {
 
         //then
         assertEquals(aiRequest.getUserId(), result.getRequestUser().getId());
+    }
+
+    @Test
+    public void 서치기능_동작확인() throws Exception {
+
+        //given
+        aiService.findReports("hello", PageRequest.of(0, 10, SortStandard.CREATED_DESC.getSort()));
+
+
+        //when
+
+        //then
+
     }
 
 }

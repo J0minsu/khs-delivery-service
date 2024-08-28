@@ -2,12 +2,15 @@ package kr.sparta.khs.delivery.domain.auth.service;
 
 import jakarta.servlet.http.HttpServletResponse;
 import kr.sparta.khs.delivery.domain.user.entity.AuthType;
+import kr.sparta.khs.delivery.domain.user.service.UserService;
 import kr.sparta.khs.delivery.domain.user.vo.UserVO;
 import kr.sparta.khs.delivery.endpoint.dto.req.SignUpRequest;
+import kr.sparta.khs.delivery.endpoint.dto.req.SortStandard;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
+import org.springframework.data.domain.PageRequest;
 import org.springframework.transaction.annotation.Transactional;
 
 import static org.junit.jupiter.api.Assertions.*;
@@ -20,6 +23,8 @@ class AuthServiceTest {
 
     @Autowired
     private AuthService authService;
+    @Autowired
+    private UserService userService;
 
     public SignUpRequest signUpRequest() {
 
@@ -46,6 +51,17 @@ class AuthServiceTest {
         //then
         System.out.println("userVO = " + userVO);
         Assertions.assertEquals(request.getName(), userVO.getName());
+
+    }
+
+    @Test
+    public void 서치_동작_테스트() throws Exception {
+
+        //given
+        userService.findUsers("helloworkd", PageRequest.of(0, 10, SortStandard.CREATED_DESC.getSort()));
+        //when
+
+        //then
 
     }
 
