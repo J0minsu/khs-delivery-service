@@ -38,6 +38,7 @@ public class ReviewController {
     private final UserService userService;
 
     @PostMapping
+    @PreAuthorize("hasAnyRole('CUSTOMER', 'MASTER')")
     public ResponseEntity createReview(
             @AuthenticationPrincipal SecurityUserDetails userDetails,
             @Valid @RequestBody ReviewRequest reviewRequest,
@@ -58,6 +59,7 @@ public class ReviewController {
 
 
     @GetMapping("/users/{userId}")
+    @PreAuthorize("hasAnyRole('CUSTOMER', 'MASTER')")
     public ResponseEntity getUsersReviews(
             @PathVariable Integer userId,
             @AuthenticationPrincipal SecurityUserDetails userDetails
@@ -71,7 +73,7 @@ public class ReviewController {
     }
 
     @GetMapping
-    @PreAuthorize("hasAnyRole('MANAGER', 'MASTER')")
+    @PreAuthorize("hasAnyRole('MASTER')")
     public ResponseEntity search(
             @RequestParam(defaultValue = "0") int pageNumber,
             @RequestParam(defaultValue = "10") int size,
@@ -102,6 +104,7 @@ public class ReviewController {
     }
 
     @PatchMapping("/{reviewId}")
+    @PreAuthorize("hasAnyRole('CUSTOMER', 'MASTER')")
     public ResponseEntity modifyReview(
             @PathVariable UUID reviewId,
             @AuthenticationPrincipal SecurityUserDetails userDetails,
@@ -121,6 +124,7 @@ public class ReviewController {
     }
 
     @DeleteMapping("/{reviewId}")
+    @PreAuthorize("hasAnyRole('CUSTOMER', 'MASTER')")
     public ResponseEntity deleteReview(
             @PathVariable UUID reviewId,
             @AuthenticationPrincipal SecurityUserDetails userDetails) {

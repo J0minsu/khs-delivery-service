@@ -36,6 +36,7 @@ public class AIController {
 
 
     @GetMapping("/users/{userId}")
+    @PreAuthorize("hasAnyRole('MANAGER', 'MASTER')")
     public ResponseEntity findByUser(
             @PathVariable Integer userId,
             @AuthenticationPrincipal SecurityUserDetails userDetails
@@ -50,6 +51,7 @@ public class AIController {
     }
 
     @GetMapping("/{aiId}")
+    @PreAuthorize("hasAnyRole('MANAGER', 'MASTER')")
     public ResponseEntity findById(
             @PathVariable("aiId") UUID aiId,
             @AuthenticationPrincipal SecurityUserDetails userDetails) {
@@ -81,6 +83,7 @@ public class AIController {
     }
 
     @PostMapping
+    @PreAuthorize("hasAnyRole('MANAGER', 'MASTER')")
     public ResponseEntity requestAI(@AuthenticationPrincipal SecurityUserDetails userDetails,
                                     @RequestBody AIRequest request) {
 
@@ -94,6 +97,7 @@ public class AIController {
     }
 
     @DeleteMapping("/{aiId}")
+    @PreAuthorize("hasAnyRole('MANAGER', 'MASTER')")
     public ResponseEntity deleteAI(
             @PathVariable UUID aiId,
             @AuthenticationPrincipal SecurityUserDetails userDetails) {
