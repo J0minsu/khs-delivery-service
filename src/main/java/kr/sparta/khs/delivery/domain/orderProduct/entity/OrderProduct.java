@@ -19,9 +19,11 @@ public class OrderProduct extends BaseEntity {
     @Column(name = "order_product_id")
     private UUID id;
 
-    @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "product_id")
-    private Product product;
+//    @ManyToOne(fetch = FetchType.LAZY)
+//    @JoinColumn(name = "product_id")
+//    private Product product;
+    @Column(name = "product_name", nullable = false)
+    private String name;
 
     @ManyToOne(fetch = FetchType.LAZY,cascade = CascadeType.ALL)
     @JoinColumn(name = "order_id")
@@ -32,8 +34,8 @@ public class OrderProduct extends BaseEntity {
     @Column(name = "product_price", nullable = false)
     private Integer price;
 
-    public OrderProduct(Product product, Integer quantity, Integer price) {
-        this.product = product;
+    public OrderProduct(String name, Integer quantity, Integer price) {
+        this.name = name;
         this.quantity = quantity;
         this.price = price;
     }
