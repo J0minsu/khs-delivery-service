@@ -39,7 +39,7 @@ public class ReviewController {
 
     @PostMapping
     @PreAuthorize("hasAnyRole('CUSTOMER', 'MASTER')")
-    public ResponseEntity createReview(
+    public ResponseEntity<ReviewResponse> createReview(
             @AuthenticationPrincipal SecurityUserDetails userDetails,
             @Valid @RequestBody ReviewRequest reviewRequest,
             BindingResult bindingResult
@@ -60,7 +60,7 @@ public class ReviewController {
 
     @GetMapping("/users/{userId}")
     @PreAuthorize("hasAnyRole('CUSTOMER', 'MASTER')")
-    public ResponseEntity getUsersReviews(
+    public ResponseEntity<Page<ReviewResponse>> getUsersReviews(
             @PathVariable Integer userId,
             @AuthenticationPrincipal SecurityUserDetails userDetails
             , Pageable pageable) {
@@ -74,7 +74,7 @@ public class ReviewController {
 
     @GetMapping
     @PreAuthorize("hasAnyRole('MASTER')")
-    public ResponseEntity search(
+    public ResponseEntity<Page<ReviewResponse>> search(
             @RequestParam(defaultValue = "0") int pageNumber,
             @RequestParam(defaultValue = "10") int size,
             @RequestParam(defaultValue = "") String keyword,
@@ -91,7 +91,7 @@ public class ReviewController {
     }
 
     @GetMapping("/restaurants/{restaurantId}")
-    public ResponseEntity getRestaurantReviews(
+    public ResponseEntity<Page<ReviewResponse>> getRestaurantReviews(
             UUID restaurantId,
             Pageable pageable
     ) {
@@ -105,7 +105,7 @@ public class ReviewController {
 
     @PatchMapping("/{reviewId}")
     @PreAuthorize("hasAnyRole('CUSTOMER', 'MASTER')")
-    public ResponseEntity modifyReview(
+    public ResponseEntity<ReviewResponse> modifyReview(
             @PathVariable UUID reviewId,
             @AuthenticationPrincipal SecurityUserDetails userDetails,
             @Valid @RequestBody ReviewModifyRequest request,
@@ -125,7 +125,7 @@ public class ReviewController {
 
     @DeleteMapping("/{reviewId}")
     @PreAuthorize("hasAnyRole('CUSTOMER', 'MASTER')")
-    public ResponseEntity deleteReview(
+    public ResponseEntity<Void> deleteReview(
             @PathVariable UUID reviewId,
             @AuthenticationPrincipal SecurityUserDetails userDetails) {
 
