@@ -3,24 +3,19 @@ package kr.sparta.khs.delivery.domain.ai.service;
 import kr.sparta.khs.delivery.domain.ai.entity.AI;
 import kr.sparta.khs.delivery.domain.ai.repository.AIRepository;
 import kr.sparta.khs.delivery.domain.ai.vo.AIVO;
-import kr.sparta.khs.delivery.domain.report.entity.Report;
-import kr.sparta.khs.delivery.domain.report.vo.ReportVO;
 import kr.sparta.khs.delivery.domain.user.entity.User;
 import kr.sparta.khs.delivery.domain.user.repository.UserRepository;
 import kr.sparta.khs.delivery.endpoint.dto.req.AIRequest;
-import lombok.AccessLevel;
+import kr.sparta.khs.delivery.webclient.service.WebClientService;
+import kr.sparta.khs.delivery.webclient.service.dto.res.GeminiResponse;
 import lombok.RequiredArgsConstructor;
-import lombok.experimental.FieldDefaults;
 import lombok.extern.slf4j.Slf4j;
-import org.springframework.data.crossstore.ChangeSetPersister;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
-import java.util.List;
 import java.util.NoSuchElementException;
-import java.util.Optional;
 import java.util.UUID;
 
 @Service
@@ -31,6 +26,7 @@ public class AIService {
 
     private final AIRepository aiRepository;
     private final UserRepository userRepository;
+    private final WebClientService webClientService;
     private final String PROMPT_SUFFIX = ". 답변을 최대한 간결하게 50자 이하로 작성해줘.";
 
     public AIVO findById(UUID id) {
@@ -50,7 +46,13 @@ public class AIService {
         request.setPrompt(prompt + PROMPT_SUFFIX);
         // TODO AI Request
 
-        AI ai = AI.create(request.getPrompt(), "answer", user);
+        GeminiResponse response = webClientService.aiRequest(request.getPrompt()).block();
+
+        assert response != null;
+        AI ai = AI.create(
+                request.getPrompt(),
+                response.getCandidates().get(0).getContent().getParts().get(0).getText(),
+                user);
 
         AI savedAI = aiRepository.save(ai);
 

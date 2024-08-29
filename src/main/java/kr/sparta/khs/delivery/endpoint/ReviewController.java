@@ -28,7 +28,6 @@ import org.springframework.web.bind.annotation.*;
 import java.util.UUID;
 
 @RestController
-@FieldDefaults(level = AccessLevel.PRIVATE, makeFinal = true)
 @Slf4j
 @RequiredArgsConstructor
 @RequestMapping("/reviews")
@@ -79,6 +78,12 @@ public class ReviewController {
             @RequestParam(defaultValue = "10") int size,
             @RequestParam(defaultValue = "") String keyword,
             @RequestParam(defaultValue = "CREATED_DESC") SortStandard sort) {
+
+        size = switch (size) {
+            case 30 -> 30;
+            case 50 -> 50;
+            default -> 10;
+        };
 
         Page<ReviewVO> reviews =  reviewService.findReview(
                 keyword, PageRequest.of(pageNumber, size, sort.getSort())

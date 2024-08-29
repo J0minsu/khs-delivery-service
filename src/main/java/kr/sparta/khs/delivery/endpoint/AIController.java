@@ -72,6 +72,12 @@ public class AIController {
             @RequestParam(defaultValue = "") String keyword,
             @RequestParam(defaultValue = "CREATED_DESC") SortStandard sort) {
 
+        size = switch (size) {
+            case 30 -> 30;
+            case 50 -> 50;
+            default -> 10;
+        };
+
         Page<AIVO> reports =  aiService.findReports(
                 keyword, PageRequest.of(pageNumber, size, sort.getSort())
         );

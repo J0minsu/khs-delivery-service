@@ -38,6 +38,7 @@ public class ReportController {
             @RequestBody ReportCreateRequest request,
             @AuthenticationPrincipal SecurityUserDetails userDetails) {
 
+
         request.setUserId(userDetails.getId());
 
         ReportVO report = reportService.createReport(request);
@@ -87,6 +88,13 @@ public class ReportController {
             @RequestParam(defaultValue = "10") int size,
             @RequestParam(defaultValue = "") String keyword,
             @RequestParam(defaultValue = "CREATED_DESC") SortStandard sort) {
+
+
+        size = switch (size) {
+            case 30 -> 30;
+            case 50 -> 50;
+            default -> 10;
+        };
 
         Page<ReportVO> reports =  reportService.search(
                 keyword, PageRequest.of(pageNumber, size, sort.getSort())
