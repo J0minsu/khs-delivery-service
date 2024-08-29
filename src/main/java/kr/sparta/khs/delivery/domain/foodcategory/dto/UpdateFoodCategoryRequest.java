@@ -10,7 +10,6 @@ import java.util.UUID;
 @NoArgsConstructor
 public class UpdateFoodCategoryRequest {
 
-    private UUID id;
     private String name;
 
 }

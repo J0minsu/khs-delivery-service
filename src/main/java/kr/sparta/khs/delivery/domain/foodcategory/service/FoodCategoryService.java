@@ -50,9 +50,9 @@ public class FoodCategoryService {
 
 
     @Transactional
-    public void updateFoodCategory(UpdateFoodCategoryRequest request) {
+    public void updateFoodCategory(UUID id , UpdateFoodCategoryRequest request) {
 
-        Optional<FoodCategory> optionalFoodCategory  = foodCategoryRepository.findById(request.getId());
+        Optional<FoodCategory> optionalFoodCategory  = foodCategoryRepository.findById(id);
 
         if (optionalFoodCategory.isEmpty()) {
             throw new IllegalArgumentException("ID의 음식 카테고리가 존재하지 않습니다");

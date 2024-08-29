@@ -24,8 +24,8 @@ public class FoodCategory extends BaseEntity {
         return new FoodCategory(UUID.randomUUID(), name);
     }
 
-    public FoodCategory updateName(String newName) {
-        return new FoodCategory(this.id, newName);
+    public void updateName(String newName) {
+        this.name = newName;
     }
 
 }

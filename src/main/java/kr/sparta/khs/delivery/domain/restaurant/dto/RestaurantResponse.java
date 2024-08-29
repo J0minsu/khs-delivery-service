@@ -40,6 +40,7 @@ public class RestaurantResponse {
                         .build())
                 .collect(Collectors.toList());
 
+
         return new RestaurantResponse(
                 restaurant.getId(),
                 restaurant.getName(),

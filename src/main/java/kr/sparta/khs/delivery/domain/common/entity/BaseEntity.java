@@ -58,4 +58,9 @@ public class BaseEntity {
         this.deletedAt = null;
     }
 
+
+
+
+
+
 }

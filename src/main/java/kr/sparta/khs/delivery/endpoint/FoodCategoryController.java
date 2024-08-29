@@ -39,8 +39,8 @@ public class FoodCategoryController {
 
     @PutMapping("{id}")
     @Secured("MASTER")
-    public ResponseEntity<?> updateFoodCategory(@RequestBody UpdateFoodCategoryRequest request) {
-        foodCategoryService.updateFoodCategory(request);
+    public ResponseEntity<?> updateFoodCategory(@PathVariable UUID id ,@RequestBody UpdateFoodCategoryRequest request) {
+        foodCategoryService.updateFoodCategory(id,request);
         return ResponseEntity.status(HttpStatus.OK).body("음식 카테고리 수정완료");
     }
 

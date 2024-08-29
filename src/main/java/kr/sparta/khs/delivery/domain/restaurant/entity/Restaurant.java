@@ -5,6 +5,7 @@ import kr.sparta.khs.delivery.domain.common.entity.BaseEntity;
 import kr.sparta.khs.delivery.domain.foodcategory.entity.FoodCategory;
 import kr.sparta.khs.delivery.domain.product.entity.Product;
 import kr.sparta.khs.delivery.domain.restaurant.dto.RestaurantCreateRequest;
+import kr.sparta.khs.delivery.domain.restaurant.dto.UpdateRestaurantRequest;
 import kr.sparta.khs.delivery.domain.user.entity.User;
 import lombok.*;
 import org.hibernate.annotations.Comment;
@@ -98,4 +99,17 @@ public class Restaurant extends BaseEntity {
       products.add(product);
    }
 
+    public void updateRestaurant(UpdateRestaurantRequest request ,FoodCategory foodCategory) {
+
+      this.name = request.getName();
+      this.foodCategory = foodCategory;
+      this.address = request.getAddress();
+      this.phone = request.getPhone();
+      this.minPrice = request.getMinPrice();
+      this.operationHours = request.getOperationHours();
+      this.closedDays = request.getClosedDays();
+      this.deliveryTip = request.getDeliveryTip();
+      this.status = request.getStatus();
+
+    }
 }

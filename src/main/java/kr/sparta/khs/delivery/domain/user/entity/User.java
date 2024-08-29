@@ -3,6 +3,8 @@ package kr.sparta.khs.delivery.domain.user.entity;
 import jakarta.persistence.*;
 import kr.sparta.khs.delivery.domain.common.entity.BaseEntity;
 import kr.sparta.khs.delivery.domain.user.vo.UserVO;
+import kr.sparta.khs.delivery.security.SecurityUserDetails;
+import kr.sparta.khs.delivery.security.SecurityUserInfo;
 import lombok.AccessLevel;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -10,6 +12,7 @@ import lombok.ToString;
 import lombok.experimental.FieldDefaults;
 import org.hibernate.annotations.Comment;
 import org.hibernate.annotations.DynamicUpdate;
+import org.springframework.security.core.context.SecurityContextHolder;
 
 @Entity(name = "p_user")
 @Getter
@@ -68,6 +71,7 @@ public class User extends BaseEntity {
 
     public static User emptyObject() {return new User();}
 
+
     public void updatePassword(String newPassword) {
         this.password = newPassword;
     }
@@ -87,4 +91,6 @@ public class User extends BaseEntity {
         this.contact = contact;
         this.address = address;
     }
+
+
 }
