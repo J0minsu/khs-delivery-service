@@ -14,6 +14,7 @@ import lombok.*;
 import org.hibernate.annotations.Cascade;
 import org.springframework.beans.factory.annotation.Autowired;
 
+import java.util.ArrayList;
 import java.util.List;
 import java.util.UUID;
 
@@ -38,7 +39,7 @@ public class Order extends BaseEntity {
     @JoinColumn(name = "user_id")
     private User user;
 
-    @ManyToOne(fetch = FetchType.LAZY)
+    @OneToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "restaurant_id")
     private Restaurant restaurant;
 
@@ -66,9 +67,9 @@ public class Order extends BaseEntity {
     @Column(name = "delivery_amount", nullable = false)
     private Integer amount; //배달료
 
-    @OneToMany(mappedBy = "order", cascade = {CascadeType.PERSIST, CascadeType.MERGE, CascadeType.REMOVE})
-    private List<OrderProduct> orderProducts; //Cascade     생성 ,                수정,              제거
-
+    @OneToMany(mappedBy = "order", cascade = CascadeType.ALL)
+    private List<OrderProduct> orderProducts = new ArrayList<>(); //Cascade     생성 ,                수정,              제거
+    //order가 생성되면 orderProduct를 넣는다.
 
 
     public Order(User user, Restaurant restaurant, OrderType type, OrderStatus orderStatus, Integer payAmount, DeliveryStatus deliveryStatus, String requirement, Integer amount) {
@@ -85,19 +86,11 @@ public class Order extends BaseEntity {
     public void updateOrderStatus(OrderStatus orderStatus) {
         this.orderStatus = orderStatus;
     }
-//    public static Restaurant of(RestaurantCreateRequest request, FoodCategory foodCategory , User user) {
-//        return Restaurant.builder()
-//                .name(request.getName())
-//                .address(request.getAddress())
-//                .phone(request.getPhone())
-//                .minPrice(request.getMinPrice())
-//                .operationHours(request.getOperationHours())
-//                .closedDays(request.getClosedDays())
-//                .deliveryTip(request.getDeliveryTip())
-//                .status(request.getStatus())
-//                .foodCategory(foodCategory)
-//                .user(user)
-//                .build();
-//
-//    }
+    public static Order of(User user, Restaurant restaurant, OrderType type, OrderStatus orderStatus, Integer payAmount, DeliveryStatus deliveryStatus, String requirement, Integer amount, List<OrderProduct> orderProducts) {
+        Order order = new Order(user, restaurant, type, orderStatus, payAmount, deliveryStatus, requirement, amount);
+        order.getOrderProducts().addAll(orderProducts);
+        return order;
+
+    }
+
 }
