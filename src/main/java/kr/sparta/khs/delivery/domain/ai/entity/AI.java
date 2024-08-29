@@ -30,7 +30,7 @@ public class AI extends BaseEntity {
     @Column(nullable = false)
     @Comment("AI 요청 명령어")
     private String prompt;
-    @Column(nullable = false, length = 50)
+    @Column(nullable = false, length = 100)
     @Comment("AI 응답 결과")
     private String answer;
 
