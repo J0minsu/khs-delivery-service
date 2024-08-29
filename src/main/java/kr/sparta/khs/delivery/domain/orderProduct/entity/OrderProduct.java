@@ -23,7 +23,7 @@ public class OrderProduct extends BaseEntity {
     @JoinColumn(name = "product_id")
     private Product product;
 
-    @ManyToOne(fetch = FetchType.LAZY)
+    @ManyToOne(fetch = FetchType.LAZY,cascade = CascadeType.ALL)
     @JoinColumn(name = "order_id")
     private Order order;
 
@@ -31,16 +31,13 @@ public class OrderProduct extends BaseEntity {
     private Integer quantity;
     @Column(name = "product_price", nullable = false)
     private Integer price;
-//    public static OrderProduct of(Order order, Product product, Integer quantity) {
-//        OrderProduct orderProduct = new OrderProduct(order, product, quantity, product.getPrice());
-//        return orderProduct;
-//    }
-    public OrderProduct(Order order, Product product, Integer quantity, Integer price) {
-        this.order = order;
+
+    public OrderProduct(Product product, Integer quantity, Integer price) {
         this.product = product;
         this.quantity = quantity;
         this.price = price;
     }
+
     public void updateQuantity(Integer quantity) {
         this.quantity = quantity;
     }

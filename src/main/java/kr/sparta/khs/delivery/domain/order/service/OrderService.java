@@ -10,6 +10,9 @@ import kr.sparta.khs.delivery.domain.order.entity.OrderStatus;
 import kr.sparta.khs.delivery.domain.order.entity.OrderType;
 import kr.sparta.khs.delivery.domain.order.repository.OrderRepository;
 import kr.sparta.khs.delivery.domain.orderProduct.entity.OrderProduct;
+import kr.sparta.khs.delivery.domain.orderProduct.repository.OrderProductRepository;
+import kr.sparta.khs.delivery.domain.product.entity.Product;
+import kr.sparta.khs.delivery.domain.product.repository.ProductRepository;
 import kr.sparta.khs.delivery.domain.restaurant.entity.Restaurant;
 import kr.sparta.khs.delivery.domain.restaurant.repository.RestaurantRepository;
 import kr.sparta.khs.delivery.domain.user.entity.User;
@@ -22,7 +25,9 @@ import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
+import java.util.ArrayList;
 import java.util.List;
 import java.util.UUID;
 import java.util.stream.Collectors;
@@ -33,6 +38,9 @@ public class OrderService {
     private final OrderRepository orderRepository;
     private final RestaurantRepository restaurantRepository;
     private final UserRepository userRepository;
+    private final ProductRepository productRepository;
+    private final OrderProductRepository orderProductRepository;
+    @Transactional
     public void createOrder(CreateOrderRequest req, User user) {
         User user1 = userRepository.findById(user.getId())
                 .orElseThrow(() -> new IllegalArgumentException("User not found"));
@@ -40,10 +48,15 @@ public class OrderService {
                 .orElseThrow(() -> new IllegalArgumentException("Restaurant not found"));
         List<OrderProductDto> orderProducts = req.getOrderProducts();
         int payAmount =0;
+        List<OrderProduct> op =new ArrayList<>();
         for(OrderProductDto orderProduct : orderProducts) {
             payAmount += orderProduct.getPrice()*orderProduct.getQuantity();
+            Product product= productRepository.findById(orderProduct.getProductId())
+                    .orElseThrow(() -> new IllegalArgumentException("product not found"));
+            OrderProduct orderProduct1 = new OrderProduct(product, orderProduct.getQuantity(),orderProduct.getPrice());
+            op.add(orderProduct1);
         }
-        Order order = new Order(user1, restaurant1, req.getOrderType(), OrderStatus.REQUESTED, payAmount, DeliveryStatus.NOT_DISPATCHED, req.getRequirement(), req.getDeliveryAmount());
+        Order order = Order.of(user1, restaurant1, req.getOrderType(), OrderStatus.REQUESTED, payAmount, DeliveryStatus.NOT_DISPATCHED, req.getRequirement(), req.getDeliveryAmount(),op);
         orderRepository.save(order);
     }
 
