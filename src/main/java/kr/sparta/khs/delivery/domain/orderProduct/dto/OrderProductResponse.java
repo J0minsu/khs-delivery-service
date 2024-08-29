@@ -18,7 +18,7 @@ public class OrderProductResponse {
 
     public static OrderProductResponse from(OrderProduct orderProduct) {
         return new OrderProductResponse(
-                orderProduct.getProduct().getName(),
+                orderProduct.getName(),
                 orderProduct.getQuantity(),
                 orderProduct.getPrice(),
                 orderProduct.getPrice()*orderProduct.getQuantity()

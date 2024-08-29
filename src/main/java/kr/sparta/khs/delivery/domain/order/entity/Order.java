@@ -10,6 +10,7 @@ import kr.sparta.khs.delivery.domain.restaurant.entity.Restaurant;
 import kr.sparta.khs.delivery.domain.restaurant.repository.RestaurantRepository;
 import kr.sparta.khs.delivery.domain.user.entity.User;
 import kr.sparta.khs.delivery.endpoint.dto.req.CreateOrderRequest;
+import kr.sparta.khs.delivery.endpoint.dto.req.OrderProductDto;
 import lombok.*;
 import org.hibernate.annotations.Cascade;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -29,7 +30,6 @@ import static kr.sparta.khs.delivery.domain.order.entity.PaymentStatus.NOT_PAID;
 @AllArgsConstructor
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
 public class Order extends BaseEntity {
-
     @Id
     @GeneratedValue(strategy = GenerationType.UUID)
     @Column(name = "order_id")
@@ -86,11 +86,15 @@ public class Order extends BaseEntity {
     public void updateOrderStatus(OrderStatus orderStatus) {
         this.orderStatus = orderStatus;
     }
-    public static Order of(User user, Restaurant restaurant, OrderType type, OrderStatus orderStatus, Integer payAmount, DeliveryStatus deliveryStatus, String requirement, Integer amount, List<OrderProduct> orderProducts) {
+    public static Order of(User user, Restaurant restaurant, OrderType type, OrderStatus orderStatus, Integer payAmount, DeliveryStatus deliveryStatus, String requirement, Integer amount, List<OrderProductDto> orderProducts) {
         Order order = new Order(user, restaurant, type, orderStatus, payAmount, deliveryStatus, requirement, amount);
-        order.getOrderProducts().addAll(orderProducts);
+        List<OrderProduct> op =new ArrayList<>();
+        for(OrderProductDto orderProduct : orderProducts) {
+            OrderProduct orderProduct1 = new OrderProduct(orderProduct.getProductName(), orderProduct.getQuantity(),orderProduct.getPrice());
+            op.add(orderProduct1);
+        }
+        order.getOrderProducts().addAll(op);
         return order;
-
     }
 
 }

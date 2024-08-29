@@ -48,15 +48,8 @@ public class OrderService {
                 .orElseThrow(() -> new IllegalArgumentException("Restaurant not found"));
         List<OrderProductDto> orderProducts = req.getOrderProducts();
         int payAmount =0;
-        List<OrderProduct> op =new ArrayList<>();
-        for(OrderProductDto orderProduct : orderProducts) {
-            payAmount += orderProduct.getPrice()*orderProduct.getQuantity();
-            Product product= productRepository.findById(orderProduct.getProductId())
-                    .orElseThrow(() -> new IllegalArgumentException("product not found"));
-            OrderProduct orderProduct1 = new OrderProduct(product, orderProduct.getQuantity(),orderProduct.getPrice());
-            op.add(orderProduct1);
-        }
-        Order order = Order.of(user1, restaurant1, req.getOrderType(), OrderStatus.REQUESTED, payAmount, DeliveryStatus.NOT_DISPATCHED, req.getRequirement(), req.getDeliveryAmount(),op);
+
+        Order order = Order.of(user1, restaurant1, req.getOrderType(), OrderStatus.REQUESTED, payAmount, DeliveryStatus.NOT_DISPATCHED, req.getRequirement(), req.getDeliveryAmount(),orderProducts);
         orderRepository.save(order);
     }
 
