@@ -37,7 +37,7 @@ public class AIController {
 
     @GetMapping("/users/{userId}")
     @PreAuthorize("hasAnyRole('MANAGER', 'MASTER')")
-    public ResponseEntity findByUser(
+    public ResponseEntity<Page<AIResponse>> findByUser(
             @PathVariable Integer userId,
             @AuthenticationPrincipal SecurityUserDetails userDetails
     ) {
@@ -52,7 +52,7 @@ public class AIController {
 
     @GetMapping("/{aiId}")
     @PreAuthorize("hasAnyRole('MANAGER', 'MASTER')")
-    public ResponseEntity findById(
+    public ResponseEntity<AIResponse> findById(
             @PathVariable("aiId") UUID aiId,
             @AuthenticationPrincipal SecurityUserDetails userDetails) {
 
@@ -66,7 +66,7 @@ public class AIController {
 
     @GetMapping
     @PreAuthorize("hasAnyRole('MANAGER', 'MASTER')")
-    public ResponseEntity search(
+    public ResponseEntity<Page<AIResponse>> search(
             @RequestParam(defaultValue = "0") int pageNumber,
             @RequestParam(defaultValue = "10") int size,
             @RequestParam(defaultValue = "") String keyword,
@@ -84,7 +84,7 @@ public class AIController {
 
     @PostMapping
     @PreAuthorize("hasAnyRole('MANAGER', 'MASTER')")
-    public ResponseEntity requestAI(@AuthenticationPrincipal SecurityUserDetails userDetails,
+    public ResponseEntity<AIResponse> requestAI(@AuthenticationPrincipal SecurityUserDetails userDetails,
                                     @RequestBody AIRequest request) {
 
         request.setUserId(userDetails.getId());
@@ -98,7 +98,7 @@ public class AIController {
 
     @DeleteMapping("/{aiId}")
     @PreAuthorize("hasAnyRole('MANAGER', 'MASTER')")
-    public ResponseEntity deleteAI(
+    public ResponseEntity<Void> deleteAI(
             @PathVariable UUID aiId,
             @AuthenticationPrincipal SecurityUserDetails userDetails) {
 

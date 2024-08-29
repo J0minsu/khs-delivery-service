@@ -34,7 +34,7 @@ public class ReportController {
     private final UserService userService;
 
     @PostMapping
-    public ResponseEntity create(
+    public ResponseEntity<ReportResponse> create(
             @RequestBody ReportCreateRequest request,
             @AuthenticationPrincipal SecurityUserDetails userDetails) {
 
@@ -49,7 +49,7 @@ public class ReportController {
     }
 
     @GetMapping("/users/{userId}")
-    public ResponseEntity findMyReports(
+    public ResponseEntity<Page<ReportResponse>> findMyReports(
             @PathVariable Integer userId,
             Pageable pageable) {
 
@@ -63,7 +63,7 @@ public class ReportController {
 
     @GetMapping("/{reportId}")
     @PreAuthorize("hasAnyRole('MASTER')")
-    public ResponseEntity findReport(
+    public ResponseEntity<ReportResponse> findReport(
             @PathVariable UUID reportId,
             @AuthenticationPrincipal SecurityUserDetails userDetails) {
 
@@ -82,7 +82,7 @@ public class ReportController {
 
     @GetMapping
     @PreAuthorize("hasAnyRole('MASTER')")
-    public ResponseEntity search(
+    public ResponseEntity<Page<ReportResponse>> search(
             @RequestParam(defaultValue = "0") int pageNumber,
             @RequestParam(defaultValue = "10") int size,
             @RequestParam(defaultValue = "") String keyword,
@@ -100,7 +100,7 @@ public class ReportController {
 
     @PatchMapping("/{reportId}/accept")
     @PreAuthorize("hasAnyRole('MASTER')")
-    public ResponseEntity acceptReport(
+    public ResponseEntity<ReportResponse> acceptReport(
             @PathVariable UUID reportId,
             @AuthenticationPrincipal SecurityUserDetails userDetails) {
 
@@ -114,7 +114,7 @@ public class ReportController {
 
     @PatchMapping("/{reportId}/solve")
     @PreAuthorize("hasAnyRole('MASTER')")
-    public ResponseEntity solveReport(
+    public ResponseEntity<ReportResponse> solveReport(
             @PathVariable UUID reportId,
             @AuthenticationPrincipal SecurityUserDetails userDetails,
             @RequestBody ReportSolveRequest request) {
@@ -128,7 +128,7 @@ public class ReportController {
     }
 
     @DeleteMapping("/{reportId}")
-    public ResponseEntity delete(
+    public ResponseEntity<Void> delete(
             @PathVariable UUID reportId,
             @AuthenticationPrincipal SecurityUserDetails userDetails) {
 
