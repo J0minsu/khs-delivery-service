@@ -67,12 +67,5 @@ public class FoodCategoryService {
 
     }
 
-    @Transactional
-    public void deleteFoodCategory(UUID id) {
-        Optional<FoodCategory> optionalFoodCategory  = foodCategoryRepository.findById(id);
-        if (optionalFoodCategory.isEmpty()) {
-            
-        }
-    }
 
 }

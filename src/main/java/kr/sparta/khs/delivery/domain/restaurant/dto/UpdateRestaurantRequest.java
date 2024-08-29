@@ -25,6 +25,6 @@ public class UpdateRestaurantRequest {
 
     private String status;
 
-    private UUID FoodCategoryId;
+    private String FoodCategoryName;
 
 }
