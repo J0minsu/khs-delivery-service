@@ -83,18 +83,28 @@ public class Order extends BaseEntity {
         this.requirement = requirement;
         this.amount = amount;
     }
-    public void updateOrderStatus(OrderStatus orderStatus) {
-        this.orderStatus = orderStatus;
-    }
     public static Order of(User user, Restaurant restaurant, OrderType type, OrderStatus orderStatus, Integer payAmount, DeliveryStatus deliveryStatus, String requirement, Integer amount, List<OrderProductDto> orderProducts) {
         Order order = new Order(user, restaurant, type, orderStatus, payAmount, deliveryStatus, requirement, amount);
-        List<OrderProduct> op =new ArrayList<>();
-        for(OrderProductDto orderProduct : orderProducts) {
-            OrderProduct orderProduct1 = new OrderProduct(orderProduct.getProductName(), orderProduct.getQuantity(),orderProduct.getPrice());
-            op.add(orderProduct1);
+        List<OrderProduct> op = new ArrayList<>();
+        for (OrderProductDto orderProductDto : orderProducts) {
+            OrderProduct orderProduct = new OrderProduct(order, orderProductDto.getProductName(), orderProductDto.getQuantity(), orderProductDto.getPrice());
+            op.add(orderProduct);
         }
         order.getOrderProducts().addAll(op);
         return order;
     }
+    public void updateOrderStatus(OrderStatus orderStatus) {
+        this.orderStatus = orderStatus;
+    }
+//    public static Order of(User user, Restaurant restaurant, OrderType type, OrderStatus orderStatus, Integer payAmount, DeliveryStatus deliveryStatus, String requirement, Integer amount, List<OrderProductDto> orderProducts) {
+//        Order order = new Order(user, restaurant, type, orderStatus, payAmount, deliveryStatus, requirement, amount);
+//        List<OrderProduct> op =new ArrayList<>();
+//        for(OrderProductDto orderProduct : orderProducts) {
+//            OrderProduct orderProduct1 = new OrderProduct(orderProduct.getProductName(), orderProduct.getQuantity(),orderProduct.getPrice());
+//            op.add(orderProduct1);
+//        }
+//        order.getOrderProducts().addAll(op);
+//        return order;
+//    }
 
 }
