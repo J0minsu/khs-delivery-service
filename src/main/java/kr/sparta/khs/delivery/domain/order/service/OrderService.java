@@ -10,7 +10,7 @@ import kr.sparta.khs.delivery.domain.order.entity.OrderStatus;
 import kr.sparta.khs.delivery.domain.order.entity.OrderType;
 import kr.sparta.khs.delivery.domain.order.repository.OrderRepository;
 import kr.sparta.khs.delivery.domain.orderProduct.entity.OrderProduct;
-import kr.sparta.khs.delivery.domain.orderProduct.repository.OrderProductRepository;
+
 import kr.sparta.khs.delivery.domain.product.entity.Product;
 import kr.sparta.khs.delivery.domain.product.repository.ProductRepository;
 import kr.sparta.khs.delivery.domain.restaurant.entity.Restaurant;
@@ -39,7 +39,7 @@ public class OrderService {
     private final RestaurantRepository restaurantRepository;
     private final UserRepository userRepository;
     private final ProductRepository productRepository;
-    private final OrderProductRepository orderProductRepository;
+
     @Transactional
     public void createOrder(CreateOrderRequest req, User user) {
         User user1 = userRepository.findById(user.getId())
