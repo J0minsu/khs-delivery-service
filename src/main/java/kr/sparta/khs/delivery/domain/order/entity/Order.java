@@ -11,6 +11,7 @@ import kr.sparta.khs.delivery.domain.restaurant.repository.RestaurantRepository;
 import kr.sparta.khs.delivery.domain.user.entity.User;
 import kr.sparta.khs.delivery.endpoint.dto.req.CreateOrderRequest;
 import lombok.*;
+import org.hibernate.annotations.Cascade;
 import org.springframework.beans.factory.annotation.Autowired;
 
 import java.util.List;
@@ -65,19 +66,10 @@ public class Order extends BaseEntity {
     @Column(name = "delivery_amount", nullable = false)
     private Integer amount; //배달료
 
-    @OneToMany(mappedBy = "order")
-    private List<OrderProduct> orderProducts;
+    @OneToMany(mappedBy = "order", cascade = {CascadeType.PERSIST, CascadeType.MERGE, CascadeType.REMOVE})
+    private List<OrderProduct> orderProducts; //Cascade     생성 ,                수정,              제거
 
-//    public static Order of(CreateOrderRequest req, User user, Restaurant restaurant) {
-//        return Order.builder()
-//                .user(user)
-//                .restaurant(restaurant)
-//                .type(req.getOrderType())
-//                .address(req.getDeliveryAddress())
-//                .amount(req.getDeliveryAmount())
-//                .orderProducts(req.getOrderProducts())
-//                .build();
-//    }
+
 
     public Order(User user, Restaurant restaurant, OrderType type, OrderStatus orderStatus, Integer payAmount, DeliveryStatus deliveryStatus, String requirement, Integer amount) {
         this.user = user;

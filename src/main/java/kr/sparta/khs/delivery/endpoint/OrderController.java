@@ -1,7 +1,12 @@
 package kr.sparta.khs.delivery.endpoint;
 
+import kr.sparta.khs.delivery.domain.ai.vo.AIVO;
 import kr.sparta.khs.delivery.domain.order.dto.OrderResponse;
+import kr.sparta.khs.delivery.domain.order.dto.OrderSearch;
+import kr.sparta.khs.delivery.domain.order.entity.DeliveryStatus;
 import kr.sparta.khs.delivery.domain.order.entity.Order;
+import kr.sparta.khs.delivery.domain.order.entity.OrderStatus;
+import kr.sparta.khs.delivery.domain.order.entity.OrderType;
 import kr.sparta.khs.delivery.domain.order.service.OrderService;
 import kr.sparta.khs.delivery.domain.restaurant.entity.Restaurant;
 import kr.sparta.khs.delivery.domain.restaurant.repository.RestaurantRepository;
@@ -9,10 +14,15 @@ import kr.sparta.khs.delivery.domain.user.entity.AuthType;
 import kr.sparta.khs.delivery.domain.user.entity.User;
 import kr.sparta.khs.delivery.domain.user.repository.UserRepository;
 import kr.sparta.khs.delivery.endpoint.dto.req.CreateOrderRequest;
+import kr.sparta.khs.delivery.endpoint.dto.req.SortStandard;
+import kr.sparta.khs.delivery.endpoint.dto.res.AIResponse;
 import kr.sparta.khs.delivery.security.SecurityUserDetails;
 import lombok.RequiredArgsConstructor;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.security.core.context.SecurityContextHolder;
@@ -43,14 +53,18 @@ public class OrderController {
         OrderResponse order = orderService.getOrder(orderId, user);
         return ResponseEntity.ok(order);
     }
+    @PreAuthorize("hasAnyRole('CUSTOMER', 'MASTER')")
     @GetMapping("/user/{userId}")
-    public ResponseEntity<List<OrderResponse>> getOrdersByUserId(@PathVariable Integer userId) {
+    public ResponseEntity<List<OrderResponse>> getOrdersByUserId(@PathVariable Integer userId, @AuthenticationPrincipal SecurityUserDetails userDetails) {
+        if (!userDetails.getId().equals(userId)) {
+            return ResponseEntity.status(HttpStatus.FORBIDDEN).build();
+        }
         User user = userRepository.findById(userId)
                 .orElseThrow(() -> new IllegalArgumentException("User not found"));
-
         List<OrderResponse> orders = orderService.getOrdersByUser(user);
         return ResponseEntity.ok(orders);
     }
+    @PreAuthorize("hasAnyRole('MANAGER', 'MASTER')")
     @GetMapping("/restaurants/{restaurantId}")
     public ResponseEntity<List<OrderResponse>> getOrdersByRestaurantId(@PathVariable UUID restaurantId) {
         Restaurant restaurant = restaurantRepository.findById(restaurantId)
@@ -84,4 +98,33 @@ public class OrderController {
             throw new ResponseStatusException(HttpStatus.FORBIDDEN, "You do not have permission to accept this order");
         }
     }
+    @GetMapping("/search")
+    public Page<OrderResponse> searchOrders(
+            @RequestBody OrderSearch search,
+            @RequestParam int page,
+            @RequestParam int size,
+            @RequestParam(defaultValue = "CREATED_DESC") SortStandard sort) {
+        return orderService.searchOrders(search, page, size, sort);
+    }
+    @DeleteMapping("/{orderId}")
+    public ResponseEntity<String> deleteOrder(@PathVariable UUID orderId, @AuthenticationPrincipal SecurityUserDetails userDetails) {
+        orderService.deleteOrder(orderId, userDetails.getId());
+        return ResponseEntity.ok("Order deleted successfully");
+    }
+//    @GetMapping
+//    public ResponseEntity search(
+//            @RequestParam(defaultValue = "0") int pageNumber,
+//            @RequestParam(defaultValue = "10") int size,
+//            @RequestParam(defaultValue = "") String keyword,
+//            @RequestParam(defaultValue = "CREATED_DESC") SortStandard sort) {
+//        Page<OrderResponse> orders = orderService.findOrders(keyword, PageRequest.of(pageNumber, size, sort.getSort()));
+//        Page<AIVO> reports =  aiService.findReports(
+//                keyword, PageRequest.of(pageNumber, size, sort.getSort())
+//        );
+//
+//        Page<AIResponse> result = reports.map(this::toAIResponse);
+//
+//        return ResponseEntity.ok(result);
+//
+//    }
 }

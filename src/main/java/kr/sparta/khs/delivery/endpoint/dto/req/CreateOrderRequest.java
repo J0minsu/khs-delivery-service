@@ -18,7 +18,11 @@ public class CreateOrderRequest {
     private String deliveryAddress;
     private String requirement;
     private Integer deliveryAmount;
-    private List<OrderProduct> orderProducts;
+    private List<OrderProductDto> orderProducts;
+    //유저에게 주거나 받을때 orderproduct에 대한 엔티티에 대한 정보를
+    //orderproduct 직접생성 repository에 직접저장
+    //order안에 orderProduct이라는 list형식으로 갖고있을거다. cascade를 걸면 order에서 orderproduct를 관리 할 수 있는 권한이 생긴다.
+
 
 //    {
 //        "restaurantId": "DFGJID-256VC7-ASNWQ7-AA3G3J-722DHC-KJJ341",
