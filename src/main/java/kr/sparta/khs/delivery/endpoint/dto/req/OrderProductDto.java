@@ -9,7 +9,7 @@ import java.util.UUID;
 @AllArgsConstructor
 @NoArgsConstructor
 public class OrderProductDto {
-    UUID orderId;
     UUID productId;
     int quantity;
+    int price;
 }
