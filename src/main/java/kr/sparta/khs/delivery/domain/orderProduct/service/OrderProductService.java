@@ -26,14 +26,14 @@ public class OrderProductService {
     private final ProductRepository productRepository;
 
     public void createOrderProduct(OrderProductDto orderProductDto) {
-        Order order = orderRepository.findById(orderProductDto.getOrderId())
+        /*Order order = orderRepository.findById(orderProductDto.getOrderId())
                 .orElseThrow(() -> new IllegalArgumentException("Order not found"));
 
         Product product = productRepository.findById(orderProductDto.getProductId())
                 .orElseThrow(() -> new IllegalArgumentException("Product not found"));
 
         OrderProduct orderProduct = new OrderProduct(order, product, orderProductDto.getQuantity(), product.getPrice());
-        orderProductRepository.save(orderProduct);
+        orderProductRepository.save(orderProduct);*/
 }
     public List<OrderProductResponse> getOrderProductsByOrderId(UUID orderId) {
         List<OrderProduct> orderProducts = orderProductRepository.findByOrderId(orderId);

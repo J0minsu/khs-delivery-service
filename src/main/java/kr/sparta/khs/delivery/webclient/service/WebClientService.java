@@ -1,20 +1,21 @@
 package kr.sparta.khs.delivery.webclient.service;
 
-import com.fasterxml.jackson.core.JsonProcessingException;
-import com.fasterxml.jackson.databind.ObjectMapper;
+import kr.sparta.khs.delivery.webclient.service.dto.req.Content;
+import kr.sparta.khs.delivery.webclient.service.dto.req.GeminiRequest;
+import kr.sparta.khs.delivery.webclient.service.dto.req.Part;
+import kr.sparta.khs.delivery.webclient.service.dto.res.GeminiResponse;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
-import org.springframework.core.io.ByteArrayResource;
-import org.springframework.http.MediaType;
-import org.springframework.http.client.MultipartBodyBuilder;
 import org.springframework.stereotype.Component;
+import org.springframework.util.LinkedMultiValueMap;
+import org.springframework.util.MultiValueMap;
 import org.springframework.web.reactive.function.client.WebClient;
 import reactor.core.publisher.Mono;
 
+import java.net.URI;
 import java.net.URLEncoder;
-import java.util.Map;
+import java.util.List;
 
 @Component
 @RequiredArgsConstructor
@@ -23,46 +24,49 @@ public class WebClientService {
 
     private final WebClient webClient;
 
-    String encodedServiceKey = URLEncoder.encode("UuJOPCi2qcZIX3hit9tiwMYo6rfg5kk8BA/rNeNK1INRhx/MwQXZKQ8rL/0rNr4fDLPpV8vaz+5gO6lboNZKhA==");
+    @Value("${gemini.api.key}")
+    String key;
     String HTTPS = "https";
     String HOST = "generativelanguage.googleapis.com";
     String BASE_PATH = "v1beta/models/gemini-1.5-flash-latest:generateContent";
 
-    @Autowired
-    private ObjectMapper objectMapper;
+    public Mono<GeminiResponse> aiRequest(String prompt) {
 
-    /**
-     *  return webClient.mutate()
-     *                 .build()
-     *                 .get()
-     *                 .uri(uriBuilder -> uriBuilder
-     *                                     .scheme(HTTPS)
-     *                                     .host(HOST)
-     *                                     .path(BASE_PATH + "getBrTitleInfo")
-     *                                     .queryParams(makeParams(cityCountyDistrictCode, areaCode, platGbCode, bun, ji, size, page, start, end))
-     *                                     .build()
-     *                 )
-     *                 .retrieve()
-     *                 .bodyToMono(Map.class);
-     */
+        String encoded = URLEncoder.encode(key);
 
-    /*public Mono<Map> predict(String prompt) {
+        Mono<GeminiResponse> geminiResponseMono = webClient.mutate()
+                .build()
+                .post()
+                .uri(uriBuilder -> uriBuilder
+                            .scheme(HTTPS)
+                            .host(HOST)
+                            .path(BASE_PATH)
+                            .queryParams(makeParams(key))
+                            .build()
+                )
+                .bodyValue(new GeminiRequest(
+                        List.of(
+                                new Content(
+                                        List.of(new Part(prompt))
+                                )
+                        )
+                ))
+                .retrieve()
+                .bodyToMono(GeminiResponse.class);
 
-        return webClient.mutate()
-                   .build()
-                   .get()
-                   .uri(uriBuilder -> uriBuilder
-                                       .scheme(HTTPS)
-                                       .host(HOST)
-                                       .path(BASE_PATH + "getBrTitleInfo")
-                                       .queryParams(makeParams(cityCountyDistrictCode, areaCode, platGbCode, bun, ji, size, page, start, end))
-                                       .build()
-                   )
-                   .retrieve()
-                   .bodyToMono(Map.class);
 
-    }*/
+        return geminiResponseMono;
 
+    }
+
+    private MultiValueMap<String, String> makeParams(String key) {
+
+        MultiValueMap<String, String> params = new LinkedMultiValueMap<>();
+
+        params.add("key", key);
+
+        return params;
+    }
 
 
 }
