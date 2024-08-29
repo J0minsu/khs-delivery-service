@@ -46,7 +46,7 @@ public class RestaurantService {
         User user = userRepository.findById(userId)
                 .orElseThrow(() -> new IllegalArgumentException("유효하지 않은 사용자 ID입니다."));
 
-        FoodCategory foodCategory = foodCategoryRepository.findById(request.getFoodCategoryId())
+        FoodCategory foodCategory = foodCategoryRepository.findByName(request.getFoodCategoryName())
                 .orElseThrow(() -> new IllegalArgumentException("유효하지 않은 음식 카테고리입니다."));
 
         restaurantRepository.save(Restaurant.createRestaurant(request, foodCategory, user));
@@ -80,7 +80,7 @@ public class RestaurantService {
         User user = userRepository.findById(userId)
                 .orElseThrow(() -> new IllegalArgumentException("유효하지 않은 사용자 ID 입니다."));
 
-        FoodCategory foodCategory = foodCategoryRepository.findById(request.getFoodCategoryId())
+        FoodCategory foodCategory = foodCategoryRepository.findByName(request.getFoodCategoryName())
                 .orElseThrow(() -> new IllegalArgumentException("유효하지 않은 음식 카테고리입니다."));
 
         Restaurant restaurant = restaurantRepository.findById(id)

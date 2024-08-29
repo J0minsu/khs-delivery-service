@@ -57,4 +57,10 @@ public class Product extends BaseEntity {
         );
     }
 
+    public void updateProduct(ProductRequest productRequest) {
+        this.name = productRequest.getName();
+        this.description = productRequest.getDescription();
+        this.price = productRequest.getPrice();
+        this.status = productRequest.getStatus();
+    }
 }

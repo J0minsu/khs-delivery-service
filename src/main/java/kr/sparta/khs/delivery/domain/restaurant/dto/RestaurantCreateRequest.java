@@ -28,7 +28,7 @@ public class RestaurantCreateRequest {
 
     private String status;
 
-    private UUID foodCategoryId;
+    private String foodCategoryName;
 
 
 }
