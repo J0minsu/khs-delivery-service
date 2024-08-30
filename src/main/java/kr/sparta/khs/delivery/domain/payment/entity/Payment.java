@@ -31,15 +31,29 @@ public class Payment extends BaseEntity {
     @JoinColumn(name = "order_id")
     private Order order;
 
-    @Column(name = "pay_amout", nullable = false)
+    @Column(name = "pay_amount", nullable = false)
     private Integer amount;
+
+    @Enumerated(EnumType.STRING)
     @Column(name = "payment_type", nullable = false)
     private PaymentType paymentType;
 
     @Column(name = "payment_status", nullable = false)
     private PaymentStatus paymentStatus;
-    @Column(name = "error_code", nullable = false) // 잔액부족, 카드 만료
+    @Column(name = "error_code") // 잔액부족, 카드 만료
     private ErrorCode errorCode;
 
-
+    public void updatePaymentStatus(PaymentStatus paymentStatus) {
+        this.paymentStatus = paymentStatus;
+    }
+    public Payment(User user, Order order, Integer amount, PaymentType paymentType,PaymentStatus paymentStatus) {
+        this.user = user;
+        this.order = order;
+        this.amount = amount;
+        this.paymentType = paymentType;
+        this.paymentStatus = paymentStatus;
+    }
+    public static Payment of(User user, Order order, Integer amount, PaymentType paymentType) {
+        return new Payment(user, order, amount, paymentType, PaymentStatus.NOT_PAID);
+    }
 }

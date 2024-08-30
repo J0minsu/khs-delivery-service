@@ -47,9 +47,8 @@ public class OrderService {
         Restaurant restaurant1 = restaurantRepository.findById(req.getRestaurantId())
                 .orElseThrow(() -> new IllegalArgumentException("Restaurant not found"));
         List<OrderProductDto> orderProducts = req.getOrderProducts();
-        int payAmount =0;
 
-        Order order = Order.of(user1, restaurant1, req.getOrderType(), OrderStatus.REQUESTED, payAmount, DeliveryStatus.NOT_DISPATCHED, req.getRequirement(), req.getDeliveryAmount(),orderProducts);
+        Order order = Order.of(user1, restaurant1, req.getOrderType(), OrderStatus.REQUESTED, DeliveryStatus.NOT_DISPATCHED, req.getRequirement(), req.getDeliveryAmount(),orderProducts);
         orderRepository.save(order);
     }
 
