@@ -5,12 +5,13 @@ import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.ToString;
 
+import java.io.Serializable;
 import java.time.LocalDateTime;
 
 @AllArgsConstructor
 @Getter
 @ToString
-public class UserVO {
+public class UserVO implements Serializable {
 
     private final int id;
     private final String username;
