@@ -11,6 +11,8 @@ import lombok.AccessLevel;
 import lombok.RequiredArgsConstructor;
 import lombok.experimental.FieldDefaults;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.cache.annotation.CachePut;
+import org.springframework.cache.annotation.Cacheable;
 import org.springframework.dao.DataIntegrityViolationException;
 import org.springframework.data.crossstore.ChangeSetPersister;
 import org.springframework.data.domain.Page;
@@ -35,6 +37,7 @@ public class UserService {
 
     }
 
+    @Cacheable(cacheNames = "userVO", key = "args[0]")
     public UserVO findByUsername(String username) {
 
         User user = userRepository.findByUsername(username).orElseThrow(() -> new UsernameNotFoundException("can not find user"));
@@ -44,6 +47,7 @@ public class UserService {
     }
 
     @Transactional
+    @CachePut(cacheNames = "userVO", key = "args[0]")
     public UserVO entry(SignUpRequest request) {
 
         User user = User.createUser(request.getUsername(), request.getPassword(),
@@ -64,6 +68,7 @@ public class UserService {
     }
 
     @Transactional
+    @CachePut(cacheNames = "userVO", key = "args[0]")
     public UserVO modifyUser(Integer userId, UserModifyRequest request) {
 
         User user = userRepository.findById(userId)
