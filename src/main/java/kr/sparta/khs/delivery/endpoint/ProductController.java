@@ -39,22 +39,21 @@ public class ProductController {
     }
 
     @Secured({"MANAGER","MASTER"})
-    @PutMapping("/{id}")
-    public ResponseEntity<String> updateProduct(@PathVariable UUID id, @RequestBody ProductRequest productRequest) {
+    @PutMapping("/{productId}")
+    public ResponseEntity<String> updateProduct(@PathVariable UUID productId, @RequestBody ProductRequest productRequest) {
 
-        productService.updateProduct(id, productRequest);
+        productService.updateProduct(productId, productRequest);
         return ResponseEntity.status(HttpStatus.OK).body("수정 성공");
     }
 
 
     @Secured({"MANAGER","MASTER"})
-    @DeleteMapping("/{id}")
-    public ResponseEntity<String> deleteProduct(@PathVariable UUID id) {
-        productService.deleteProduct(id);
+    @DeleteMapping("/{productId}")
+    public ResponseEntity<String> deleteProduct(@PathVariable UUID productId) {
+        productService.deleteProduct(productId);
 
         return ResponseEntity.status(HttpStatus.OK).body("레스토랑 삭제 완료");
 
     }
-
 
 }
