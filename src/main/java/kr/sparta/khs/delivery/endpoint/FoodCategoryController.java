@@ -32,7 +32,6 @@ public class FoodCategoryController {
 
     @GetMapping
     public ResponseEntity<?> getAllFoodCategory() {
-
          foodCategoryService.getAllFoodCategory();
          return ResponseEntity.status(HttpStatus.OK).body(foodCategoryService.getAllFoodCategory());
     }
@@ -41,7 +40,7 @@ public class FoodCategoryController {
     @Secured("MASTER")
     public ResponseEntity<?> updateFoodCategory(@PathVariable UUID id ,@RequestBody UpdateFoodCategoryRequest request) {
         foodCategoryService.updateFoodCategory(id,request);
-        return ResponseEntity.status(HttpStatus.OK).body("음식 카테고리 수정완료");
+        return ResponseEntity.status(HttpStatus.NO_CONTENT).body("음식 카테고리 수정완료");
     }
 
 

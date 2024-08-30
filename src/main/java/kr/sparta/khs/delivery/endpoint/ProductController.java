@@ -4,6 +4,7 @@ import kr.sparta.khs.delivery.domain.product.dto.ProductRequest;
 import kr.sparta.khs.delivery.domain.product.dto.ProductResponse;
 import kr.sparta.khs.delivery.domain.product.entity.Product;
 import kr.sparta.khs.delivery.domain.product.service.ProductService;
+import kr.sparta.khs.delivery.security.SecurityUserDetails;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.annotation.Secured;
@@ -40,17 +41,19 @@ public class ProductController {
 
     @Secured({"MANAGER","MASTER"})
     @PutMapping("/{productId}")
-    public ResponseEntity<String> updateProduct(@PathVariable UUID productId, @RequestBody ProductRequest productRequest) {
+    public ResponseEntity<String> updateProduct(@PathVariable UUID productId,
+                                                @RequestBody ProductRequest productRequest,
+                                                SecurityUserDetails userDetails) {
 
-        productService.updateProduct(productId, productRequest);
-        return ResponseEntity.status(HttpStatus.OK).body("수정 성공");
+        productService.updateProduct(productId, productRequest,userDetails);
+        return ResponseEntity.status(HttpStatus.NO_CONTENT).body("수정 성공");
     }
 
 
     @Secured({"MANAGER","MASTER"})
     @DeleteMapping("/{productId}")
-    public ResponseEntity<String> deleteProduct(@PathVariable UUID productId) {
-        productService.deleteProduct(productId);
+    public ResponseEntity<String> deleteProduct(@PathVariable UUID productId, SecurityUserDetails userDetails) {
+        productService.deleteProduct(productId,userDetails);
 
         return ResponseEntity.status(HttpStatus.OK).body("레스토랑 삭제 완료");
 
