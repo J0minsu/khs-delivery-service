@@ -9,7 +9,7 @@ import kr.sparta.khs.delivery.domain.restaurant.repository.RestaurantRepository;
 import kr.sparta.khs.delivery.domain.user.entity.AuthType;
 import kr.sparta.khs.delivery.domain.user.entity.User;
 import kr.sparta.khs.delivery.domain.user.repository.UserRepository;
-import kr.sparta.khs.delivery.util.SecurityUtils;
+import kr.sparta.khs.delivery.security.SecurityUserDetails;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import java.util.UUID;
@@ -18,13 +18,11 @@ import java.util.UUID;
 public class ProductService {
     private final ProductRepository productRepository;
     private final RestaurantRepository restaurantRepository;
-    private final SecurityUtils securityUtils;
     private final UserRepository userRepository;
 
-    public ProductService(ProductRepository productRepository, RestaurantRepository restaurantRepository, SecurityUtils securityUtils, UserRepository userRepository) {
+    public ProductService(ProductRepository productRepository, RestaurantRepository restaurantRepository, UserRepository userRepository) {
         this.productRepository = productRepository;
         this.restaurantRepository = restaurantRepository;
-        this.securityUtils = securityUtils;
         this.userRepository = userRepository;
     }
     @Transactional
@@ -44,8 +42,8 @@ public class ProductService {
 
 
     @Transactional
-    public void updateProduct(UUID productId, ProductRequest productRequest) {
-        int userId = securityUtils.getCurrentUserId();
+    public void updateProduct(UUID productId, ProductRequest productRequest, SecurityUserDetails userDetails) {
+        int userId = userDetails.getId();
 
         User user = userRepository.findById(userId)
                 .orElseThrow(() -> new IllegalArgumentException("유효하지 않은 사용자 ID 입니다."));
@@ -67,8 +65,8 @@ public class ProductService {
 
 
     @Transactional
-    public void deleteProduct(UUID id) {
-        int userId = securityUtils.getCurrentUserId();
+    public void deleteProduct(UUID id,SecurityUserDetails userDetails) {
+        int userId = userDetails.getId();
         User user = userRepository.findById(userId).orElseThrow(() -> new IllegalArgumentException("유효하지 않은 사용자 ID입니다."));
 
         Product product = productRepository.findById(id).orElseThrow(()->
