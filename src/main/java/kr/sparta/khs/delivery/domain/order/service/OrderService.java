@@ -31,7 +31,7 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.UUID;
 import java.util.stream.Collectors;
-
+@Transactional
 @Service
 @RequiredArgsConstructor
 public class OrderService {
@@ -51,7 +51,7 @@ public class OrderService {
         Order order = Order.of(user1, restaurant1, req.getOrderType(), OrderStatus.REQUESTED, DeliveryStatus.NOT_DISPATCHED, req.getRequirement(), req.getDeliveryAmount(),orderProducts);
         orderRepository.save(order);
     }
-
+    @Transactional(readOnly = true)
     public OrderResponse getOrder(UUID orderId, User user) {
         Order order = orderRepository.findById(orderId)
                 .orElseThrow(() -> new IllegalArgumentException("Order not found"));
@@ -63,39 +63,41 @@ public class OrderService {
             throw new IllegalArgumentException("User not found");
         }
     }
-
+    @Transactional(readOnly = true)
     public List<OrderResponse> getOrdersByUser(User user) {
         List<Order> orders = orderRepository.findByUser(user);
         return orders.stream()
                 .map(OrderResponse::from)
                 .collect(Collectors.toList());
     }
-
+    @Transactional(readOnly = true)
     public List<OrderResponse> getOrdersByRestaurant(Restaurant restaurant) {
         List<Order> orders = orderRepository.findByRestaurant(restaurant);
         return orders.stream()
                 .map(OrderResponse::from)
                 .collect(Collectors.toList());
     }
+    @Transactional
     public void acceptOrder(UUID orderId, User user) {
         OrderResponse orderResponse = getOrder(orderId, user);
         Order order = orderRepository.findById(orderResponse.getOrderId())
                         .orElseThrow(() -> new IllegalArgumentException("Order not found"));
         order.updateOrderStatus(OrderStatus.ACCEPT);
     }
-
+    @Transactional
     public void cancelOrder(UUID orderId, User user) {
         OrderResponse orderResponse = getOrder(orderId, user);
         Order order = orderRepository.findById(orderResponse.getOrderId())
                         .orElseThrow(() -> new IllegalArgumentException("Order not found"));
         order.updateOrderStatus(OrderStatus.CANCELED);
     }
+    @Transactional(readOnly = true)
     public Page<OrderResponse> searchOrders(OrderSearch search, int page, int size, SortStandard sort) {
         Pageable pageable = PageRequest.of(page, size, sort.getSort());
         Page<Order> orders = orderRepository.findByTypeAndDeliveryStatusAndOrderStatus(search.getType(), search.getDeliveryStatus(), search.getOrderStatus(), pageable);
         return orders.map(OrderResponse::from);
     }
-
+    @Transactional
     public void deleteOrder(UUID orderId, Integer userid) {
         Order order = orderRepository.findById(orderId)
                 .orElseThrow(() -> new IllegalArgumentException("Order not found"));

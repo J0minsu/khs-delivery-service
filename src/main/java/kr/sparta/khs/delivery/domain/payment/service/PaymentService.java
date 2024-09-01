@@ -11,9 +11,10 @@ import kr.sparta.khs.delivery.domain.user.entity.User;
 import kr.sparta.khs.delivery.domain.user.repository.UserRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.util.UUID;
-
+@Transactional(readOnly = true)
 @Service
 @RequiredArgsConstructor
 public class PaymentService {
@@ -40,7 +41,7 @@ public class PaymentService {
                 .orElseThrow(() -> new IllegalArgumentException("유효하지 않는 payment ID입니다"));
         payment.updatePaymentStatus(PaymentStatus.CANCELLED);
     }
-
+    @Transactional
     public PaymentResponse createPayment(PaymentRequest req, User user) {
         User user1 = userRepository.findById(user.getId())
                 .orElseThrow(() -> new IllegalArgumentException("User not found"));
@@ -51,7 +52,7 @@ public class PaymentService {
 
         return PaymentResponse.from(payment);
     }
-
+    @Transactional
     public void deletePayment(UUID paymentId, Integer userId) {
         Payment payment = paymentRepository.findById(paymentId)
                 .orElseThrow(() -> new IllegalArgumentException("Payment not found"));
