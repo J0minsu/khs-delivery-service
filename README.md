@@ -56,8 +56,13 @@
 
 ## 고혁진 PART
 
-권혁진은 프로젝트의 다음 부분을 담당했습니다:
-- **00 개발**: 
+고혁진은 프로젝트의 다음 부분을 담당했습니다:
+
+- **기능 개발**:
+  - **주문**: 주문 생성, 조회, 수정 및 삭제 기능 구현.
+  - **결제**: 결제 등록, 조회, 수정 및 삭제 기능 구현.
+
+- **Spring Boot CI/CD 파이프라인 구축**: AWS ECS 및 ECR을 이용한 자동화 배포 GitHub Actions를 통해 코드 푸시 시 자동으로 빌드 및 Docker 이미지를 생성.   
 
 ## APIs 결과
 각 API의 예시 요청 및 응답 결과는 [여기](http://delivery-lb-1253848622.ap-northeast-2.elb.amazonaws.com/swagger-ui/index.html)에서 확인하실 수 있습니다.
