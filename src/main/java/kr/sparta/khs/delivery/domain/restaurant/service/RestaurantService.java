@@ -38,7 +38,7 @@ public class RestaurantService {
         int userId = userDetails.getId();
 
         User user = userRepository.findById(userId)
-                .orElseThrow(() -> new IllegalArgumentException("유효하지 않은 사용자 ID입니다."));
+                .orElseThrow(() -> new IllegalArgumentException("유효하지 않은 사용자 ID 입니다."));
 
         FoodCategory foodCategory = foodCategoryRepository.findByName(request.getFoodCategoryName())
                 .orElseThrow(() -> new IllegalArgumentException("유효하지 않은 음식 카테고리입니다."));
@@ -49,7 +49,7 @@ public class RestaurantService {
     @Transactional(readOnly = true)
     public RestaurantResponse getRestaurantById(UUID id) {
         Restaurant restaurant = restaurantRepository.findById(id)
-                .orElseThrow(() -> new IllegalArgumentException("유효하지 않은 레스토랑 ID입니다."));
+                .orElseThrow(() -> new IllegalArgumentException("유효하지 않은 레스토랑 ID 입니다."));
         return RestaurantResponse.fromEntity(restaurant);
     }
 
@@ -69,14 +69,21 @@ public class RestaurantService {
     @Transactional
     public void updateRestaurant(UUID id, UpdateRestaurantRequest request, SecurityUserDetails userDetails) {
 
+          int userId = userDetails.getId();
+
         FoodCategory foodCategory = foodCategoryRepository.findByName(request.getFoodCategoryName())
                 .orElseThrow(() -> new IllegalArgumentException("유효하지 않은 음식 카테고리입니다."));
 
         Restaurant restaurant = restaurantRepository.findById(id)
                 .orElseThrow(() -> new IllegalArgumentException("존재 하지않는 레스토랑 입니다"));
 
-        restaurant.updateRestaurant(request, foodCategory);
-        restaurantRepository.save(restaurant);
+        if (restaurant.getUser().getId() == userId || userDetails.getAuthType().equals(AuthType.MASTER)) {
+
+            restaurant.updateRestaurant(request, foodCategory);
+            restaurantRepository.save(restaurant);
+        } else throw new IllegalArgumentException("레스토랑 수정 권한없음");
+
+
 
     }
 
@@ -88,12 +95,15 @@ public class RestaurantService {
         Restaurant restaurant = restaurantRepository.findById(id)
                 .orElseThrow(() -> new IllegalArgumentException("존재 하지않는 레스토랑 입니다"));
 
-        if (restaurant.isDeleted()) {
-            throw new IllegalArgumentException("이미 삭제 처리된 레스토랑 입니다.");
-        } else {
+        if (restaurant.isDeleted())  throw new IllegalArgumentException("이미 삭제 처리된 레스토랑 입니다.");
+
+        if (restaurant.getUser().getId() == userId || userDetails.getAuthType().equals(AuthType.MASTER)) {
+
             restaurant.delete(userId);
             restaurantRepository.save(restaurant);
-        }
+        }else throw new IllegalArgumentException("레스토랑 수정 권한없음");
+
+
     }
 
 }

@@ -5,7 +5,7 @@ import kr.sparta.khs.delivery.domain.common.entity.BaseEntity;
 import lombok.*;
 import java.util.UUID;
 
-@Entity(name = "p_foodcategory")
+@Entity(name = "p_foodCategory")
 @AllArgsConstructor
 @NoArgsConstructor
 @Getter

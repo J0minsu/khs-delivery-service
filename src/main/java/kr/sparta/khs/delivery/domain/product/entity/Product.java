@@ -5,7 +5,6 @@ import kr.sparta.khs.delivery.domain.common.entity.BaseEntity;
 import kr.sparta.khs.delivery.domain.product.dto.ProductRequest;
 import kr.sparta.khs.delivery.domain.restaurant.entity.Restaurant;
 import lombok.*;
-import org.hibernate.annotations.DynamicUpdate;
 
 import java.util.UUID;
 
