@@ -144,7 +144,7 @@ public class ReviewController {
     public ReviewResponse toResponse(ReviewVO review) {
         return new ReviewResponse(
                 review.getId(),
-                review.getComment(), review.getRating(),
+                review.getComment(), (double) review.getRating() / 2,
                 review.getReviewer().getName(), review.getCreatedAt());
     }
 
