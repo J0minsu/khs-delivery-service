@@ -1,6 +1,7 @@
 package kr.sparta.khs.delivery.endpoint;
 
 import io.swagger.v3.oas.annotations.Operation;
+import io.swagger.v3.oas.annotations.Parameter;
 import io.swagger.v3.oas.annotations.enums.SecuritySchemeType;
 import io.swagger.v3.oas.annotations.security.SecurityRequirement;
 import io.swagger.v3.oas.annotations.security.SecurityScheme;
@@ -70,7 +71,7 @@ public class UserController {
     @Operation(summary = "AI 생성", description = "AI 생성")
     public ResponseEntity<Result<UserResponse>> modifyUser(
             @PathVariable Integer userId,
-            @AuthenticationPrincipal SecurityUserDetails userDetails,
+            @Parameter(hidden = true) @AuthenticationPrincipal SecurityUserDetails userDetails,
             @RequestBody @Valid UserModifyRequest request,
             BindingResult bindingResult) {
 
@@ -94,7 +95,7 @@ public class UserController {
     @Operation(summary = "AI 생성", description = "AI 생성")
     public ResponseEntity<Result<Void>> deleteUser(
             @PathVariable Integer userId,
-            @AuthenticationPrincipal SecurityUserDetails userDetails
+            @Parameter(hidden = true) @AuthenticationPrincipal SecurityUserDetails userDetails
     ) {
         if(userDetails.getAuthType() != AuthType.MASTER && userId != userDetails.getId()) {
             throw new IllegalArgumentException("Customers can only delete their own.");

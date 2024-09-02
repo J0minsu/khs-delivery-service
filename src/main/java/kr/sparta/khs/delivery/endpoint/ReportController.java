@@ -1,6 +1,7 @@
 package kr.sparta.khs.delivery.endpoint;
 
 import io.swagger.v3.oas.annotations.Operation;
+import io.swagger.v3.oas.annotations.Parameter;
 import io.swagger.v3.oas.annotations.enums.SecuritySchemeType;
 import io.swagger.v3.oas.annotations.security.SecurityRequirement;
 import io.swagger.v3.oas.annotations.security.SecurityScheme;
@@ -45,7 +46,7 @@ public class ReportController {
     @Operation(summary = "AI 생성", description = "AI 생성")
     public ResponseEntity<Result<ReportResponse>> create(
             @RequestBody ReportCreateRequest request,
-            @AuthenticationPrincipal SecurityUserDetails userDetails) {
+            @Parameter(hidden = true) @AuthenticationPrincipal SecurityUserDetails userDetails) {
 
 
         request.setUserId(userDetails.getId());
@@ -77,7 +78,7 @@ public class ReportController {
     @Operation(summary = "AI 생성", description = "AI 생성")
     public ResponseEntity<Result<ReportResponse>> findReport(
             @PathVariable UUID reportId,
-            @AuthenticationPrincipal SecurityUserDetails userDetails) {
+            @Parameter(hidden = true) @AuthenticationPrincipal SecurityUserDetails userDetails) {
 
         ReportVO report = reportService.getReport(reportId);
 
@@ -123,7 +124,7 @@ public class ReportController {
     @Operation(summary = "AI 생성", description = "AI 생성")
     public ResponseEntity<Result<ReportResponse>> acceptReport(
             @PathVariable UUID reportId,
-            @AuthenticationPrincipal SecurityUserDetails userDetails) {
+            @Parameter(hidden = true) @AuthenticationPrincipal SecurityUserDetails userDetails) {
 
         ReportVO report = reportService.accept(reportId, userDetails.getId());
 
@@ -138,7 +139,7 @@ public class ReportController {
     @Operation(summary = "AI 생성", description = "AI 생성")
     public ResponseEntity<Result<ReportResponse>> solveReport(
             @PathVariable UUID reportId,
-            @AuthenticationPrincipal SecurityUserDetails userDetails,
+            @Parameter(hidden = true) @AuthenticationPrincipal SecurityUserDetails userDetails,
             @RequestBody ReportSolveRequest request) {
 
         ReportVO report = reportService.solve(reportId, request);
@@ -153,7 +154,7 @@ public class ReportController {
     @Operation(summary = "AI 생성", description = "AI 생성")
     public ResponseEntity<Result<Void>> delete(
             @PathVariable UUID reportId,
-            @AuthenticationPrincipal SecurityUserDetails userDetails) {
+            @Parameter(hidden = true) @AuthenticationPrincipal SecurityUserDetails userDetails) {
 
         reportService.delete(reportId, userDetails.getId());
 

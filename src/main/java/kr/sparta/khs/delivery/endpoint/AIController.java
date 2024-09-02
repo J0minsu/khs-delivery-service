@@ -1,6 +1,7 @@
 package kr.sparta.khs.delivery.endpoint;
 
 import io.swagger.v3.oas.annotations.Operation;
+import io.swagger.v3.oas.annotations.Parameter;
 import io.swagger.v3.oas.annotations.enums.SecuritySchemeType;
 import io.swagger.v3.oas.annotations.security.SecurityRequirement;
 import io.swagger.v3.oas.annotations.security.SecurityScheme;
@@ -49,7 +50,7 @@ public class AIController {
     @Operation(summary = "AI 생성", description = "AI 생성")
     public ResponseEntity<Result<Page<AIResponse>>> findByUser(
             @PathVariable Integer userId,
-            @AuthenticationPrincipal SecurityUserDetails userDetails
+            @Parameter(hidden = true) @AuthenticationPrincipal SecurityUserDetails userDetails
     ) {
 
         Page<AIVO> aiResultList = aiService.findByUser(userId);
@@ -65,7 +66,7 @@ public class AIController {
     @PreAuthorize("hasAnyRole('MANAGER', 'MASTER')")
     public ResponseEntity<Result<AIResponse>> findById(
             @PathVariable("aiId") UUID aiId,
-            @AuthenticationPrincipal SecurityUserDetails userDetails) {
+            @Parameter(hidden = true) @AuthenticationPrincipal SecurityUserDetails userDetails) {
 
         AIVO ai = aiService.findById(aiId);
 
@@ -103,7 +104,8 @@ public class AIController {
     @PostMapping
     @PreAuthorize("hasAnyRole('MANAGER', 'MASTER')")
     @Operation(summary = "AI 생성", description = "AI 생성")
-    public ResponseEntity<Result<AIResponse>> requestAI(@AuthenticationPrincipal SecurityUserDetails userDetails,
+    public ResponseEntity<Result<AIResponse>> requestAI(
+            @Parameter(hidden = true) @AuthenticationPrincipal SecurityUserDetails userDetails,
                                     @RequestBody AIRequest request) {
 
         request.setUserId(userDetails.getId());
@@ -120,7 +122,7 @@ public class AIController {
     @Operation(summary = "AI 생성", description = "AI 생성")
     public ResponseEntity<Void> deleteAI(
             @PathVariable UUID aiId,
-            @AuthenticationPrincipal SecurityUserDetails userDetails) {
+            @Parameter(hidden = true) @AuthenticationPrincipal SecurityUserDetails userDetails) {
 
         aiService.delete(aiId, userDetails.getId());
 

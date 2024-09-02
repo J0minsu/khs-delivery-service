@@ -1,6 +1,7 @@
 package kr.sparta.khs.delivery.endpoint;
 
 import io.swagger.v3.oas.annotations.Operation;
+import io.swagger.v3.oas.annotations.Parameter;
 import io.swagger.v3.oas.annotations.enums.SecuritySchemeType;
 import io.swagger.v3.oas.annotations.security.SecurityRequirement;
 import io.swagger.v3.oas.annotations.security.SecurityScheme;
@@ -40,7 +41,7 @@ public class NoticeController {
     @PostMapping
     @Secured({"MASTER"})
     @Operation(summary = "AI 생성", description = "AI 생성")
-    public ResponseEntity<?> createNotice(@RequestBody NoticeRequest request , @AuthenticationPrincipal SecurityUserDetails userDetails) {
+    public ResponseEntity<?> createNotice(@RequestBody NoticeRequest request , @Parameter(hidden = true) @AuthenticationPrincipal SecurityUserDetails userDetails) {
 
         noticeService.createNotice(request,userDetails);
 
@@ -75,7 +76,7 @@ public class NoticeController {
     @PutMapping("/{noticeId}")
     @Secured({"MASTER"})
     @Operation(summary = "AI 생성", description = "AI 생성")
-    public ResponseEntity<?> updateNotice(@PathVariable UUID noticeId, @RequestBody NoticeRequest request , @AuthenticationPrincipal SecurityUserDetails userDetails) {
+    public ResponseEntity<?> updateNotice(@PathVariable UUID noticeId, @RequestBody NoticeRequest request , @Parameter(hidden = true) @AuthenticationPrincipal SecurityUserDetails userDetails) {
 
         noticeService.updateNotice(noticeId,request,userDetails);
 
@@ -86,7 +87,7 @@ public class NoticeController {
     @DeleteMapping("/{noticeId}")
     @Secured({"MASTER"})
     @Operation(summary = "AI 생성", description = "AI 생성")
-    public ResponseEntity<?> deleteNotice(@PathVariable UUID noticeId, @AuthenticationPrincipal SecurityUserDetails userDetails) {
+    public ResponseEntity<?> deleteNotice(@PathVariable UUID noticeId, @Parameter(hidden = true) @AuthenticationPrincipal SecurityUserDetails userDetails) {
 
         noticeService.deleteNotice(noticeId,userDetails);
 

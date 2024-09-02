@@ -1,6 +1,7 @@
 package kr.sparta.khs.delivery.endpoint;
 
 import io.swagger.v3.oas.annotations.Operation;
+import io.swagger.v3.oas.annotations.Parameter;
 import io.swagger.v3.oas.annotations.enums.SecuritySchemeType;
 import io.swagger.v3.oas.annotations.security.SecurityRequirement;
 import io.swagger.v3.oas.annotations.security.SecurityScheme;
@@ -49,7 +50,7 @@ public class ReviewController {
     @PreAuthorize("hasAnyRole('CUSTOMER', 'MASTER')")
     @Operation(summary = "AI 생성", description = "AI 생성")
     public ResponseEntity<Result<ReviewResponse>> createReview(
-            @AuthenticationPrincipal SecurityUserDetails userDetails,
+            @Parameter(hidden = true) @AuthenticationPrincipal SecurityUserDetails userDetails,
             @Valid @RequestBody ReviewRequest reviewRequest,
             BindingResult bindingResult
     ) {
@@ -72,7 +73,7 @@ public class ReviewController {
     @Operation(summary = "AI 생성", description = "AI 생성")
     public ResponseEntity<Result<Page<ReviewResponse>>> getUsersReviews(
             @PathVariable Integer userId,
-            @AuthenticationPrincipal SecurityUserDetails userDetails
+            @Parameter(hidden = true) @AuthenticationPrincipal SecurityUserDetails userDetails
             , Pageable pageable) {
         Page<ReviewVO> reviews = reviewService.getReviews(userId, pageable);
 
@@ -126,7 +127,7 @@ public class ReviewController {
     @Operation(summary = "AI 생성", description = "AI 생성")
     public ResponseEntity<Result<ReviewResponse>> modifyReview(
             @PathVariable UUID reviewId,
-            @AuthenticationPrincipal SecurityUserDetails userDetails,
+            @Parameter(hidden = true) @AuthenticationPrincipal SecurityUserDetails userDetails,
             @Valid @RequestBody ReviewModifyRequest request,
             BindingResult bindingResult) {
 
@@ -147,7 +148,7 @@ public class ReviewController {
     @Operation(summary = "AI 생성", description = "AI 생성")
     public ResponseEntity<Result<Void>> deleteReview(
             @PathVariable UUID reviewId,
-            @AuthenticationPrincipal SecurityUserDetails userDetails) {
+            @Parameter(hidden = true) @AuthenticationPrincipal SecurityUserDetails userDetails) {
 
         reviewService.delete(reviewId, userDetails.getId());
 

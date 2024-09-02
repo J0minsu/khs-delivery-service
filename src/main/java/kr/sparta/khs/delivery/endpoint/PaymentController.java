@@ -1,6 +1,7 @@
 package kr.sparta.khs.delivery.endpoint;
 
 import io.swagger.v3.oas.annotations.Operation;
+import io.swagger.v3.oas.annotations.Parameter;
 import io.swagger.v3.oas.annotations.enums.SecuritySchemeType;
 import io.swagger.v3.oas.annotations.security.SecurityRequirement;
 import io.swagger.v3.oas.annotations.security.SecurityScheme;
@@ -31,7 +32,7 @@ public class PaymentController {
 
     @PostMapping
     @Operation(summary = "AI 생성", description = "AI 생성")
-    public ResponseEntity<Result<PaymentResponse>> createPayment(@RequestBody PaymentRequest req, @AuthenticationPrincipal SecurityUserDetails userDetails) {
+    public ResponseEntity<Result<PaymentResponse>> createPayment(@RequestBody PaymentRequest req, @Parameter(hidden = true) @AuthenticationPrincipal SecurityUserDetails userDetails) {
         User user = userRepository.findById(userDetails.getId())
                 .orElseThrow(() -> new IllegalArgumentException("User not found!"));
         PaymentResponse paymentResponse = paymentService.createPayment(req, user);
@@ -53,7 +54,7 @@ public class PaymentController {
 
     @DeleteMapping("/{paymentId}")
     @Operation(summary = "AI 생성", description = "AI 생성")
-    public ResponseEntity<Result<String>> deletePayment(@PathVariable("paymentId") UUID paymentId, @AuthenticationPrincipal SecurityUserDetails userDetails) {
+    public ResponseEntity<Result<String>> deletePayment(@PathVariable("paymentId") UUID paymentId, @Parameter(hidden = true) @AuthenticationPrincipal SecurityUserDetails userDetails) {
         paymentService.deletePayment(paymentId, userDetails.getId());
         return ResponseEntity.ok(Result.success("delete success"));
     }

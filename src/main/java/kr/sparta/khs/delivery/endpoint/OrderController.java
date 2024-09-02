@@ -1,6 +1,7 @@
 package kr.sparta.khs.delivery.endpoint;
 
 import io.swagger.v3.oas.annotations.Operation;
+import io.swagger.v3.oas.annotations.Parameter;
 import io.swagger.v3.oas.annotations.enums.SecuritySchemeType;
 import io.swagger.v3.oas.annotations.security.SecurityRequirement;
 import io.swagger.v3.oas.annotations.security.SecurityScheme;
@@ -51,7 +52,7 @@ public class OrderController {
     @PreAuthorize("hasAnyRole('CUSTOMER, MANAGER')")
     @PostMapping
     @Operation(summary = "AI 생성", description = "AI 생성")
-    public ResponseEntity<Result<String>> createOrder(@RequestBody CreateOrderRequest req, @AuthenticationPrincipal SecurityUserDetails userDetails){
+    public ResponseEntity<Result<String>> createOrder(@RequestBody CreateOrderRequest req, @Parameter(hidden = true) @AuthenticationPrincipal SecurityUserDetails userDetails){
         User user = userRepository.findById(userDetails.getId())
                 .orElseThrow(() -> new IllegalArgumentException("User not found"));
         orderService.createOrder(req,user);
@@ -60,7 +61,7 @@ public class OrderController {
     @PreAuthorize("hasAnyRole('CUSTOMER', 'MASTER')")
     @GetMapping("/{orderId}")
     @Operation(summary = "AI 생성", description = "AI 생성")
-    public ResponseEntity<Result<OrderResponse>> getOrder(@PathVariable UUID orderId, @AuthenticationPrincipal SecurityUserDetails userDetails){
+    public ResponseEntity<Result<OrderResponse>> getOrder(@PathVariable UUID orderId, @Parameter(hidden = true) @AuthenticationPrincipal SecurityUserDetails userDetails){
         User user =userRepository.findById(userDetails.getId())
                 .orElseThrow(() -> new IllegalArgumentException("User not found"));
         OrderResponse order = orderService.getOrder(orderId, user);
@@ -69,7 +70,7 @@ public class OrderController {
     @PreAuthorize("hasAnyRole('CUSTOMER', 'MASTER')")
     @GetMapping("/user/{userId}")
     @Operation(summary = "AI 생성", description = "AI 생성")
-    public ResponseEntity<Result<List<OrderResponse>>> getOrdersByUserId(@PathVariable Integer userId, @AuthenticationPrincipal SecurityUserDetails userDetails) {
+    public ResponseEntity<Result<List<OrderResponse>>> getOrdersByUserId(@PathVariable Integer userId, @Parameter(hidden = true) @AuthenticationPrincipal SecurityUserDetails userDetails) {
         if (!userDetails.getId().equals(userId)) {
             return ResponseEntity.status(HttpStatus.FORBIDDEN).build();
         }
@@ -90,7 +91,7 @@ public class OrderController {
     @PreAuthorize("hasRole('MANAGER')")
     @PutMapping("/{orderId}/accept")
     @Operation(summary = "AI 생성", description = "AI 생성")
-    public ResponseEntity<Result<String>> acceptOrder(@PathVariable UUID orderId, @AuthenticationPrincipal SecurityUserDetails userDetails){
+    public ResponseEntity<Result<String>> acceptOrder(@PathVariable UUID orderId, @Parameter(hidden = true) @AuthenticationPrincipal SecurityUserDetails userDetails){
         User user = userRepository.findById(userDetails.getId())
                 .orElseThrow(() -> new IllegalArgumentException("User not found"));
 
@@ -105,7 +106,7 @@ public class OrderController {
     @PreAuthorize("hasRole('MANAGER')")
     @PutMapping("/{orderId}/cancel")
     @Operation(summary = "AI 생성", description = "AI 생성")
-    public ResponseEntity<Result<String>> cancelOrder(@PathVariable UUID orderId, @AuthenticationPrincipal SecurityUserDetails userDetails){
+    public ResponseEntity<Result<String>> cancelOrder(@PathVariable UUID orderId, @Parameter(hidden = true) @AuthenticationPrincipal SecurityUserDetails userDetails){
         User user = userRepository.findById(userDetails.getId())
                 .orElseThrow(() -> new IllegalArgumentException("User not found"));
 
@@ -130,7 +131,7 @@ public class OrderController {
     @PreAuthorize("hasAnyRole('MANAGER','MASTER')")
     @DeleteMapping("/{orderId}")
     @Operation(summary = "AI 생성", description = "AI 생성")
-    public ResponseEntity<Result<String>> deleteOrder(@PathVariable UUID orderId, @AuthenticationPrincipal SecurityUserDetails userDetails) {
+    public ResponseEntity<Result<String>> deleteOrder(@PathVariable UUID orderId, @Parameter(hidden = true) @AuthenticationPrincipal SecurityUserDetails userDetails) {
         orderService.deleteOrder(orderId, userDetails.getId());
         return ResponseEntity.ok(Result.success("Order deleted successfully"));
     }

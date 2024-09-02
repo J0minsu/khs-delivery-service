@@ -1,6 +1,7 @@
 package kr.sparta.khs.delivery.endpoint;
 
 import io.swagger.v3.oas.annotations.Operation;
+import io.swagger.v3.oas.annotations.Parameter;
 import io.swagger.v3.oas.annotations.enums.SecuritySchemeType;
 import io.swagger.v3.oas.annotations.security.SecurityRequirement;
 import io.swagger.v3.oas.annotations.security.SecurityScheme;
@@ -67,7 +68,6 @@ public class RestaurantController {
             SortStandard sort
     ) {
 
-
         Pageable pageable = PageRequest.of(pageNumber, size, sort.getSort());
 
         Page<RestaurantResponse> restaurants = restaurantService.getSearchedRestaurants(restaurantName, pageable);
@@ -79,26 +79,41 @@ public class RestaurantController {
     @PostMapping
     @Secured({"MANAGER", "MASTER"})
     @Operation(summary = "AI 생성", description = "AI 생성")
-    public ResponseEntity<Result<String>> createRestaurant(@RequestBody RestaurantCreateRequest request , @AuthenticationPrincipal SecurityUserDetails userDetails ) {
+    public ResponseEntity<Result<String>> createRestaurant(
+            @RequestBody RestaurantCreateRequest request ,
+            @Parameter(hidden = true) @AuthenticationPrincipal SecurityUserDetails userDetails ) {
+
         restaurantService.createRestaurant(request,userDetails);
+
         return ResponseEntity.status(HttpStatus.CREATED).body(Result.success("레스토랑 생성 완료"));
+
     }
 
     @PutMapping("/{id}")
     @Secured({"MANAGER", "MASTER"})
     @Operation(summary = "AI 생성", description = "AI 생성")
-    public ResponseEntity<Result<String>> updateRestaurant(@PathVariable UUID id, UpdateRestaurantRequest request,SecurityUserDetails userDetails) {
+    public ResponseEntity<Result<String>> updateRestaurant(
+            @PathVariable UUID id, UpdateRestaurantRequest request,
+            @Parameter(hidden = true) @AuthenticationPrincipal SecurityUserDetails userDetails) {
+
         restaurantService.updateRestaurant(id, request,userDetails);
+
         return ResponseEntity.status(HttpStatus.NO_CONTENT).body(Result.success("레스토랑 수정 성공"));
+
     }
 
 
     @DeleteMapping("/{id}")
     @Secured({"MANAGER", "MASTER"})
     @Operation(summary = "AI 생성", description = "AI 생성")
-    public ResponseEntity<Result<String>> deleteRestaurant(@PathVariable UUID id,SecurityUserDetails userDetails) {
+    public ResponseEntity<Result<String>> deleteRestaurant(
+            @PathVariable UUID id,
+            @Parameter(hidden = true) @AuthenticationPrincipal SecurityUserDetails userDetails) {
+
         restaurantService.deleteRestaurant(id,userDetails);
+
         return ResponseEntity.status(HttpStatus.OK).body(Result.success("레스토랑 삭제 완료"));
+
     }
 
 
