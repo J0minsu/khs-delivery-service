@@ -17,6 +17,9 @@
 3. **객체 생성 순서**: USER -> 카테고리 -> 레스토랑 -> 상품 -> 주문, AI -> REPORT, REVIEW etc.
 
 
+## Infra Structure
+![INFRA.png](img_1.png)
+
 ## ERD
 ![ERD 이미지](https://github.com/user-attachments/assets/004ca688-3bd6-433e-ac8d-5a66243db4c1)
 
