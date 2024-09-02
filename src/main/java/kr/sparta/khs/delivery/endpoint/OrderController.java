@@ -39,6 +39,7 @@ public class OrderController {
     private final OrderService orderService;
     private final UserRepository userRepository;
     private final RestaurantRepository restaurantRepository;
+    @PreAuthorize("hasAnyRole('CUSTOMER, MANAGER')")
     @PostMapping
     public ResponseEntity<String> createOrder(@RequestBody CreateOrderRequest req, @AuthenticationPrincipal SecurityUserDetails userDetails){
         User user = userRepository.findById(userDetails.getId())
@@ -46,6 +47,7 @@ public class OrderController {
         orderService.createOrder(req,user);
         return ResponseEntity.ok("Order Crate successfully");
     }
+    @PreAuthorize("hasAnyRole('CUSTOMER', 'MASTER')")
     @GetMapping("/{orderId}")
     public ResponseEntity<OrderResponse> getOrder(@PathVariable UUID orderId, @AuthenticationPrincipal SecurityUserDetails userDetails){
         User user =userRepository.findById(userDetails.getId())
@@ -72,6 +74,7 @@ public class OrderController {
         List<OrderResponse> orders = orderService.getOrdersByRestaurant(restaurant);
         return ResponseEntity.ok(orders);
     }
+    @PreAuthorize("hasRole('MANAGER')")
     @PutMapping("/{orderId}/accept")
     public ResponseEntity<String> acceptOrder(@PathVariable UUID orderId, @AuthenticationPrincipal SecurityUserDetails userDetails){
         User user = userRepository.findById(userDetails.getId())
@@ -85,6 +88,7 @@ public class OrderController {
             throw new ResponseStatusException(HttpStatus.FORBIDDEN, "You do not have permission to accept this order");
         }
     }
+    @PreAuthorize("hasRole('MANAGER')")
     @PutMapping("/{orderId}/cancel")
     public ResponseEntity<String> cancelOrder(@PathVariable UUID orderId, @AuthenticationPrincipal SecurityUserDetails userDetails){
         User user = userRepository.findById(userDetails.getId())
@@ -106,25 +110,11 @@ public class OrderController {
             @RequestParam(defaultValue = "CREATED_DESC") SortStandard sort) {
         return orderService.searchOrders(search, page, size, sort);
     }
+    @PreAuthorize("hasAnyRole('MANAGER','MASTER')")
     @DeleteMapping("/{orderId}")
     public ResponseEntity<String> deleteOrder(@PathVariable UUID orderId, @AuthenticationPrincipal SecurityUserDetails userDetails) {
         orderService.deleteOrder(orderId, userDetails.getId());
         return ResponseEntity.ok("Order deleted successfully");
     }
-//    @GetMapping
-//    public ResponseEntity search(
-//            @RequestParam(defaultValue = "0") int pageNumber,
-//            @RequestParam(defaultValue = "10") int size,
-//            @RequestParam(defaultValue = "") String keyword,
-//            @RequestParam(defaultValue = "CREATED_DESC") SortStandard sort) {
-//        Page<OrderResponse> orders = orderService.findOrders(keyword, PageRequest.of(pageNumber, size, sort.getSort()));
-//        Page<AIVO> reports =  aiService.findReports(
-//                keyword, PageRequest.of(pageNumber, size, sort.getSort())
-//        );
-//
-//        Page<AIResponse> result = reports.map(this::toAIResponse);
-//
-//        return ResponseEntity.ok(result);
-//
-//    }
+
 }
