@@ -2,8 +2,6 @@ package kr.sparta.khs.delivery.domain.review.service;
 
 import kr.sparta.khs.delivery.domain.order.entity.Order;
 import kr.sparta.khs.delivery.domain.order.repository.OrderRepository;
-import kr.sparta.khs.delivery.domain.report.entity.Report;
-import kr.sparta.khs.delivery.domain.report.vo.ReportVO;
 import kr.sparta.khs.delivery.domain.review.entity.Review;
 import kr.sparta.khs.delivery.domain.review.repository.ReviewRepository;
 import kr.sparta.khs.delivery.domain.review.vo.ReviewVO;
@@ -106,7 +104,7 @@ public class ReviewService {
     public Page<ReviewVO> findReview(String keyword, PageRequest pageRequest) {
 
 
-        Page<Review> reports = reviewRepository.findByKeyword(keyword, pageRequest);
+        Page<Review> reports = reviewRepository.findByCommentContaining(keyword, pageRequest);
 
         Page<ReviewVO> result = reports.map(Review::toVO);
 

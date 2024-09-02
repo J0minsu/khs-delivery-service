@@ -32,20 +32,20 @@ public class AuthController {
     private final JWTUtil jwtUtil;
 
     @PostMapping("/auth/signin")
-    public ResponseEntity<Result<Void>> createAuthenticationToken(
+    public ResponseEntity<Result<String>> createAuthenticationToken(
             @RequestBody SignInRequest request, HttpServletResponse response) {
 
         log.info("request :: {}", request);
 
         UserVO userVO = authService.signIn(request);
 
-        jwtUtil.createAccessToken(userVO.getId(), userVO.getUsername(), userVO.getAuthType(), response);
+        String accessToken = jwtUtil.createAccessToken(userVO.getId(), userVO.getUsername(), userVO.getAuthType(), response);
 
-        return ResponseEntity.ok().build();
+        return ResponseEntity.ok().body(Result.success(accessToken));
     }
 
     @PostMapping("/auth/signup")
-    public ResponseEntity<Result<Void>> signUp(
+    public ResponseEntity<Result<String>> signUp(
             @RequestBody @Valid SignUpRequest request,
             BindingResult bindingResult, HttpServletResponse response) {
 
@@ -60,11 +60,11 @@ public class AuthController {
 
         UserVO userVO = authService.signUp(request);
 
-        jwtUtil.createAccessToken(userVO.getId(), userVO.getUsername(), userVO.getAuthType(), response);
+        String accessToken = jwtUtil.createAccessToken(userVO.getId(), userVO.getUsername(), userVO.getAuthType(), response);
 
         log.info("sign-up is successfully :: {}", userVO.getUsername());
 
-        return ResponseEntity.ok().build();
+        return ResponseEntity.ok().body(Result.success(accessToken));
     }
 
 }

@@ -89,7 +89,7 @@ public class AIService {
     public Page<AIVO> findReports(String keyword, PageRequest pageRequest) {
 
 
-        Page<AI> reports = aiRepository.findByKeyword(keyword, pageRequest);
+        Page<AI> reports = aiRepository.findByPromptStartingWith(keyword, pageRequest);
 
         Page<AIVO> result = reports.map(AI::toVO);
 

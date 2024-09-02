@@ -29,10 +29,10 @@ public interface ReviewRepository extends JpaRepository<Review, UUID> {
     """)
     Page<Review> findByRestaurantId(@Param("restaurantId") UUID restaurantId, Pageable pageable);
 
-    @Query("""
+    /*@Query("""
         SELECT review
           FROM kr.sparta.khs.delivery.domain.review.entity.Review review
          WHERE review.comment = :keyword
-    """)
-    Page<Review> findByKeyword(String keyword, PageRequest pageRequest);
+    """)*/
+    Page<Review> findByCommentContaining(String keyword, PageRequest pageRequest);
 }

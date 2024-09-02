@@ -41,6 +41,12 @@ public class UserController {
             @RequestParam(defaultValue = "") String keyword,
             @RequestParam(defaultValue = "CREATED_DESC") SortStandard sort) {
 
+        size = switch (size) {
+            case 30 -> 30;
+            case 50 -> 50;
+            default -> 10;
+        };
+
         Page<UserVO> users =  userService.findUsers(
                 keyword, PageRequest.of(pageNumber, size, sort.getSort())
         );

@@ -113,7 +113,7 @@ public class ReportService {
 
     public Page<ReportVO> search(String keyword, PageRequest pageRequest) {
 
-        Page<Report> reports = reportRepository.findByKeyword(keyword, pageRequest);
+        Page<Report> reports = reportRepository.findByReasonContaining(keyword, pageRequest);
 
         Page<ReportVO> result = reports.map(Report::toVO);
 
