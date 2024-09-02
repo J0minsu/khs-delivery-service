@@ -1,6 +1,7 @@
 package kr.sparta.khs.delivery.endpoint;
 
 import jakarta.validation.Valid;
+import kr.sparta.khs.delivery.config.holder.Result;
 import kr.sparta.khs.delivery.domain.report.vo.ReportVO;
 import kr.sparta.khs.delivery.domain.user.entity.AuthType;
 import kr.sparta.khs.delivery.domain.user.service.UserService;
@@ -26,7 +27,7 @@ import org.springframework.web.bind.annotation.*;
 @RestController
 @Slf4j
 @RequiredArgsConstructor
-@RequestMapping("/users")
+@RequestMapping("/api/v1/users")
 public class UserController {
 
     private final UserService userService;
@@ -34,7 +35,7 @@ public class UserController {
 
     @GetMapping
     @PreAuthorize("hasAnyRole('MANAGER', 'MASTER')")
-    public ResponseEntity search(
+    public ResponseEntity<Result<Page<UserResponse>>> search(
             @RequestParam(defaultValue = "0") int pageNumber,
             @RequestParam(defaultValue = "10") int size,
             @RequestParam(defaultValue = "") String keyword,
@@ -46,12 +47,12 @@ public class UserController {
 
         Page<UserResponse> result = users.map(this::toUserResponse);
 
-        return ResponseEntity.ok(result);
+        return ResponseEntity.ok(Result.success(result));
 
     }
 
     @PatchMapping("/{userId}")
-    public ResponseEntity modifyUser(
+    public ResponseEntity<Result<UserResponse>> modifyUser(
             @PathVariable Integer userId,
             @AuthenticationPrincipal SecurityUserDetails userDetails,
             @RequestBody @Valid UserModifyRequest request,
@@ -69,12 +70,12 @@ public class UserController {
 
         UserResponse result = toUserResponse(user);
 
-        return ResponseEntity.ok(result);
+        return ResponseEntity.ok(Result.success(result));
 
     }
 
     @DeleteMapping("/{userId}")
-    public ResponseEntity deleteUser(
+    public ResponseEntity<Result<Void>> deleteUser(
             @PathVariable Integer userId,
             @AuthenticationPrincipal SecurityUserDetails userDetails
     ) {

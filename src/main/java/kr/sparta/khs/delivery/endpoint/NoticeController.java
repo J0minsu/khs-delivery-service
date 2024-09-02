@@ -1,5 +1,6 @@
 package kr.sparta.khs.delivery.endpoint;
 
+import kr.sparta.khs.delivery.config.holder.Result;
 import kr.sparta.khs.delivery.domain.notice.dto.NoticeRequest;
 import kr.sparta.khs.delivery.domain.notice.dto.NoticeResponse;
 import kr.sparta.khs.delivery.domain.notice.service.NoticeService;
@@ -19,7 +20,7 @@ import java.util.List;
 import java.util.UUID;
 
 @RestController
-@RequestMapping("/notice")
+@RequestMapping("/api/v1/notice")
 public class NoticeController {
 
     private final NoticeService noticeService;
@@ -34,7 +35,7 @@ public class NoticeController {
 
         noticeService.createNotice(request,userDetails);
 
-        return ResponseEntity.status(HttpStatus.CREATED).body("게시물 생성 완료");
+        return ResponseEntity.status(HttpStatus.CREATED).body(Result.success("게시물 생성 완료"));
 
     }
 
@@ -42,7 +43,7 @@ public class NoticeController {
     @PreAuthorize("isAuthenticated()")
     public ResponseEntity<?> getNoticeDetails(@PathVariable UUID noticeId) {
 
-        return ResponseEntity.status(HttpStatus.OK).body(noticeService.getNoticeDetails(noticeId));
+        return ResponseEntity.status(HttpStatus.OK).body(Result.success(noticeService.getNoticeDetails(noticeId)));
 
     }
 
@@ -57,7 +58,7 @@ public class NoticeController {
 
         Page<NoticeResponse> notices = noticeService.getNotices(pageable);
 
-        return ResponseEntity.status(HttpStatus.OK).body(notices);
+        return ResponseEntity.status(HttpStatus.OK).body(Result.success(notices));
     }
 
     @PutMapping("/{noticeId}")
@@ -66,7 +67,7 @@ public class NoticeController {
 
         noticeService.updateNotice(noticeId,request,userDetails);
 
-        return ResponseEntity.status(HttpStatus.NO_CONTENT).body("공지사항 수정 완료");
+        return ResponseEntity.status(HttpStatus.NO_CONTENT).body(Result.success("공지사항 수정 완료"));
 
     }
 
@@ -76,7 +77,7 @@ public class NoticeController {
 
         noticeService.deleteNotice(noticeId,userDetails);
 
-        return ResponseEntity.status(HttpStatus.NO_CONTENT).body("공지사항 삭제 완료");
+        return ResponseEntity.status(HttpStatus.NO_CONTENT).body(Result.success("공지사항 삭제 완료"));
 
     }
 

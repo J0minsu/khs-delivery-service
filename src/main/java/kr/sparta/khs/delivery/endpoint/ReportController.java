@@ -1,5 +1,6 @@
 package kr.sparta.khs.delivery.endpoint;
 
+import kr.sparta.khs.delivery.config.holder.Result;
 import kr.sparta.khs.delivery.domain.report.service.ReportService;
 import kr.sparta.khs.delivery.domain.report.vo.ReportVO;
 import kr.sparta.khs.delivery.domain.user.entity.AuthType;
@@ -27,14 +28,14 @@ import java.util.UUID;
 @FieldDefaults(level = AccessLevel.PRIVATE, makeFinal = true)
 @Slf4j
 @RequiredArgsConstructor
-@RequestMapping("/reports")
+@RequestMapping("/api/v1/reports")
 public class ReportController {
 
     private final ReportService reportService;
     private final UserService userService;
 
     @PostMapping
-    public ResponseEntity<ReportResponse> create(
+    public ResponseEntity<Result<ReportResponse>> create(
             @RequestBody ReportCreateRequest request,
             @AuthenticationPrincipal SecurityUserDetails userDetails) {
 
@@ -45,12 +46,12 @@ public class ReportController {
 
         ReportResponse result = toResponse(report);
 
-        return ResponseEntity.ok(result);
+        return ResponseEntity.ok(Result.success(result));
 
     }
 
     @GetMapping("/users/{userId}")
-    public ResponseEntity<Page<ReportResponse>> findMyReports(
+    public ResponseEntity<Result<Page<ReportResponse>>> findMyReports(
             @PathVariable Integer userId,
             Pageable pageable) {
 
@@ -58,13 +59,13 @@ public class ReportController {
 
         Page<ReportResponse> result = reports.map(this::toResponse);
 
-        return ResponseEntity.ok(result);
+        return ResponseEntity.ok(Result.success(result));
 
     }
 
     @GetMapping("/{reportId}")
     @PreAuthorize("hasAnyRole('MASTER')")
-    public ResponseEntity<ReportResponse> findReport(
+    public ResponseEntity<Result<ReportResponse>> findReport(
             @PathVariable UUID reportId,
             @AuthenticationPrincipal SecurityUserDetails userDetails) {
 
@@ -77,13 +78,13 @@ public class ReportController {
 
         ReportResponse result = toResponse(report);
 
-        return ResponseEntity.ok(result);
+        return ResponseEntity.ok(Result.success(result));
 
     }
 
     @GetMapping
     @PreAuthorize("hasAnyRole('MASTER')")
-    public ResponseEntity<Page<ReportResponse>> search(
+    public ResponseEntity<Result<Page<ReportResponse>>> search(
             @RequestParam(defaultValue = "0") int pageNumber,
             @RequestParam(defaultValue = "10") int size,
             @RequestParam(defaultValue = "") String keyword,
@@ -102,13 +103,13 @@ public class ReportController {
 
         Page<ReportResponse> result = reports.map(this::toResponse);
 
-        return ResponseEntity.ok(result);
+        return ResponseEntity.ok(Result.success(result));
 
     }
 
     @PatchMapping("/{reportId}/accept")
     @PreAuthorize("hasAnyRole('MASTER')")
-    public ResponseEntity<ReportResponse> acceptReport(
+    public ResponseEntity<Result<ReportResponse>> acceptReport(
             @PathVariable UUID reportId,
             @AuthenticationPrincipal SecurityUserDetails userDetails) {
 
@@ -116,13 +117,13 @@ public class ReportController {
 
         ReportResponse result = toResponse(report);
 
-        return ResponseEntity.ok(result);
+        return ResponseEntity.ok(Result.success(result));
 
     }
 
     @PatchMapping("/{reportId}/solve")
     @PreAuthorize("hasAnyRole('MASTER')")
-    public ResponseEntity<ReportResponse> solveReport(
+    public ResponseEntity<Result<ReportResponse>> solveReport(
             @PathVariable UUID reportId,
             @AuthenticationPrincipal SecurityUserDetails userDetails,
             @RequestBody ReportSolveRequest request) {
@@ -131,12 +132,12 @@ public class ReportController {
 
         ReportResponse result = toResponse(report);
 
-        return ResponseEntity.ok(result);
+        return ResponseEntity.ok(Result.success(result));
 
     }
 
     @DeleteMapping("/{reportId}")
-    public ResponseEntity<Void> delete(
+    public ResponseEntity<Result<Void>> delete(
             @PathVariable UUID reportId,
             @AuthenticationPrincipal SecurityUserDetails userDetails) {
 

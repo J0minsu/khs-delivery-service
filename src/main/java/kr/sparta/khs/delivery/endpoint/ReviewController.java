@@ -1,6 +1,7 @@
 package kr.sparta.khs.delivery.endpoint;
 
 import jakarta.validation.Valid;
+import kr.sparta.khs.delivery.config.holder.Result;
 import kr.sparta.khs.delivery.domain.ai.vo.AIVO;
 import kr.sparta.khs.delivery.domain.review.service.ReviewService;
 import kr.sparta.khs.delivery.domain.review.vo.ReviewVO;
@@ -30,7 +31,7 @@ import java.util.UUID;
 @RestController
 @Slf4j
 @RequiredArgsConstructor
-@RequestMapping("/reviews")
+@RequestMapping("/api/v1/reviews")
 public class ReviewController {
 
     private final ReviewService reviewService;
@@ -38,7 +39,7 @@ public class ReviewController {
 
     @PostMapping
     @PreAuthorize("hasAnyRole('CUSTOMER', 'MASTER')")
-    public ResponseEntity<ReviewResponse> createReview(
+    public ResponseEntity<Result<ReviewResponse>> createReview(
             @AuthenticationPrincipal SecurityUserDetails userDetails,
             @Valid @RequestBody ReviewRequest reviewRequest,
             BindingResult bindingResult
@@ -52,14 +53,14 @@ public class ReviewController {
 
         ReviewResponse result = toResponse(review);
 
-        return ResponseEntity.ok(result);
+        return ResponseEntity.ok(Result.success(result));
 
     }
 
 
     @GetMapping("/users/{userId}")
     @PreAuthorize("hasAnyRole('CUSTOMER', 'MASTER')")
-    public ResponseEntity<Page<ReviewResponse>> getUsersReviews(
+    public ResponseEntity<Result<Page<ReviewResponse>>> getUsersReviews(
             @PathVariable Integer userId,
             @AuthenticationPrincipal SecurityUserDetails userDetails
             , Pageable pageable) {
@@ -67,13 +68,13 @@ public class ReviewController {
 
         Page<ReviewResponse> result = reviews.map(this::toResponse);
 
-        return ResponseEntity.ok(result);
+        return ResponseEntity.ok(Result.success(result));
 
     }
 
     @GetMapping
     @PreAuthorize("hasAnyRole('MASTER')")
-    public ResponseEntity<Page<ReviewResponse>> search(
+    public ResponseEntity<Result<Page<ReviewResponse>>> search(
             @RequestParam(defaultValue = "0") int pageNumber,
             @RequestParam(defaultValue = "10") int size,
             @RequestParam(defaultValue = "") String keyword,
@@ -91,12 +92,12 @@ public class ReviewController {
 
         Page<ReviewResponse> result = reviews.map(this::toResponse);
 
-        return ResponseEntity.ok(result);
+        return ResponseEntity.ok(Result.success(result));
 
     }
 
     @GetMapping("/restaurants/{restaurantId}")
-    public ResponseEntity<Page<ReviewResponse>> getRestaurantReviews(
+    public ResponseEntity<Result<Page<ReviewResponse>>> getRestaurantReviews(
             UUID restaurantId,
             Pageable pageable
     ) {
@@ -104,13 +105,13 @@ public class ReviewController {
 
         Page<ReviewResponse> result = reviews.map(this::toResponse);
 
-        return ResponseEntity.ok(result);
+        return ResponseEntity.ok(Result.success(result));
 
     }
 
     @PatchMapping("/{reviewId}")
     @PreAuthorize("hasAnyRole('CUSTOMER', 'MASTER')")
-    public ResponseEntity<ReviewResponse> modifyReview(
+    public ResponseEntity<Result<ReviewResponse>> modifyReview(
             @PathVariable UUID reviewId,
             @AuthenticationPrincipal SecurityUserDetails userDetails,
             @Valid @RequestBody ReviewModifyRequest request,
@@ -124,13 +125,13 @@ public class ReviewController {
 
         ReviewResponse result = toResponse(review);
 
-        return ResponseEntity.ok(result);
+        return ResponseEntity.ok(Result.success(result));
 
     }
 
     @DeleteMapping("/{reviewId}")
     @PreAuthorize("hasAnyRole('CUSTOMER', 'MASTER')")
-    public ResponseEntity<Void> deleteReview(
+    public ResponseEntity<Result<Void>> deleteReview(
             @PathVariable UUID reviewId,
             @AuthenticationPrincipal SecurityUserDetails userDetails) {
 

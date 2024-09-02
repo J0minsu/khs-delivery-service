@@ -1,5 +1,6 @@
 package kr.sparta.khs.delivery.endpoint;
 
+import kr.sparta.khs.delivery.config.holder.Result;
 import kr.sparta.khs.delivery.domain.foodcategory.dto.UpdateFoodCategoryRequest;
 import kr.sparta.khs.delivery.domain.foodcategory.service.FoodCategoryService;
 import kr.sparta.khs.delivery.domain.foodcategory.dto.FoodCategoryCreateRequest;
@@ -11,7 +12,7 @@ import org.springframework.web.bind.annotation.*;
 import java.util.UUID;
 
 @RestController
-@RequestMapping("/foodCategories")
+@RequestMapping("/api/v1/foodCategories")
 public class FoodCategoryController {
 
     private final FoodCategoryService foodCategoryService;
@@ -26,7 +27,7 @@ public class FoodCategoryController {
     public ResponseEntity<?> createFoodCategory(
             @RequestBody FoodCategoryCreateRequest foodCategoryCreateRequest) {
             foodCategoryService.createFoodCategory(foodCategoryCreateRequest);
-            return ResponseEntity.status(HttpStatus.CREATED).body("음식 카테고리 생성완료.");
+            return ResponseEntity.status(HttpStatus.CREATED).body(Result.success("음식 카테고리 생성완료."));
     }
 
 
@@ -40,7 +41,7 @@ public class FoodCategoryController {
     @Secured("MASTER")
     public ResponseEntity<?> updateFoodCategory(@PathVariable UUID id ,@RequestBody UpdateFoodCategoryRequest request) {
         foodCategoryService.updateFoodCategory(id,request);
-        return ResponseEntity.status(HttpStatus.NO_CONTENT).body("음식 카테고리 수정완료");
+        return ResponseEntity.status(HttpStatus.NO_CONTENT).body(Result.success("음식 카테고리 수정완료"));
     }
 
 

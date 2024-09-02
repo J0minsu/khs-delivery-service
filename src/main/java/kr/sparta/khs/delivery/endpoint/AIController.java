@@ -1,5 +1,6 @@
 package kr.sparta.khs.delivery.endpoint;
 
+import kr.sparta.khs.delivery.config.holder.Result;
 import kr.sparta.khs.delivery.domain.ai.service.AIService;
 import kr.sparta.khs.delivery.domain.ai.vo.AIVO;
 import kr.sparta.khs.delivery.domain.report.vo.ReportVO;
@@ -28,7 +29,7 @@ import java.util.UUID;
 @RestController
 @Slf4j
 @RequiredArgsConstructor
-@RequestMapping("/ais")
+@RequestMapping("/api/v1/ais")
 public class AIController {
 
     private final AIService aiService;
@@ -37,7 +38,7 @@ public class AIController {
 
     @GetMapping("/users/{userId}")
     @PreAuthorize("hasAnyRole('MANAGER', 'MASTER')")
-    public ResponseEntity<Page<AIResponse>> findByUser(
+    public ResponseEntity<Result<Page<AIResponse>>> findByUser(
             @PathVariable Integer userId,
             @AuthenticationPrincipal SecurityUserDetails userDetails
     ) {
@@ -46,13 +47,13 @@ public class AIController {
 
         Page<AIResponse> result = aiResultList.map(this::toAIResponse);
 
-        return ResponseEntity.ok(result);
+        return ResponseEntity.ok(Result.success(result));
 
     }
 
     @GetMapping("/{aiId}")
     @PreAuthorize("hasAnyRole('MANAGER', 'MASTER')")
-    public ResponseEntity<AIResponse> findById(
+    public ResponseEntity<Result<AIResponse>> findById(
             @PathVariable("aiId") UUID aiId,
             @AuthenticationPrincipal SecurityUserDetails userDetails) {
 
@@ -60,13 +61,13 @@ public class AIController {
 
         AIResponse result = toAIResponse(ai);
 
-        return ResponseEntity.ok(result);
+        return ResponseEntity.ok(Result.success(result));
 
     }
 
     @GetMapping
     @PreAuthorize("hasAnyRole('MANAGER', 'MASTER')")
-    public ResponseEntity<Page<AIResponse>> search(
+    public ResponseEntity<Result<Page<AIResponse>>> search(
             @RequestParam(defaultValue = "0") int pageNumber,
             @RequestParam(defaultValue = "10") int size,
             @RequestParam(defaultValue = "") String keyword,
@@ -84,13 +85,13 @@ public class AIController {
 
         Page<AIResponse> result = reports.map(this::toAIResponse);
 
-        return ResponseEntity.ok(result);
+        return ResponseEntity.ok(Result.success(result));
 
     }
 
     @PostMapping
     @PreAuthorize("hasAnyRole('MANAGER', 'MASTER')")
-    public ResponseEntity<AIResponse> requestAI(@AuthenticationPrincipal SecurityUserDetails userDetails,
+    public ResponseEntity<Result<AIResponse>> requestAI(@AuthenticationPrincipal SecurityUserDetails userDetails,
                                     @RequestBody AIRequest request) {
 
         request.setUserId(userDetails.getId());
@@ -99,7 +100,7 @@ public class AIController {
 
         AIResponse result = toAIResponse(ai);
 
-        return ResponseEntity.ok(result);
+        return ResponseEntity.ok(Result.success(result));
     }
 
     @DeleteMapping("/{aiId}")

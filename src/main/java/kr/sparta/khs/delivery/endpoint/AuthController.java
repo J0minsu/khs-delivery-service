@@ -3,6 +3,7 @@ package kr.sparta.khs.delivery.endpoint;
 
 import jakarta.servlet.http.HttpServletResponse;
 import jakarta.validation.Valid;
+import kr.sparta.khs.delivery.config.holder.Result;
 import kr.sparta.khs.delivery.domain.auth.service.AuthService;
 import kr.sparta.khs.delivery.domain.user.entity.User;
 import kr.sparta.khs.delivery.domain.user.vo.UserVO;
@@ -31,7 +32,7 @@ public class AuthController {
     private final JWTUtil jwtUtil;
 
     @PostMapping("/auth/signin")
-    public ResponseEntity<Void> createAuthenticationToken(
+    public ResponseEntity<Result<Void>> createAuthenticationToken(
             @RequestBody SignInRequest request, HttpServletResponse response) {
 
         log.info("request :: {}", request);
@@ -44,7 +45,7 @@ public class AuthController {
     }
 
     @PostMapping("/auth/signup")
-    public ResponseEntity<Void> signUp(
+    public ResponseEntity<Result<Void>> signUp(
             @RequestBody @Valid SignUpRequest request,
             BindingResult bindingResult, HttpServletResponse response) {
 
@@ -64,13 +65,6 @@ public class AuthController {
         log.info("sign-up is successfully :: {}", userVO.getUsername());
 
         return ResponseEntity.ok().build();
-    }
-
-    @Data
-    @AllArgsConstructor
-    @NoArgsConstructor
-    static class AuthResponse {
-        private String access_token;
     }
 
 }
