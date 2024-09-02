@@ -1,6 +1,7 @@
 package kr.sparta.khs.delivery.endpoint;
 
 import io.swagger.v3.oas.annotations.Operation;
+import io.swagger.v3.oas.annotations.Parameter;
 import io.swagger.v3.oas.annotations.enums.SecuritySchemeType;
 import io.swagger.v3.oas.annotations.security.SecurityRequirement;
 import io.swagger.v3.oas.annotations.security.SecurityScheme;
@@ -14,6 +15,7 @@ import kr.sparta.khs.delivery.util.CommonApiResponses;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.annotation.Secured;
+import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.UUID;
@@ -54,7 +56,7 @@ public class ProductController {
     public ResponseEntity<Result<String>> updateProduct(
             @PathVariable UUID productId,
             @RequestBody ProductRequest productRequest,
-            SecurityUserDetails userDetails) {
+            @Parameter(hidden = true)@AuthenticationPrincipal SecurityUserDetails userDetails) {
 
         productService.updateProduct(productId, productRequest, userDetails);
         return ResponseEntity.status(HttpStatus.OK).body(Result.success("수정 성공"));
@@ -64,7 +66,8 @@ public class ProductController {
     @Secured({"MANAGER", "MASTER"})
     @Operation(summary = "상품 삭제", description = "기존 상품을 삭제")
     public ResponseEntity<Result<String>> deleteProduct(
-            @PathVariable UUID productId, SecurityUserDetails userDetails) {
+            @PathVariable UUID productId,
+            @Parameter(hidden = true)@AuthenticationPrincipal SecurityUserDetails userDetails) {
         productService.deleteProduct(productId, userDetails);
         return ResponseEntity.status(HttpStatus.OK).body(Result.success("상품 삭제 완료"));
     }
