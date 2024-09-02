@@ -18,6 +18,7 @@ import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.stereotype.Component;
 import org.springframework.web.filter.OncePerRequestFilter;
 import java.io.IOException;
+import java.util.Arrays;
 
 @Slf4j
 @RequiredArgsConstructor
@@ -26,11 +27,19 @@ public class JwtAuthenticationFilter extends OncePerRequestFilter implements Ord
     private final JWTUtil jwtUtil;
     private final SecurityDetailsService jwtUserDetailsService;
 
+    private static final String[] RESOURCE_WHITELIST = {
+            "v3/api-docs", // v3 : SpringBoot 3(없으면 swagger 예시 api 목록 제공)
+            "/swagger-ui/",
+            "/swagger-resources/",
+            "/webjars/",
+    };
+
     @Override
     protected void doFilterInternal(HttpServletRequest request, HttpServletResponse response, FilterChain filterChain) throws ServletException, IOException {
 
         String path = request.getRequestURI();
-        if (path.equals("/auth/signin") || path.equals("/auth/signup")) {
+        if (path.equals("/auth/signin") || path.equals("/auth/signup")
+            || Arrays.stream(RESOURCE_WHITELIST).anyMatch(path::contains)) {
             filterChain.doFilter(request, response);
             return;
         }
