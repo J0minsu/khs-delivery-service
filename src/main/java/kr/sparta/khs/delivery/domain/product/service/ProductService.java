@@ -67,7 +67,7 @@ public class ProductService {
     @Transactional
     public void deleteProduct(UUID id,SecurityUserDetails userDetails) {
         int userId = userDetails.getId();
-        User user = userRepository.findById(userId).orElseThrow(() -> new IllegalArgumentException("유효하지 않은 사용자 ID입니다."));
+        User user = userRepository.findById(userId).orElseThrow(() -> new IllegalArgumentException("유효하지 않은 사용자 ID 입니다."));
 
         Product product = productRepository.findById(id).orElseThrow(()->
                 new IllegalArgumentException("존재 하지않는 상품 입니다"));

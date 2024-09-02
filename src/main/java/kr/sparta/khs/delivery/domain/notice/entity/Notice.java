@@ -35,12 +35,6 @@ public class Notice extends BaseEntity {
         this.writer = userDetails.getName();
     }
 
-    public Notice(NoticeRequest request) {
-
-        this.title = request.getTitle();
-        this.contents = request.getContents();
-        this.writer = request.getWriter();
-    }
 
     public void update(NoticeRequest request, SecurityUserDetails userDetails) {
         this.title = request.getTitle();

@@ -1,7 +1,6 @@
 package kr.sparta.khs.delivery.domain.product.dto;
 
 import kr.sparta.khs.delivery.domain.product.entity.Product;
-import kr.sparta.khs.delivery.domain.restaurant.entity.Restaurant;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
