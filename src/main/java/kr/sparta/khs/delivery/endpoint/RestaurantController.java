@@ -1,5 +1,10 @@
 package kr.sparta.khs.delivery.endpoint;
 
+import io.swagger.v3.oas.annotations.Operation;
+import io.swagger.v3.oas.annotations.enums.SecuritySchemeType;
+import io.swagger.v3.oas.annotations.security.SecurityRequirement;
+import io.swagger.v3.oas.annotations.security.SecurityScheme;
+import io.swagger.v3.oas.annotations.tags.Tag;
 import kr.sparta.khs.delivery.config.holder.Result;
 import kr.sparta.khs.delivery.domain.restaurant.dto.UpdateRestaurantRequest;
 import kr.sparta.khs.delivery.domain.restaurant.service.RestaurantService;
@@ -20,6 +25,9 @@ import java.util.List;
 import java.util.UUID;
 
 @RestController
+@SecurityRequirement(name = "Bearer Authentication")
+@SecurityScheme( name = "Bearer Authentication", type = SecuritySchemeType.HTTP, bearerFormat = "JWT", scheme = "Bearer")
+@Tag(name = "음식점 API", description = "음식점 관리 목적의 API Docs")
 @RequestMapping("/api/v1/restaurants")
 public class RestaurantController {
     private final RestaurantService restaurantService;
@@ -30,12 +38,14 @@ public class RestaurantController {
 
 
     @GetMapping("/{id}")
+    @Operation(summary = "AI 생성", description = "AI 생성")
     public ResponseEntity<Result<RestaurantResponse>> getRestaurantById(@PathVariable UUID id) {
         RestaurantResponse restaurant = restaurantService.getRestaurantById(id);
         return ResponseEntity.status(HttpStatus.OK).body(Result.success(restaurant));
     }
 
     @GetMapping
+    @Operation(summary = "AI 생성", description = "AI 생성")
     public ResponseEntity<Result<Page<RestaurantResponse>>> getAllRestaurants(
             @RequestParam(defaultValue = "0") int pageNumber,
             @RequestParam(defaultValue = "10") int size,
@@ -48,6 +58,7 @@ public class RestaurantController {
     }
 
     @GetMapping("/search/{restaurantName}")
+    @Operation(summary = "AI 생성", description = "AI 생성")
     public ResponseEntity<Result<Page<RestaurantResponse>>> getSearchedRestaurants(
             @PathVariable String restaurantName,
             @RequestParam(defaultValue = "0") int pageNumber,
@@ -67,6 +78,7 @@ public class RestaurantController {
 
     @PostMapping
     @Secured({"MANAGER", "MASTER"})
+    @Operation(summary = "AI 생성", description = "AI 생성")
     public ResponseEntity<Result<String>> createRestaurant(@RequestBody RestaurantCreateRequest request , @AuthenticationPrincipal SecurityUserDetails userDetails ) {
         restaurantService.createRestaurant(request,userDetails);
         return ResponseEntity.status(HttpStatus.CREATED).body(Result.success("레스토랑 생성 완료"));
@@ -74,6 +86,7 @@ public class RestaurantController {
 
     @PutMapping("/{id}")
     @Secured({"MANAGER", "MASTER"})
+    @Operation(summary = "AI 생성", description = "AI 생성")
     public ResponseEntity<Result<String>> updateRestaurant(@PathVariable UUID id, UpdateRestaurantRequest request,SecurityUserDetails userDetails) {
         restaurantService.updateRestaurant(id, request,userDetails);
         return ResponseEntity.status(HttpStatus.NO_CONTENT).body(Result.success("레스토랑 수정 성공"));
@@ -82,6 +95,7 @@ public class RestaurantController {
 
     @DeleteMapping("/{id}")
     @Secured({"MANAGER", "MASTER"})
+    @Operation(summary = "AI 생성", description = "AI 생성")
     public ResponseEntity<Result<String>> deleteRestaurant(@PathVariable UUID id,SecurityUserDetails userDetails) {
         restaurantService.deleteRestaurant(id,userDetails);
         return ResponseEntity.status(HttpStatus.OK).body(Result.success("레스토랑 삭제 완료"));

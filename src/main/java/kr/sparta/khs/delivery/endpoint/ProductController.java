@@ -1,5 +1,10 @@
 package kr.sparta.khs.delivery.endpoint;
 
+import io.swagger.v3.oas.annotations.Operation;
+import io.swagger.v3.oas.annotations.enums.SecuritySchemeType;
+import io.swagger.v3.oas.annotations.security.SecurityRequirement;
+import io.swagger.v3.oas.annotations.security.SecurityScheme;
+import io.swagger.v3.oas.annotations.tags.Tag;
 import kr.sparta.khs.delivery.config.holder.Result;
 import kr.sparta.khs.delivery.domain.product.dto.ProductRequest;
 import kr.sparta.khs.delivery.domain.product.dto.ProductResponse;
@@ -14,6 +19,9 @@ import org.springframework.web.bind.annotation.*;
 import java.util.UUID;
 
 @RestController
+@SecurityRequirement(name = "Bearer Authentication")
+@SecurityScheme( name = "Bearer Authentication", type = SecuritySchemeType.HTTP, bearerFormat = "JWT", scheme = "Bearer")
+@Tag(name = "상품 API", description = "상품 관리 목적의 API Docs")
 @RequestMapping("/api/v1/products")
 public class ProductController {
 
@@ -26,6 +34,7 @@ public class ProductController {
 
     @Secured({"MANAGER","MASTER"})
     @PostMapping("{restaurantId}")
+    @Operation(summary = "AI 생성", description = "AI 생성")
     public ResponseEntity<Result<String>> createProduct(
             @PathVariable UUID restaurantId,@RequestBody ProductRequest productRequest) {
         productService.createProduct(productRequest, restaurantId);
@@ -34,6 +43,7 @@ public class ProductController {
     }
 
 
+    @Operation(summary = "AI 생성", description = "AI 생성")
     @GetMapping("{productId}")
     public ResponseEntity<Result<ProductResponse>> getProduct(@PathVariable UUID productId) {
         ProductResponse productResponse=  productService.getProduct(productId);
@@ -42,6 +52,7 @@ public class ProductController {
 
     @Secured({"MANAGER","MASTER"})
     @PutMapping("/{productId}")
+    @Operation(summary = "AI 생성", description = "AI 생성")
     public ResponseEntity<Result<String>> updateProduct(@PathVariable UUID productId,
                                                 @RequestBody ProductRequest productRequest,
                                                 SecurityUserDetails userDetails) {
@@ -53,6 +64,7 @@ public class ProductController {
 
     @Secured({"MANAGER","MASTER"})
     @DeleteMapping("/{productId}")
+    @Operation(summary = "AI 생성", description = "AI 생성")
     public ResponseEntity<Result<String>> deleteProduct(@PathVariable UUID productId, SecurityUserDetails userDetails) {
         productService.deleteProduct(productId,userDetails);
 

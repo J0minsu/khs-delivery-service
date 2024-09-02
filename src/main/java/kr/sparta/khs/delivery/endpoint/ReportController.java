@@ -1,5 +1,10 @@
 package kr.sparta.khs.delivery.endpoint;
 
+import io.swagger.v3.oas.annotations.Operation;
+import io.swagger.v3.oas.annotations.enums.SecuritySchemeType;
+import io.swagger.v3.oas.annotations.security.SecurityRequirement;
+import io.swagger.v3.oas.annotations.security.SecurityScheme;
+import io.swagger.v3.oas.annotations.tags.Tag;
 import kr.sparta.khs.delivery.config.holder.Result;
 import kr.sparta.khs.delivery.domain.report.service.ReportService;
 import kr.sparta.khs.delivery.domain.report.vo.ReportVO;
@@ -25,7 +30,9 @@ import org.springframework.web.bind.annotation.*;
 import java.util.UUID;
 
 @RestController
-@FieldDefaults(level = AccessLevel.PRIVATE, makeFinal = true)
+@SecurityRequirement(name = "Bearer Authentication")
+@SecurityScheme( name = "Bearer Authentication", type = SecuritySchemeType.HTTP, bearerFormat = "JWT", scheme = "Bearer")
+@Tag(name = "신고 내역 API", description = "신고 내역 관리 목적의 API Docs")
 @Slf4j
 @RequiredArgsConstructor
 @RequestMapping("/api/v1/reports")
@@ -35,6 +42,7 @@ public class ReportController {
     private final UserService userService;
 
     @PostMapping
+    @Operation(summary = "AI 생성", description = "AI 생성")
     public ResponseEntity<Result<ReportResponse>> create(
             @RequestBody ReportCreateRequest request,
             @AuthenticationPrincipal SecurityUserDetails userDetails) {
@@ -51,6 +59,7 @@ public class ReportController {
     }
 
     @GetMapping("/users/{userId}")
+    @Operation(summary = "AI 생성", description = "AI 생성")
     public ResponseEntity<Result<Page<ReportResponse>>> findMyReports(
             @PathVariable Integer userId,
             Pageable pageable) {
@@ -65,6 +74,7 @@ public class ReportController {
 
     @GetMapping("/{reportId}")
     @PreAuthorize("hasAnyRole('MASTER')")
+    @Operation(summary = "AI 생성", description = "AI 생성")
     public ResponseEntity<Result<ReportResponse>> findReport(
             @PathVariable UUID reportId,
             @AuthenticationPrincipal SecurityUserDetails userDetails) {
@@ -84,6 +94,7 @@ public class ReportController {
 
     @GetMapping
     @PreAuthorize("hasAnyRole('MASTER')")
+    @Operation(summary = "AI 생성", description = "AI 생성")
     public ResponseEntity<Result<Page<ReportResponse>>> search(
             @RequestParam(defaultValue = "0") int pageNumber,
             @RequestParam(defaultValue = "10") int size,
@@ -109,6 +120,7 @@ public class ReportController {
 
     @PatchMapping("/{reportId}/accept")
     @PreAuthorize("hasAnyRole('MASTER')")
+    @Operation(summary = "AI 생성", description = "AI 생성")
     public ResponseEntity<Result<ReportResponse>> acceptReport(
             @PathVariable UUID reportId,
             @AuthenticationPrincipal SecurityUserDetails userDetails) {
@@ -123,6 +135,7 @@ public class ReportController {
 
     @PatchMapping("/{reportId}/solve")
     @PreAuthorize("hasAnyRole('MASTER')")
+    @Operation(summary = "AI 생성", description = "AI 생성")
     public ResponseEntity<Result<ReportResponse>> solveReport(
             @PathVariable UUID reportId,
             @AuthenticationPrincipal SecurityUserDetails userDetails,
@@ -137,6 +150,7 @@ public class ReportController {
     }
 
     @DeleteMapping("/{reportId}")
+    @Operation(summary = "AI 생성", description = "AI 생성")
     public ResponseEntity<Result<Void>> delete(
             @PathVariable UUID reportId,
             @AuthenticationPrincipal SecurityUserDetails userDetails) {

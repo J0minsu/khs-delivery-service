@@ -1,6 +1,7 @@
 package kr.sparta.khs.delivery.endpoint;
 
 
+import io.swagger.v3.oas.annotations.tags.Tag;
 import jakarta.servlet.http.HttpServletResponse;
 import jakarta.validation.Valid;
 import kr.sparta.khs.delivery.config.holder.Result;
@@ -23,6 +24,7 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RestController;
 
 
+@Tag(name = "인증 API", description = "인증 목적의 API Docs")
 @RestController
 @RequiredArgsConstructor
 @Slf4j

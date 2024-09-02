@@ -1,5 +1,10 @@
 package kr.sparta.khs.delivery.endpoint;
 
+import io.swagger.v3.oas.annotations.Operation;
+import io.swagger.v3.oas.annotations.enums.SecuritySchemeType;
+import io.swagger.v3.oas.annotations.security.SecurityRequirement;
+import io.swagger.v3.oas.annotations.security.SecurityScheme;
+import io.swagger.v3.oas.annotations.tags.Tag;
 import jakarta.validation.Valid;
 import kr.sparta.khs.delivery.config.holder.Result;
 import kr.sparta.khs.delivery.domain.ai.vo.AIVO;
@@ -29,6 +34,9 @@ import org.springframework.web.bind.annotation.*;
 import java.util.UUID;
 
 @RestController
+@SecurityRequirement(name = "Bearer Authentication")
+@SecurityScheme( name = "Bearer Authentication", type = SecuritySchemeType.HTTP, bearerFormat = "JWT", scheme = "Bearer")
+@Tag(name = "리뷰 API", description = "리뷰 관리 목적의 API Docs")
 @Slf4j
 @RequiredArgsConstructor
 @RequestMapping("/api/v1/reviews")
@@ -39,6 +47,7 @@ public class ReviewController {
 
     @PostMapping
     @PreAuthorize("hasAnyRole('CUSTOMER', 'MASTER')")
+    @Operation(summary = "AI 생성", description = "AI 생성")
     public ResponseEntity<Result<ReviewResponse>> createReview(
             @AuthenticationPrincipal SecurityUserDetails userDetails,
             @Valid @RequestBody ReviewRequest reviewRequest,
@@ -60,6 +69,7 @@ public class ReviewController {
 
     @GetMapping("/users/{userId}")
     @PreAuthorize("hasAnyRole('CUSTOMER', 'MASTER')")
+    @Operation(summary = "AI 생성", description = "AI 생성")
     public ResponseEntity<Result<Page<ReviewResponse>>> getUsersReviews(
             @PathVariable Integer userId,
             @AuthenticationPrincipal SecurityUserDetails userDetails
@@ -74,6 +84,7 @@ public class ReviewController {
 
     @GetMapping
     @PreAuthorize("hasAnyRole('MASTER')")
+    @Operation(summary = "AI 생성", description = "AI 생성")
     public ResponseEntity<Result<Page<ReviewResponse>>> search(
             @RequestParam(defaultValue = "0") int pageNumber,
             @RequestParam(defaultValue = "10") int size,
@@ -97,6 +108,7 @@ public class ReviewController {
     }
 
     @GetMapping("/restaurants/{restaurantId}")
+    @Operation(summary = "AI 생성", description = "AI 생성")
     public ResponseEntity<Result<Page<ReviewResponse>>> getRestaurantReviews(
             UUID restaurantId,
             Pageable pageable
@@ -111,6 +123,7 @@ public class ReviewController {
 
     @PatchMapping("/{reviewId}")
     @PreAuthorize("hasAnyRole('CUSTOMER', 'MASTER')")
+    @Operation(summary = "AI 생성", description = "AI 생성")
     public ResponseEntity<Result<ReviewResponse>> modifyReview(
             @PathVariable UUID reviewId,
             @AuthenticationPrincipal SecurityUserDetails userDetails,
@@ -131,6 +144,7 @@ public class ReviewController {
 
     @DeleteMapping("/{reviewId}")
     @PreAuthorize("hasAnyRole('CUSTOMER', 'MASTER')")
+    @Operation(summary = "AI 생성", description = "AI 생성")
     public ResponseEntity<Result<Void>> deleteReview(
             @PathVariable UUID reviewId,
             @AuthenticationPrincipal SecurityUserDetails userDetails) {

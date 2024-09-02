@@ -1,5 +1,10 @@
 package kr.sparta.khs.delivery.endpoint;
 
+import io.swagger.v3.oas.annotations.Operation;
+import io.swagger.v3.oas.annotations.enums.SecuritySchemeType;
+import io.swagger.v3.oas.annotations.security.SecurityRequirement;
+import io.swagger.v3.oas.annotations.security.SecurityScheme;
+import io.swagger.v3.oas.annotations.tags.Tag;
 import kr.sparta.khs.delivery.config.holder.Result;
 import kr.sparta.khs.delivery.domain.notice.dto.NoticeRequest;
 import kr.sparta.khs.delivery.domain.notice.dto.NoticeResponse;
@@ -20,6 +25,9 @@ import java.util.List;
 import java.util.UUID;
 
 @RestController
+@SecurityRequirement(name = "Bearer Authentication")
+@SecurityScheme( name = "Bearer Authentication", type = SecuritySchemeType.HTTP, bearerFormat = "JWT", scheme = "Bearer")
+@Tag(name = "공지사항 API", description = "공지사항 관리 목적의 API Docs")
 @RequestMapping("/api/v1/notice")
 public class NoticeController {
 
@@ -31,6 +39,7 @@ public class NoticeController {
 
     @PostMapping
     @Secured({"MASTER"})
+    @Operation(summary = "AI 생성", description = "AI 생성")
     public ResponseEntity<?> createNotice(@RequestBody NoticeRequest request , @AuthenticationPrincipal SecurityUserDetails userDetails) {
 
         noticeService.createNotice(request,userDetails);
@@ -41,6 +50,7 @@ public class NoticeController {
 
     @GetMapping("/{noticeId}")
     @PreAuthorize("isAuthenticated()")
+    @Operation(summary = "AI 생성", description = "AI 생성")
     public ResponseEntity<?> getNoticeDetails(@PathVariable UUID noticeId) {
 
         return ResponseEntity.status(HttpStatus.OK).body(Result.success(noticeService.getNoticeDetails(noticeId)));
@@ -48,6 +58,7 @@ public class NoticeController {
     }
 
     @GetMapping
+    @Operation(summary = "AI 생성", description = "AI 생성")
     public ResponseEntity<?> getNotices(
             @RequestParam(defaultValue = "0") int pageNumber,
             @RequestParam(defaultValue = "10") int size,
@@ -63,6 +74,7 @@ public class NoticeController {
 
     @PutMapping("/{noticeId}")
     @Secured({"MASTER"})
+    @Operation(summary = "AI 생성", description = "AI 생성")
     public ResponseEntity<?> updateNotice(@PathVariable UUID noticeId, @RequestBody NoticeRequest request , @AuthenticationPrincipal SecurityUserDetails userDetails) {
 
         noticeService.updateNotice(noticeId,request,userDetails);
@@ -73,6 +85,7 @@ public class NoticeController {
 
     @DeleteMapping("/{noticeId}")
     @Secured({"MASTER"})
+    @Operation(summary = "AI 생성", description = "AI 생성")
     public ResponseEntity<?> deleteNotice(@PathVariable UUID noticeId, @AuthenticationPrincipal SecurityUserDetails userDetails) {
 
         noticeService.deleteNotice(noticeId,userDetails);

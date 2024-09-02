@@ -1,5 +1,10 @@
 package kr.sparta.khs.delivery.endpoint;
 
+import io.swagger.v3.oas.annotations.Operation;
+import io.swagger.v3.oas.annotations.enums.SecuritySchemeType;
+import io.swagger.v3.oas.annotations.security.SecurityRequirement;
+import io.swagger.v3.oas.annotations.security.SecurityScheme;
+import io.swagger.v3.oas.annotations.tags.Tag;
 import jakarta.validation.Valid;
 import kr.sparta.khs.delivery.config.holder.Result;
 import kr.sparta.khs.delivery.domain.report.vo.ReportVO;
@@ -25,6 +30,9 @@ import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.*;
 
 @RestController
+@SecurityRequirement(name = "Bearer Authentication")
+@SecurityScheme( name = "Bearer Authentication", type = SecuritySchemeType.HTTP, bearerFormat = "JWT", scheme = "Bearer")
+@Tag(name = "사용자 정보 API", description = "사용자 관리 목적의 API Docs")
 @Slf4j
 @RequiredArgsConstructor
 @RequestMapping("/api/v1/users")
@@ -35,6 +43,7 @@ public class UserController {
 
     @GetMapping
     @PreAuthorize("hasAnyRole('MANAGER', 'MASTER')")
+    @Operation(summary = "AI 생성", description = "AI 생성")
     public ResponseEntity<Result<Page<UserResponse>>> search(
             @RequestParam(defaultValue = "0") int pageNumber,
             @RequestParam(defaultValue = "10") int size,
@@ -58,6 +67,7 @@ public class UserController {
     }
 
     @PatchMapping("/{userId}")
+    @Operation(summary = "AI 생성", description = "AI 생성")
     public ResponseEntity<Result<UserResponse>> modifyUser(
             @PathVariable Integer userId,
             @AuthenticationPrincipal SecurityUserDetails userDetails,
@@ -81,6 +91,7 @@ public class UserController {
     }
 
     @DeleteMapping("/{userId}")
+    @Operation(summary = "AI 생성", description = "AI 생성")
     public ResponseEntity<Result<Void>> deleteUser(
             @PathVariable Integer userId,
             @AuthenticationPrincipal SecurityUserDetails userDetails
