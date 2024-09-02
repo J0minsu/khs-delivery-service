@@ -1,6 +1,7 @@
 package kr.sparta.khs.delivery.endpoint;
 
 
+import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import jakarta.servlet.http.HttpServletResponse;
 import jakarta.validation.Valid;
@@ -34,6 +35,7 @@ public class AuthController {
     private final JWTUtil jwtUtil;
 
     @PostMapping("/auth/signin")
+    @Operation(summary = "로그인(토큰발급)", description = "로그인(토큰발급)")
     public ResponseEntity<Result<String>> createAuthenticationToken(
             @RequestBody SignInRequest request, HttpServletResponse response) {
 
@@ -47,6 +49,7 @@ public class AuthController {
     }
 
     @PostMapping("/auth/signup")
+    @Operation(summary = "회원가입", description = "회원가입")
     public ResponseEntity<Result<String>> signUp(
             @RequestBody @Valid SignUpRequest request,
             BindingResult bindingResult, HttpServletResponse response) {

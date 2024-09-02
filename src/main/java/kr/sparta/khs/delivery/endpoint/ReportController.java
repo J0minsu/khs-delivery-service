@@ -43,7 +43,7 @@ public class ReportController {
     private final UserService userService;
 
     @PostMapping
-    @Operation(summary = "AI 생성", description = "AI 생성")
+    @Operation(summary = "신고하기", description = "신고하기")
     public ResponseEntity<Result<ReportResponse>> create(
             @RequestBody ReportCreateRequest request,
             @Parameter(hidden = true) @AuthenticationPrincipal SecurityUserDetails userDetails) {
@@ -60,7 +60,7 @@ public class ReportController {
     }
 
     @GetMapping("/users/{userId}")
-    @Operation(summary = "AI 생성", description = "AI 생성")
+    @Operation(summary = "신고내역 사용자 아이디 별 조회", description = "신고내역 사용자 아이디 별 조회")
     public ResponseEntity<Result<Page<ReportResponse>>> findMyReports(
             @PathVariable Integer userId,
             Pageable pageable) {
@@ -75,7 +75,7 @@ public class ReportController {
 
     @GetMapping("/{reportId}")
     @PreAuthorize("hasAnyRole('MASTER')")
-    @Operation(summary = "AI 생성", description = "AI 생성")
+    @Operation(summary = "신고내역 아이디로 조회", description = "신고내역 아이디로 조회")
     public ResponseEntity<Result<ReportResponse>> findReport(
             @PathVariable UUID reportId,
             @Parameter(hidden = true) @AuthenticationPrincipal SecurityUserDetails userDetails) {
@@ -95,7 +95,7 @@ public class ReportController {
 
     @GetMapping
     @PreAuthorize("hasAnyRole('MASTER')")
-    @Operation(summary = "AI 생성", description = "AI 생성")
+    @Operation(summary = "신고내역 검색(search)", description = "신고내역 검색(search)")
     public ResponseEntity<Result<Page<ReportResponse>>> search(
             @RequestParam(defaultValue = "0") int pageNumber,
             @RequestParam(defaultValue = "10") int size,
@@ -121,7 +121,7 @@ public class ReportController {
 
     @PatchMapping("/{reportId}/accept")
     @PreAuthorize("hasAnyRole('MASTER')")
-    @Operation(summary = "AI 생성", description = "AI 생성")
+    @Operation(summary = "신고내역 접수(담당자 확인)", description = "신고내역 접수(담당자 확인)")
     public ResponseEntity<Result<ReportResponse>> acceptReport(
             @PathVariable UUID reportId,
             @Parameter(hidden = true) @AuthenticationPrincipal SecurityUserDetails userDetails) {
@@ -136,7 +136,7 @@ public class ReportController {
 
     @PatchMapping("/{reportId}/solve")
     @PreAuthorize("hasAnyRole('MASTER')")
-    @Operation(summary = "AI 생성", description = "AI 생성")
+    @Operation(summary = "신고내역 처리완료", description = "신고내역 처리완료")
     public ResponseEntity<Result<ReportResponse>> solveReport(
             @PathVariable UUID reportId,
             @Parameter(hidden = true) @AuthenticationPrincipal SecurityUserDetails userDetails,
@@ -151,7 +151,7 @@ public class ReportController {
     }
 
     @DeleteMapping("/{reportId}")
-    @Operation(summary = "AI 생성", description = "AI 생성")
+    @Operation(summary = "신고내역 비활성화", description = "신고내역 비활성화")
     public ResponseEntity<Result<Void>> delete(
             @PathVariable UUID reportId,
             @Parameter(hidden = true) @AuthenticationPrincipal SecurityUserDetails userDetails) {

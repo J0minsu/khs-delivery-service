@@ -48,7 +48,7 @@ public class ReviewController {
 
     @PostMapping
     @PreAuthorize("hasAnyRole('CUSTOMER', 'MASTER')")
-    @Operation(summary = "AI 생성", description = "AI 생성")
+    @Operation(summary = "리뷰 생성", description = "리뷰 생성")
     public ResponseEntity<Result<ReviewResponse>> createReview(
             @Parameter(hidden = true) @AuthenticationPrincipal SecurityUserDetails userDetails,
             @Valid @RequestBody ReviewRequest reviewRequest,
@@ -70,7 +70,7 @@ public class ReviewController {
 
     @GetMapping("/users/{userId}")
     @PreAuthorize("hasAnyRole('CUSTOMER', 'MASTER')")
-    @Operation(summary = "AI 생성", description = "AI 생성")
+    @Operation(summary = "리뷰 사용자로 조회", description = "리뷰 사용자로 조회")
     public ResponseEntity<Result<Page<ReviewResponse>>> getUsersReviews(
             @PathVariable Integer userId,
             @Parameter(hidden = true) @AuthenticationPrincipal SecurityUserDetails userDetails
@@ -85,7 +85,7 @@ public class ReviewController {
 
     @GetMapping
     @PreAuthorize("hasAnyRole('MASTER')")
-    @Operation(summary = "AI 생성", description = "AI 생성")
+    @Operation(summary = "리뷰 검색(search)", description = "리뷰 검색(search)")
     public ResponseEntity<Result<Page<ReviewResponse>>> search(
             @RequestParam(defaultValue = "0") int pageNumber,
             @RequestParam(defaultValue = "10") int size,
@@ -109,7 +109,7 @@ public class ReviewController {
     }
 
     @GetMapping("/restaurants/{restaurantId}")
-    @Operation(summary = "AI 생성", description = "AI 생성")
+    @Operation(summary = "레스토랑 리뷰 검색", description = "레스토랑 리뷰 검색")
     public ResponseEntity<Result<Page<ReviewResponse>>> getRestaurantReviews(
             UUID restaurantId,
             Pageable pageable
@@ -124,7 +124,7 @@ public class ReviewController {
 
     @PatchMapping("/{reviewId}")
     @PreAuthorize("hasAnyRole('CUSTOMER', 'MASTER')")
-    @Operation(summary = "AI 생성", description = "AI 생성")
+    @Operation(summary = "리뷰 수정", description = "리뷰 수정")
     public ResponseEntity<Result<ReviewResponse>> modifyReview(
             @PathVariable UUID reviewId,
             @Parameter(hidden = true) @AuthenticationPrincipal SecurityUserDetails userDetails,
@@ -145,7 +145,7 @@ public class ReviewController {
 
     @DeleteMapping("/{reviewId}")
     @PreAuthorize("hasAnyRole('CUSTOMER', 'MASTER')")
-    @Operation(summary = "AI 생성", description = "AI 생성")
+    @Operation(summary = "리뷰 비활성화", description = "리뷰 비활성화")
     public ResponseEntity<Result<Void>> deleteReview(
             @PathVariable UUID reviewId,
             @Parameter(hidden = true) @AuthenticationPrincipal SecurityUserDetails userDetails) {

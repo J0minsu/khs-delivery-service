@@ -47,7 +47,7 @@ public class AIController {
 
     @GetMapping("/users/{userId}")
     @PreAuthorize("hasAnyRole('MANAGER', 'MASTER')")
-    @Operation(summary = "AI 생성", description = "AI 생성")
+    @Operation(summary = "AI 사용자 별 내역 조회", description = "AI 사용자 별 내역 조회")
     public ResponseEntity<Result<Page<AIResponse>>> findByUser(
             @PathVariable Integer userId,
             @Parameter(hidden = true) @AuthenticationPrincipal SecurityUserDetails userDetails
@@ -62,7 +62,7 @@ public class AIController {
     }
 
     @GetMapping("/{aiId}")
-    @Operation(summary = "AI 생성", description = "AI 생성")
+    @Operation(summary = "AI 아이디로 조회", description = "AI 아이디로 조회")
     @PreAuthorize("hasAnyRole('MANAGER', 'MASTER')")
     public ResponseEntity<Result<AIResponse>> findById(
             @PathVariable("aiId") UUID aiId,
@@ -78,7 +78,7 @@ public class AIController {
 
     @GetMapping
     @PreAuthorize("hasAnyRole('MANAGER', 'MASTER')")
-    @Operation(summary = "AI 생성", description = "AI 생성")
+    @Operation(summary = "AI 내역 조회(search)", description = "AI 내역 조회(search)")
     public ResponseEntity<Result<Page<AIResponse>>> search(
             @RequestParam(defaultValue = "0") int pageNumber,
             @RequestParam(defaultValue = "10") int size,
@@ -119,7 +119,7 @@ public class AIController {
 
     @DeleteMapping("/{aiId}")
     @PreAuthorize("hasAnyRole('MANAGER', 'MASTER')")
-    @Operation(summary = "AI 생성", description = "AI 생성")
+    @Operation(summary = "AI 내역 비활성화", description = "AI 내역 비활성화")
     public ResponseEntity<Void> deleteAI(
             @PathVariable UUID aiId,
             @Parameter(hidden = true) @AuthenticationPrincipal SecurityUserDetails userDetails) {

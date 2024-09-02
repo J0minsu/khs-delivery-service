@@ -44,7 +44,7 @@ public class UserController {
 
     @GetMapping
     @PreAuthorize("hasAnyRole('MANAGER', 'MASTER')")
-    @Operation(summary = "AI 생성", description = "AI 생성")
+    @Operation(summary = "사용자 search", description = "사용자 검색")
     public ResponseEntity<Result<Page<UserResponse>>> search(
             @RequestParam(defaultValue = "0") int pageNumber,
             @RequestParam(defaultValue = "10") int size,
@@ -68,7 +68,7 @@ public class UserController {
     }
 
     @PatchMapping("/{userId}")
-    @Operation(summary = "AI 생성", description = "AI 생성")
+    @Operation(summary = "사용자 정보 수정", description = "사용자 정보 수정")
     public ResponseEntity<Result<UserResponse>> modifyUser(
             @PathVariable Integer userId,
             @Parameter(hidden = true) @AuthenticationPrincipal SecurityUserDetails userDetails,
@@ -92,7 +92,7 @@ public class UserController {
     }
 
     @DeleteMapping("/{userId}")
-    @Operation(summary = "AI 생성", description = "AI 생성")
+    @Operation(summary = "사용자 비활성화", description = "사용자 비활성화")
     public ResponseEntity<Result<Void>> deleteUser(
             @PathVariable Integer userId,
             @Parameter(hidden = true) @AuthenticationPrincipal SecurityUserDetails userDetails
