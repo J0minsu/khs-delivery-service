@@ -18,7 +18,7 @@ public class ReviewResponse {
 
     private UUID id;
     private String comment;
-    private int rating;
+    private double rating;
     private String reviewerName;
     private LocalDateTime createdAt;
 

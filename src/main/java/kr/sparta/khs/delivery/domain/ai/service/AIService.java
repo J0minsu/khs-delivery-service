@@ -27,7 +27,7 @@ public class AIService {
     private final AIRepository aiRepository;
     private final UserRepository userRepository;
     private final WebClientService webClientService;
-    private final String PROMPT_SUFFIX = ". 답변을 최대한 간결하게 50자 이하로 작성해줘.";
+    private final String PROMPT_SUFFIX = ". 답변을 최대한 간결하게 50자 이하로 문자로만 작성해줘.";
 
     public AIVO findById(UUID id) {
         AIVO ai = aiRepository.findById(id)
