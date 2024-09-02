@@ -51,7 +51,7 @@ public class OrderController {
     private final RestaurantRepository restaurantRepository;
     @PreAuthorize("hasAnyRole('CUSTOMER, MANAGER')")
     @PostMapping
-    @Operation(summary = "AI 생성", description = "AI 생성")
+    @Operation(summary = "Order 생성", description = "Order 생성")
     public ResponseEntity<Result<String>> createOrder(@RequestBody CreateOrderRequest req, @Parameter(hidden = true) @AuthenticationPrincipal SecurityUserDetails userDetails){
         User user = userRepository.findById(userDetails.getId())
                 .orElseThrow(() -> new IllegalArgumentException("User not found"));
@@ -60,7 +60,7 @@ public class OrderController {
     }
     @PreAuthorize("hasAnyRole('CUSTOMER', 'MASTER')")
     @GetMapping("/{orderId}")
-    @Operation(summary = "AI 생성", description = "AI 생성")
+    @Operation(summary = "orderId 주문 확인", description = "orderId 기반 주문내용 확인")
     public ResponseEntity<Result<OrderResponse>> getOrder(@PathVariable UUID orderId, @Parameter(hidden = true) @AuthenticationPrincipal SecurityUserDetails userDetails){
         User user =userRepository.findById(userDetails.getId())
                 .orElseThrow(() -> new IllegalArgumentException("User not found"));
@@ -69,7 +69,7 @@ public class OrderController {
     }
     @PreAuthorize("hasAnyRole('CUSTOMER', 'MASTER')")
     @GetMapping("/user/{userId}")
-    @Operation(summary = "AI 생성", description = "AI 생성")
+    @Operation(summary = "userId 주문 확인", description = "해당 유저가 한 주문 확인")
     public ResponseEntity<Result<List<OrderResponse>>> getOrdersByUserId(@PathVariable Integer userId, @Parameter(hidden = true) @AuthenticationPrincipal SecurityUserDetails userDetails) {
         if (!userDetails.getId().equals(userId)) {
             return ResponseEntity.status(HttpStatus.FORBIDDEN).build();
@@ -81,7 +81,7 @@ public class OrderController {
     }
     @PreAuthorize("hasAnyRole('MANAGER', 'MASTER')")
     @GetMapping("/restaurants/{restaurantId}")
-    @Operation(summary = "AI 생성", description = "AI 생성")
+    @Operation(summary = "restaurantId 주문 확인", description = "식당에서 받은 주문 확인")
     public ResponseEntity<Result<List<OrderResponse>>> getOrdersByRestaurantId(@PathVariable UUID restaurantId) {
         Restaurant restaurant = restaurantRepository.findById(restaurantId)
                 .orElseThrow(() -> new IllegalArgumentException("Restaurant not found"));
@@ -90,7 +90,7 @@ public class OrderController {
     }
     @PreAuthorize("hasRole('MANAGER')")
     @PutMapping("/{orderId}/accept")
-    @Operation(summary = "AI 생성", description = "AI 생성")
+    @Operation(summary = "주문 승낙", description = "orderId 받아와서 해당 주문 승낙")
     public ResponseEntity<Result<String>> acceptOrder(@PathVariable UUID orderId, @Parameter(hidden = true) @AuthenticationPrincipal SecurityUserDetails userDetails){
         User user = userRepository.findById(userDetails.getId())
                 .orElseThrow(() -> new IllegalArgumentException("User not found"));
@@ -105,7 +105,7 @@ public class OrderController {
     }
     @PreAuthorize("hasRole('MANAGER')")
     @PutMapping("/{orderId}/cancel")
-    @Operation(summary = "AI 생성", description = "AI 생성")
+    @Operation(summary = "주문 취소", description = "orderId 받아와서 해당 주문 취소")
     public ResponseEntity<Result<String>> cancelOrder(@PathVariable UUID orderId, @Parameter(hidden = true) @AuthenticationPrincipal SecurityUserDetails userDetails){
         User user = userRepository.findById(userDetails.getId())
                 .orElseThrow(() -> new IllegalArgumentException("User not found"));
@@ -118,19 +118,25 @@ public class OrderController {
             throw new ResponseStatusException(HttpStatus.FORBIDDEN, "You do not have permission to accept this order");
         }
     }
+    @PreAuthorize("hasAnyRole('MANAGER','MASTER')")
     @GetMapping("/search")
-    @Operation(summary = "AI 생성", description = "AI 생성")
+    @Operation(summary = "주문 검색", description = "주문 타입, 상태에 따른 주문 검색")
     public ResponseEntity<Result<Page<OrderResponse>>> searchOrders(
             @RequestBody OrderSearch search,
-            @RequestParam int page,
-            @RequestParam int size,
+            @RequestParam(defaultValue = "0") int page,
+            @RequestParam(defaultValue = "10") int size,
             @RequestParam(defaultValue = "CREATED_DESC") SortStandard sort) {
+        size = switch (size) {
+            case 30 -> 30;
+            case 50 -> 50;
+            default -> 10;
+        };
         Page<OrderResponse> orders = orderService.searchOrders(search, page, size, sort);
         return ResponseEntity.ok(Result.success(orders));
     }
     @PreAuthorize("hasAnyRole('MANAGER','MASTER')")
     @DeleteMapping("/{orderId}")
-    @Operation(summary = "AI 생성", description = "AI 생성")
+    @Operation(summary = "주문 삭제", description = "주문 삭제")
     public ResponseEntity<Result<String>> deleteOrder(@PathVariable UUID orderId, @Parameter(hidden = true) @AuthenticationPrincipal SecurityUserDetails userDetails) {
         orderService.deleteOrder(orderId, userDetails.getId());
         return ResponseEntity.ok(Result.success("Order deleted successfully"));
