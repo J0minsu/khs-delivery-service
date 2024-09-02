@@ -4,8 +4,6 @@ import kr.sparta.khs.delivery.domain.notice.dto.NoticeRequest;
 import kr.sparta.khs.delivery.domain.notice.dto.NoticeResponse;
 import kr.sparta.khs.delivery.domain.notice.entity.Notice;
 import kr.sparta.khs.delivery.domain.notice.repository.NoticeRepository;
-import kr.sparta.khs.delivery.domain.user.entity.User;
-import kr.sparta.khs.delivery.domain.user.repository.UserRepository;
 import kr.sparta.khs.delivery.security.SecurityUserDetails;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
@@ -19,7 +17,7 @@ import java.util.UUID;
 public class NoticeService {
     private final NoticeRepository noticeRepository;
 
-    public NoticeService(NoticeRepository noticeRepository, UserRepository userRepository) {
+    public NoticeService(NoticeRepository noticeRepository) {
         this.noticeRepository = noticeRepository;
     }
 

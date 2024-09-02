@@ -1,6 +1,5 @@
 package kr.sparta.khs.delivery.domain.notice.dto;
 
-import jakarta.persistence.Column;
 import kr.sparta.khs.delivery.domain.notice.entity.Notice;
 import lombok.AllArgsConstructor;
 import lombok.Data;
