@@ -56,6 +56,7 @@ public class BaseEntity {
     public void undoDelete(Integer handlerId) {
         this.deletedBy = null;
         this.deletedAt = null;
+        this.isDeleted = false;
     }
 
 
