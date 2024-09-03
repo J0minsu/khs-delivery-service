@@ -67,3 +67,18 @@
 ## APIs 결과
 각 API의 예시 요청 및 응답 결과는 [여기](http://delivery-lb-1253848622.ap-northeast-2.elb.amazonaws.com/swagger-ui/index.html)에서 확인하실 수 있습니다.
 
+## 프로젝트를 진행하며 어려웠던 점
+
+조민수 : 
+
+김홍성 : 
+
+고혁진 :
+
+## 프로젝트를 마무리하며 느낀 점
+
+조민수 : 
+
+김홍성 : 
+
+고혁진 :
