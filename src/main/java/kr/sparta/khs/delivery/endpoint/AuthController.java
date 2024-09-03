@@ -11,6 +11,7 @@ import kr.sparta.khs.delivery.domain.user.entity.User;
 import kr.sparta.khs.delivery.domain.user.vo.UserVO;
 import kr.sparta.khs.delivery.endpoint.dto.req.SignInRequest;
 import kr.sparta.khs.delivery.endpoint.dto.req.SignUpRequest;
+import kr.sparta.khs.delivery.util.CommonApiResponses;
 import kr.sparta.khs.delivery.util.JWTUtil;
 import lombok.AllArgsConstructor;
 import lombok.Data;
@@ -28,6 +29,7 @@ import org.springframework.web.bind.annotation.RestController;
 @Tag(name = "인증 API", description = "인증 목적의 API Docs")
 @RestController
 @RequiredArgsConstructor
+@CommonApiResponses
 @Slf4j
 public class AuthController {
 

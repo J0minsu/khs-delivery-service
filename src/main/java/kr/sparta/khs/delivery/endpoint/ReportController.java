@@ -16,6 +16,7 @@ import kr.sparta.khs.delivery.endpoint.dto.req.ReportSolveRequest;
 import kr.sparta.khs.delivery.endpoint.dto.req.SortStandard;
 import kr.sparta.khs.delivery.endpoint.dto.res.ReportResponse;
 import kr.sparta.khs.delivery.security.SecurityUserDetails;
+import kr.sparta.khs.delivery.util.CommonApiResponses;
 import lombok.AccessLevel;
 import lombok.RequiredArgsConstructor;
 import lombok.experimental.FieldDefaults;
@@ -35,6 +36,7 @@ import java.util.UUID;
 @SecurityScheme( name = "Bearer Authentication", type = SecuritySchemeType.HTTP, bearerFormat = "JWT", scheme = "Bearer")
 @Tag(name = "신고 내역 API", description = "신고 내역 관리 목적의 API Docs")
 @Slf4j
+@CommonApiResponses
 @RequiredArgsConstructor
 @RequestMapping("/api/v1/reports")
 public class ReportController {
