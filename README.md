@@ -15,7 +15,7 @@
 **실행 방법:**
 1. **프로파일 설정**: Local 환경에서 구동 시 active.profile 을 'local' 로 설정 해주시기 바랍니다. 
 2. **횐경변수 설정**: PostgreSQL와 Redis 의 datasource, gemini apikey 를 local properties 파일에서 key 값에 일치하는 값을 입력합니다.  
-3. **객체 생성 순서**: USER -> 카테고리 -> 레스토랑 -> 상품 -> 주문, AI -> REPORT, REVIEW etc.
+3. **API 생성 요청 순서**: USER -> 카테고리 -> 레스토랑 -> 상품 -> 주문, AI -> REPORT, REVIEW etc.
 
 
 ## Infra Structure
