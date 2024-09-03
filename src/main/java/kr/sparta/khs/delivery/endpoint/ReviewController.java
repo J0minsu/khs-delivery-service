@@ -19,6 +19,7 @@ import kr.sparta.khs.delivery.endpoint.dto.res.AIResponse;
 import kr.sparta.khs.delivery.endpoint.dto.res.ReviewResponse;
 import kr.sparta.khs.delivery.security.SecurityUserDetails;
 import kr.sparta.khs.delivery.security.SecurityUserInfo;
+import kr.sparta.khs.delivery.util.CommonApiResponses;
 import lombok.AccessLevel;
 import lombok.RequiredArgsConstructor;
 import lombok.experimental.FieldDefaults;
@@ -39,6 +40,7 @@ import java.util.UUID;
 @SecurityScheme( name = "Bearer Authentication", type = SecuritySchemeType.HTTP, bearerFormat = "JWT", scheme = "Bearer")
 @Tag(name = "리뷰 API", description = "리뷰 관리 목적의 API Docs")
 @Slf4j
+@CommonApiResponses
 @RequiredArgsConstructor
 @RequestMapping("/api/v1/reviews")
 public class ReviewController {

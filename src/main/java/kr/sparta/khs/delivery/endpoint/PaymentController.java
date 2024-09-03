@@ -13,6 +13,7 @@ import kr.sparta.khs.delivery.domain.payment.service.PaymentService;
 import kr.sparta.khs.delivery.domain.user.entity.User;
 import kr.sparta.khs.delivery.domain.user.repository.UserRepository;
 import kr.sparta.khs.delivery.security.SecurityUserDetails;
+import kr.sparta.khs.delivery.util.CommonApiResponses;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
@@ -26,6 +27,7 @@ import java.util.UUID;
 @SecurityScheme( name = "Bearer Authentication", type = SecuritySchemeType.HTTP, bearerFormat = "JWT", scheme = "Bearer")
 @Tag(name = "결제 API", description = "결제 관리 목적의 API Docs")
 @RestController
+@CommonApiResponses
 @RequiredArgsConstructor
 public class PaymentController {
     private final PaymentService paymentService;

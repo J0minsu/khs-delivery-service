@@ -17,6 +17,7 @@ import kr.sparta.khs.delivery.endpoint.dto.req.SortStandard;
 import kr.sparta.khs.delivery.endpoint.dto.res.AIResponse;
 import kr.sparta.khs.delivery.endpoint.dto.res.ReportResponse;
 import kr.sparta.khs.delivery.security.SecurityUserDetails;
+import kr.sparta.khs.delivery.util.CommonApiResponses;
 import lombok.AccessLevel;
 import lombok.RequiredArgsConstructor;
 import lombok.experimental.FieldDefaults;
@@ -36,6 +37,7 @@ import java.util.UUID;
 @SecurityRequirement(name = "Bearer Authentication")
 @SecurityScheme( name = "Bearer Authentication", type = SecuritySchemeType.HTTP, bearerFormat = "JWT", scheme = "Bearer")
 @Tag(name = "AI 요청 API", description = "AI 요청 내역 관리 목적의 API Docs")
+@CommonApiResponses
 @Slf4j
 @RequiredArgsConstructor
 @RequestMapping("/api/v1/ais")

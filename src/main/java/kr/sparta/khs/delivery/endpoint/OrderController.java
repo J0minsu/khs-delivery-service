@@ -24,6 +24,7 @@ import kr.sparta.khs.delivery.endpoint.dto.req.CreateOrderRequest;
 import kr.sparta.khs.delivery.endpoint.dto.req.SortStandard;
 import kr.sparta.khs.delivery.endpoint.dto.res.AIResponse;
 import kr.sparta.khs.delivery.security.SecurityUserDetails;
+import kr.sparta.khs.delivery.util.CommonApiResponses;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
@@ -43,6 +44,7 @@ import java.util.UUID;
 @SecurityRequirement(name = "Bearer Authentication")
 @SecurityScheme( name = "Bearer Authentication", type = SecuritySchemeType.HTTP, bearerFormat = "JWT", scheme = "Bearer")
 @Tag(name = "주문 API", description = "주문 관리 목적의 API Docs")
+@CommonApiResponses
 @RequiredArgsConstructor
 @RequestMapping("/api/v1/orders")
 public class OrderController {

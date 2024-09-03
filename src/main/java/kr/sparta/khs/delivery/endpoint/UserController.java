@@ -17,6 +17,7 @@ import kr.sparta.khs.delivery.endpoint.dto.req.UserModifyRequest;
 import kr.sparta.khs.delivery.endpoint.dto.res.ReportResponse;
 import kr.sparta.khs.delivery.endpoint.dto.res.UserResponse;
 import kr.sparta.khs.delivery.security.SecurityUserDetails;
+import kr.sparta.khs.delivery.util.CommonApiResponses;
 import lombok.AccessLevel;
 import lombok.RequiredArgsConstructor;
 import lombok.experimental.FieldDefaults;
@@ -36,6 +37,7 @@ import org.springframework.web.bind.annotation.*;
 @Tag(name = "사용자 정보 API", description = "사용자 관리 목적의 API Docs")
 @Slf4j
 @RequiredArgsConstructor
+@CommonApiResponses
 @RequestMapping("/api/v1/users")
 public class UserController {
 
