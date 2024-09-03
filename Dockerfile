@@ -2,15 +2,19 @@ FROM openjdk:17-jdk-slim
 VOLUME /tmp
 ARG JAR_FILE=build/libs/*.jar
 
-ENV GEMINI=${GEMINI}
-ENV POSTGRES_URL=${POSTGRES_URL}
-ENV POSTGRES_USERNAME=${POSTGRES_USERNAME}
-ENV POSTGRES_PASSWORD=${POSTGRES_PASSWORD}
-ENV REDIS_URL=${REDIS_URL}
-ENV REDIS_PORT=${REDIS_PORT}
-ENV REDIS_USERNAME=${REDIS_USERNAME}
-ENV REDIS_PASSWORD=${REDIS_PASSWORD}
-ENV JWT_KEY=${JWT_KEY}
-
 COPY ${JAR_FILE} app.jar
-ENTRYPOINT ["java","-Dspring.profiles.active=prod","-jar","/app.jar"]
+ENTRYPOINT [
+            "java",
+            "-Dspring.profiles.active=prod",
+            "-DGEMINI=${{ secrets.GEMINI }}",
+            "-DPOSTGRES_URL=${{ secrets.POSTGRES_URL }}",
+            "-DPOSTGRES_USERNAME=${{ secrets.POSTGRES_USERNAME }}",
+            "-DPOSTGRES_PASSWORD=${{ secrets.POSTGRES_PASSWORD }}",
+            "-DREDIS_URL=${{ secrets.REDIS_URL }}",
+            "-DREDIS_PORT=${{ secrets.REDIS_PORT }}",
+            "-DREDIS_USERNAME=${{ secrets.REDIS_USERNAME }}",
+            "-DREDIS_PASSWORD=${{ secrets.REDIS_PASSWORD }}",
+            "-DJWT_KEY=${{ secrets.JWT_KEY }}",
+            "-jar",
+            "/app.jar"
+            ]
