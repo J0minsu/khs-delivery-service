@@ -9,6 +9,7 @@ import java.util.UUID;
 @AllArgsConstructor
 @ToString
 @Getter
+@EqualsAndHashCode
 public class AIVO {
     
     private final UUID id;

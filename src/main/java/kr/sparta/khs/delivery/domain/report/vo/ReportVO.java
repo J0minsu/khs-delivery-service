@@ -5,6 +5,7 @@ import kr.sparta.khs.delivery.domain.report.entity.ReportType;
 import kr.sparta.khs.delivery.domain.user.entity.User;
 import kr.sparta.khs.delivery.domain.user.vo.UserVO;
 import lombok.AllArgsConstructor;
+import lombok.EqualsAndHashCode;
 import lombok.Getter;
 import lombok.ToString;
 
@@ -14,6 +15,7 @@ import java.util.UUID;
 @AllArgsConstructor
 @ToString
 @Getter
+@EqualsAndHashCode
 public class ReportVO {
 
     private final UUID id;

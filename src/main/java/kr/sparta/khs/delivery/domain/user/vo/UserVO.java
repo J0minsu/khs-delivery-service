@@ -2,6 +2,7 @@ package kr.sparta.khs.delivery.domain.user.vo;
 
 import kr.sparta.khs.delivery.domain.user.entity.AuthType;
 import lombok.AllArgsConstructor;
+import lombok.EqualsAndHashCode;
 import lombok.Getter;
 import lombok.ToString;
 
@@ -11,6 +12,7 @@ import java.time.LocalDateTime;
 @AllArgsConstructor
 @Getter
 @ToString
+@EqualsAndHashCode
 public class UserVO implements Serializable {
 
     private final int id;
